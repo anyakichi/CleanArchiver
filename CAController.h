@@ -36,24 +36,24 @@ extern NSString *AOExcludeDSS;
 extern NSString *AOExcludeIcon;
 extern NSString *AOInternetEnabledDMG;
 extern NSString *AOReplaceAutomatically;
+extern NSString *AOSaveRSRC;
 
 enum archive_type {
 	GZIPT = 0,
 	BZIP2T,
 	ZIPT,
-	DMGT,
-	SITT,
-	SITXT
+	DMGT
 };
 
 @interface CAController : NSObject
 {
 	IBOutlet NSButton *_archiveIndividuallyCheck;
 	IBOutlet NSButton *_cancelButton;
+	IBOutlet NSButton *_excludeDSSCheck;
 	IBOutlet NSButton *_excludeIconCheck;
 	IBOutlet NSButton *_internetEnabledDMGCheck;
-	IBOutlet NSButton *_excludeDSSCheck;
 	IBOutlet NSButton *_replaceAutomaticallyCheck;
+	IBOutlet NSButton *_saveRSRCCheck;
 	IBOutlet NSPopUpButton *_archiveTypeMenu;
 	IBOutlet NSProgressIndicator *_progressIndicator;
 	IBOutlet NSTextField *_progressMessage;
@@ -65,8 +65,10 @@ enum archive_type {
 	BOOL _archiveSessionInProgress;
 	BOOL _archivingCancelled;
 }
-- (IBAction)saveAsDefault:(id)sender;
 - (IBAction)cancelArchiving:(id)sender;
+- (IBAction)changeArchiveType:(id)sender;
+- (IBAction)saveAsDefault:(id)sender;
+
 
 - (void)handleFilesDropped:(NSNotification *)n;
 - (void)handleArchiveTerminated:(NSNotification *)n;

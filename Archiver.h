@@ -37,6 +37,7 @@
 	id _output;
 	NSArray *_excludedFiles;
 	unsigned _mode;
+	BOOL _rsrc;
 }
 
 - (id)init;
@@ -70,6 +71,9 @@
 
 - (NSArray *)excludedFiles;
 - (void)setExcludedFiles:(NSArray *)filenames;
+
+- (BOOL)savingResourceFork;
+- (void)setSavingResourceFork:(BOOL)yn;
 
 - (unsigned)archiveMode;
 - (void)setArchiveMode:(unsigned)m;

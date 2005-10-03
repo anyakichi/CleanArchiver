@@ -1,7 +1,7 @@
 {
     IBClasses = (
         {
-            ACTIONS = {cancelArchiving = id; saveAsDefault = id; }; 
+            ACTIONS = {cancelArchiving = id; changeArchiveType = id; saveAsDefault = id; }; 
             CLASS = CAController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
@@ -16,6 +16,7 @@
                 "_progressMessage" = NSTextField; 
                 "_progressWindow" = NSWindow; 
                 "_replaceAutomaticallyCheck" = NSButton; 
+                "_saveRSRCCheck" = NSButton; 
             }; 
             SUPERCLASS = NSObject; 
         }, 

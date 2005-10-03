@@ -47,6 +47,7 @@
 		[self setCurrentDirectoryPath:@""];
 		[self setInput:nil];
 		[self setOutput:nil];
+		[self setSavingResourceFork:YES];
 		[self setArchiveMode:0];
 
 		_task = [[NSTask alloc] init];
@@ -151,6 +152,17 @@
 	[filenames retain];
 	[_excludedFiles release];
 	_excludedFiles = filenames;
+}
+
+- (BOOL)savingResourceFork
+{
+
+	return _rsrc;
+}
+- (void)setSavingResourceFork:(BOOL)yn
+{
+
+	_rsrc = yn;
 }
 
 - (unsigned)archiveMode

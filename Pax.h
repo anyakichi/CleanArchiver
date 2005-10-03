@@ -28,67 +28,27 @@
  * SUCH DAMAGE.
  */
 
-#import "StuffIt.h"
+#import <Foundation/Foundation.h>
 
-@implementation StuffIt
+enum {
+	TAR = 0,
+	TAR_GZIP,
+	TAR_BZIP2,
+	UNTAR,
+	UNTAR_GZIP,
+	UNTAR_BZIP2
+};
 
-- (id)init
+#import "Archiver.h"
+
+@interface Pax : Archiver
 {
-
-	if (self = [super init])
-		[_task setLaunchPath:[[[NSBundle mainBundle] bundlePath]
-		    stringByAppendingString:@"/Contents/Resources/stuffit"]];
-	return self;
 }
+/*
+ * setInput accepts NSString *, NSArray *, NSFileHandle *, and NSPipe *.
+ * setOutput accepts NSString *, NSFileHandle *, and NSPipe *.
+ * setArchvierMode accepts the constants above.
+ */
 
-- (void)launch
-{
-	NSMutableArray *args;
-
-	args = [[NSMutableArray alloc] init];
-
-	switch (_mode) {
-	case STUFFIT5:
-		[args addObject:@"-f"];
-		[args addObject:@"5"];
-		break;
-	case STUFFITX:
-		[args addObject:@"-f"];
-		[args addObject:@"X"];
-		break;
-	case UNSTUFFIT:
-		[args addObject:@"-d"];
-		break;
-	default:
-		exit(1);
-	}
-
-	if ([_excludedFiles count] != 0)
-		[args addObject:@"-c"];
-
-	if ([_input isKindOfClass:[NSArray class]])
-		[args addObjectsFromArray:_input];
-	else if ([_input isKindOfClass:[NSString class]])
-		[args addObject:_input];
-
-	[_task setArguments:args];
-	[_task launch];
-
-	[args release];
-}
-
-- (StuffIt *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
-{
-	StuffIt *sit;
-	
-	sit = [[StuffIt alloc] init];
-
-	[sit setInput:i];
-	[sit setOutput:o];
-	[sit setArchiveMode:m];
-
-	[sit launch];
-	return [sit autorelease];
-}
-
+- (void)launch;
 @end

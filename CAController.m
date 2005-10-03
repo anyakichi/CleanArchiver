@@ -34,7 +34,7 @@
 #import "CAView.h"
 #import "Dmg.h"
 #import "Gzip.h"
-#import "StuffIt.h"
+#import "Pax.h"
 #import "Tar.h"
 #import "Zip.h"
 
@@ -44,6 +44,7 @@ NSString *AOExcludeDSS		= @"Exclude .DS_Store";
 NSString *AOExcludeIcon		= @"Exclude Icon";
 NSString *AOInternetEnabledDMG	= @"Internet-Enabled Disk Image";
 NSString *AOReplaceAutomatically= @"Replace Automatically";
+NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 @implementation CAController
 
@@ -64,6 +65,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	    forKey:AOArchiveIndividually];
 	[defaults setObject:[NSNumber numberWithBool:NO]
 	    forKey:AOInternetEnabledDMG];
+	[defaults setObject:[NSNumber numberWithBool:YES] forKey:AOSaveRSRC];
 
 	[ud registerDefaults:defaults];
 }
@@ -78,6 +80,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 
 	[_archiveTypeMenu selectItemWithTitle:
 	    [ud objectForKey:AOArchiveType]];
+	[self changeArchiveType:self];
 	[_excludeDSSCheck setState:[ud boolForKey:AOExcludeDSS]];
 	[_excludeIconCheck setState:[ud boolForKey:AOExcludeIcon]];
 	[_replaceAutomaticallyCheck setState:
@@ -86,6 +89,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	    setState:[ud boolForKey:AOArchiveIndividually]];
 	[_internetEnabledDMGCheck
 	    setState:[ud boolForKey:AOInternetEnabledDMG]];
+	[_saveRSRCCheck setState:[ud boolForKey:AOSaveRSRC]];
 
 	[nc addObserver:self selector:@selector(handleFilesDropped:)
 	    name:AOFilesDroppedNotification object:nil];
@@ -144,20 +148,14 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	}
 
 	if (_archivingCancelled == NO && [_mainTask terminationStatus] != 0) {
-		if ([_mainTask isKindOfClass:[StuffIt class]])
-			NSRunAlertPanel(@"", NSLocalizedString(
-			    @"Can't communicate with DropStuff.", nil),
-			    nil, nil, nil);
-		else
-			NSRunAlertPanel(@"", 
-			    [NSString localizedStringWithFormat:
-			    @"Can't make %@.", [_mainTask output]], 
-			    nil, nil, nil);
+		NSRunAlertPanel(@"", 
+		    [NSString localizedStringWithFormat:
+		    @"Can't make %@.", [_mainTask output]], 
+		    nil, nil, nil);
 	}
 
-	if (![_mainTask isKindOfClass:[StuffIt class]])
-	    [[NSWorkspace sharedWorkspace]
-		noteFileSystemChanged:[_mainTask output]];
+	[[NSWorkspace sharedWorkspace]
+	    noteFileSystemChanged:[_mainTask output]];
 
 	[_mainTask release];
 
@@ -189,6 +187,27 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 		[fm removeFileAtPath:dst handler:nil];
 }
 
+- (IBAction)changeArchiveType:(id)sender
+{
+	enum archive_type type;
+
+	type = [_archiveTypeMenu indexOfSelectedItem];
+	switch (type) {
+	case GZIPT:
+	case BZIP2T:
+		[_saveRSRCCheck setEnabled:YES];
+		break;
+	case ZIPT:
+		[_saveRSRCCheck setState:NSOffState];
+		[_saveRSRCCheck setEnabled:NO];
+		break;
+	case DMGT:
+		[_saveRSRCCheck setState:NSOnState];
+		[_saveRSRCCheck setEnabled:NO];
+		break;
+	}
+}
+
 - (IBAction)saveAsDefault:(id)sender
 {
 	NSUserDefaults *ud;
@@ -199,6 +218,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	    forKey:AOArchiveType];
 	[ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
 	[ud setBool:[_excludeIconCheck state] forKey:AOExcludeIcon];
+	[ud setBool:[_saveRSRCCheck state] forKey:AOSaveRSRC];
 	[ud setBool:[_replaceAutomaticallyCheck state]
 	    forKey:AOReplaceAutomatically];
 	[ud setBool:[_archiveIndividuallyCheck state]
@@ -297,10 +317,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 		}
 		ext = @"dmg";
 		break;
-	case SITT:
-		return @"sit";
-	case SITXT:
-		return @"sitx";
 	default:
 		exit(1);
 	}
@@ -323,7 +339,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	NSString *dst, *src;
 	enum archive_type type;
 	int i;
-	BOOL ai, ei, ie, ra, rd;
+	BOOL ai, ed, ei, er, ie, ra;
 
 	status = [[NSMutableDictionary alloc] init];
 
@@ -331,14 +347,16 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	type = [_archiveTypeMenu indexOfSelectedItem];
 	src = [srcs objectAtIndex:0];
 	ai = [_archiveIndividuallyCheck state];
+	ed = [_excludeDSSCheck state];
 	ei = [_excludeIconCheck state];
+	er = [_saveRSRCCheck state];
 	ie = [_internetEnabledDMGCheck state];
 	ra = [_replaceAutomaticallyCheck state];
-	rd = [_excludeDSSCheck state];
 
 	[status setObject:[NSNumber numberWithInt:type] forKey:AOArchiveType];
-	[status setObject:[NSNumber numberWithBool:rd] forKey:AOExcludeDSS];
+	[status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
 	[status setObject:[NSNumber numberWithBool:ei] forKey:AOExcludeIcon];
+	[status setObject:[NSNumber numberWithBool:er] forKey:AOSaveRSRC];
 	[status setObject:[NSNumber numberWithBool:ie]
 	    forKey:AOInternetEnabledDMG];
 
@@ -418,7 +436,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 			_mainTask = [[Gzip alloc] init];
 			[_mainTask setArchiveMode:GZIP];
 		} else {
-			_mainTask = [[Tar alloc] init];
+			_mainTask = [[Pax alloc] init];
 			[_mainTask setArchiveMode:TAR_GZIP];
 		}
 		break;
@@ -427,7 +445,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 			_mainTask = [[Bzip2 alloc] init];
 			[_mainTask setArchiveMode:BZIP2];
 		} else {
-			_mainTask = [[Tar alloc] init];
+			_mainTask = [[Pax alloc] init];
 			[_mainTask setArchiveMode:TAR_BZIP2];
 		}
 		break;
@@ -442,17 +460,14 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 		else
 			[_mainTask setArchiveMode:DMG_CREATE];
 		break;
-	case SITT:
-		_mainTask = [[StuffIt alloc] init];
-		[_mainTask setArchiveMode:STUFFIT5];
-		break;
-	case SITXT:
-		_mainTask = [[StuffIt alloc] init];
-		[_mainTask setArchiveMode:STUFFITX];
-		break;
 	default:
 		exit(1);
 	}
+
+	if ([[status objectForKey:AOSaveRSRC] intValue])
+		[_mainTask setSavingResourceFork:YES];
+	else
+		[_mainTask setSavingResourceFork:NO];
 
 	if ([srcs count] == 1)
 		[_mainTask setInput:[[srcs objectAtIndex:0] lastPathComponent]];
