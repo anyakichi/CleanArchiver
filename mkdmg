@@ -1,5 +1,6 @@
 #!/usr/bin/perl
-#	$Id: mkdmg,v 1.7.2.1 2005/03/06 04:49:43 inajima Exp $
+#	$Id$
+
 #
 # Copyright (c) 2005 Inajima Daisuke All rights reserved.
 #
