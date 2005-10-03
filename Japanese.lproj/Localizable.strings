@@ -1,0 +1,5 @@
+"Archiving: %@" = "圧縮中: %@";
+"Cleaning folders..." = "フォルダを掃除中...";
+"Preparing..." = "準備中...";
+"You can make a disk image only from a folder." = "Disk Imageはフォルダからしか作れません。";
+"Can't communicate with DropStuff." = "DropStuffと通信できません。";

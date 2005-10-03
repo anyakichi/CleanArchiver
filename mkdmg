@@ -1,0 +1,148 @@
+#!/usr/bin/perl
+#	$Id: mkdmg,v 1.7.2.1 2005/03/06 04:49:43 inajima Exp $
+#
+# Copyright (c) 2005 Inajima Daisuke All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+# 3. The name of the copyright holder may not be used to endorse or
+#    promote products derived from this software without specific prior
+#    written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER ``AS IS'' AND ANY EXPRESS
+# OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+
+use strict;
+use warnings;
+
+our $VERSION = '0.3';
+
+foreach (qw(HUP INT TERM)) {
+    $SIG{$_} = \&trap;
+}
+
+my @exc_files;
+my $dst;
+my $dst_temp;
+my $src;
+my $internet_enable = 0;
+
+my @argv;
+while ($_ = shift @ARGV) {
+    push(@argv, $_), next unless /^-(.*)/;
+    my @options = split //, $1;
+    
+    foreach my $option (@options) {
+	if    ($option eq 'i') { $internet_enable = 1 }
+	elsif ($option eq 'o') { $dst = shift @ARGV }
+	elsif ($option eq 't') { $dst_temp = shift @ARGV }
+	elsif ($option eq 'x') { push @exc_files, shift @ARGV }
+	else { print STDERR "Invalid option -$option\n"; exit 1 }
+    }
+}
+
+if (@argv != 1) {
+    print "illigal arguments\n";
+    exit 1;
+}
+
+$src = shift @argv;
+unless (-d $src) {
+    print "src is not a folder\n";
+    exit 1;
+}
+
+$dst ||= $src . ".dmg";
+
+unless ($dst_temp) {
+    $dst_temp = $dst;
+    $dst_temp =~ s/.dmg$/.temp.dmg/;
+}
+
+my($device, $volume);
+
+create($src, $dst_temp) or die;
+attach($dst_temp, \$device, \$volume) or die;
+exclude($volume, @exc_files) if @exc_files;
+detach($device) or die;
+convert($dst_temp, $dst) or die;
+internet_enable($dst) or die if $internet_enable;
+
+unlink $dst_temp;
+
+sub trap {
+    detach($device) if $device;
+    unlink $dst_temp if -w $dst_temp;
+    unlink $dst if -w $dst;
+}
+
+sub create {
+    my $src = shift;
+    my $dst = shift;
+
+    return system('hdiutil', 'create', '-quiet', '-srcFolder', $src,
+		  '-format', 'UDRW', '-fs', 'HFS+', '-ov', $dst) == 0;
+}
+
+sub attach {
+    my $src = shift;
+    my $devref = shift;
+    my $volref = shift;
+
+    $_ = `hdiutil attach -noverify "$dst_temp"`;
+
+    $$devref = (m#(/dev/disk\d+)#)[0];
+    $$volref = (m#(/Volumes/.+)\n$#)[0];
+
+    return $? == 0;
+}
+
+sub detach {
+    my $dev = shift;
+
+    return system('hdiutil', 'detach', '-quiet', $dev) == 0;
+}
+
+sub convert {
+    my $src = shift;
+    my $dst = shift;
+
+    return system('hdiutil', 'convert', '-quiet', '-format', 'UDZO',
+		  '-o', $dst, '-ov', $src) == 0;
+}
+
+sub internet_enable {
+    my $src = shift;
+
+    return system('hdiutil', 'internet-enable', '-quiet', '-yes', $src) == 0;
+}
+
+sub exclude {
+    my $from = shift;
+    my @list = @_ or return;
+
+    my @args = ('find', $from, '(');
+    foreach (@list) {
+	push @args, '-name', $_, '-o';
+    }
+    pop @args;
+    push @args, ')', '-delete';
+
+    return system(@args) == 0;
+}
