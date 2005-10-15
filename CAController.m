@@ -35,7 +35,6 @@
 #import "Dmg.h"
 #import "Gzip.h"
 #import "Pax.h"
-#import "Tar.h"
 #import "Zip.h"
 
 NSString *AOArchiveIndividually	= @"Archive Individually";
