@@ -97,6 +97,10 @@
 		B51E9EBC0558B4D500BD3E9C /* StuffIt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StuffIt.m; sourceTree = "<group>"; };
 		B52CCA3905531C0F00F5FEAE /* Archiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Archiver.h; sourceTree = "<group>"; };
 		B52CCA3A05531C0F00F5FEAE /* Archiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Archiver.m; sourceTree = "<group>"; };
+		B56B5C8E09387AD900C3DECC /* French */ = {isa = PBXFileReference; lastKnownFileType = folder; name = French; path = French.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
+		B56B5C9B09387AE300C3DECC /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B56B5C9E09387AEC00C3DECC /* French */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B56B5CA109387AF600C3DECC /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = French.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B56C236F07BC8BA700DB93B4 /* mkdmg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = mkdmg; sourceTree = "<group>"; };
 		B57219C10660ABF5007A621B /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B577E97A065FBD2E00DB450B /* CAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAView.h; sourceTree = "<group>"; };
@@ -384,6 +388,7 @@
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
 				B57D83650579E84C0071EFEB /* Japanese */,
+				B56B5C9B09387AE300C3DECC /* French */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -393,6 +398,7 @@
 			children = (
 				29B97319FDCFA39411CA2CEA /* English */,
 				B57219C10660ABF5007A621B /* Japanese */,
+				B56B5CA109387AF600C3DECC /* French */,
 			);
 			name = MainMenu.nib;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 			children = (
 				B57D836F0579EAD90071EFEB /* English */,
 				B57D837B0579EB490071EFEB /* Japanese */,
+				B56B5C9E09387AEC00C3DECC /* French */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -411,6 +418,7 @@
 			children = (
 				B59BBD0E05DE72AB0015AD29 /* English */,
 				B5F506AE0664C8D9009CDA53 /* Japanese */,
+				B56B5C8E09387AD900C3DECC /* French */,
 			);
 			name = CleanArchiverHelp;
 			sourceTree = "<group>";
