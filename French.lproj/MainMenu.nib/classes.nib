@@ -1,0 +1,26 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {cancelArchiving = id; saveAsDefault = id; }; 
+            CLASS = CAController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "_archiveIndividuallyCheck" = NSButton; 
+                "_archiveTypeMenu" = NSPopUpButton; 
+                "_cancelButton" = NSButton; 
+                "_excludeDSSCheck" = NSButton; 
+                "_excludeIconCheck" = NSButton; 
+                "_internetEnabledDMGCheck" = NSButton; 
+                "_mainView" = CAView; 
+                "_progressIndicator" = NSProgressIndicator; 
+                "_progressMessage" = NSTextField; 
+                "_progressWindow" = NSWindow; 
+                "_replaceAutomaticallyCheck" = NSButton; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = CAView; LANGUAGE = ObjC; SUPERCLASS = NSImageView; }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
