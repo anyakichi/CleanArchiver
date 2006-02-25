@@ -35,7 +35,8 @@
 - (id)init
 {
 
-	self = [super init];
+	if (self = [super init])
+		[_task setLaunchPath:@"/bin/pax"];
 	return self;
 }
 
@@ -46,88 +47,50 @@
 
 	args = [[NSMutableArray alloc] init];
 
-	if (_rsrc) {
-		[_task setLaunchPath:@"/usr/bin/tar"];
+	if (!_rsrc)
+		[_task setEnvironment:
+		    [NSDictionary
+			dictionaryWithObject:@"1"
+			forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"]];
 
-		for (i = 0; i < [_excludedFiles count]; i++) {
-			[args addObject:@"--exclude"];
-			[args addObject:[_excludedFiles objectAtIndex:i]];
+	for (i = 0; i < [_excludedFiles count]; i++) {
+		[args addObject:@"-s"];
+		[args addObject:[NSString stringWithFormat:@"|.*/%@||",
+		    [_excludedFiles objectAtIndex:i]]];
+	}
+
+	switch (_mode) {
+	case TAR:
+	case TAR_GZIP:
+	case TAR_BZIP2:
+		[args addObject:@"-w"];
+		if ([_output isKindOfClass:[NSFileHandle class]] ||
+		    [_output isKindOfClass:[NSPipe class]])
+			[_task setStandardOutput:_output];
+		else if ([_output isKindOfClass:[NSString class]]) {
+			[args addObject:@"-f"];
+			[args addObject:_output];
 		}
 
-		switch (_mode) {
-		case TAR:
-		case TAR_GZIP:
-		case TAR_BZIP2:
-			[args addObject:@"-cf"];
-			if ([_output isKindOfClass:[NSFileHandle class]] ||
-			    [_output isKindOfClass:[NSPipe class]]) {
-				[args addObject:@"-"];
-				[_task setStandardOutput:_output];
-			} else if ([_output isKindOfClass:[NSString class]])
-				[args addObject:_output];
+		if (_mode == TAR_GZIP)
+			[args addObject:@"-z"];
+		else if (_mode == TAR_BZIP2)
+			[args addObject:@"-j"];
 
-			if (_mode == TAR_GZIP)
-				[args addObject:@"--gzip"];
-			else if (_mode == TAR_BZIP2)
-				[args addObject:@"--bzip2"];
-
-			if ([_input isKindOfClass:[NSFileHandle class]] ||
-			    [_input isKindOfClass:[NSPipe class]])
-				[_task setStandardInput:_input];
-			else if ([_input isKindOfClass:[NSArray class]])
-				[args addObjectsFromArray:_input];
-			else if ([_input isKindOfClass:[NSString class]])
-				[args addObject:_input];
-			break;
-		case UNTAR:
-		case UNTAR_GZIP:
-		case UNTAR_BZIP2:
-		default:
-			exit(1);
-		}
-	} else {
-		[_task setLaunchPath:[[[NSBundle mainBundle] bundlePath]
-		    stringByAppendingString:@"/Contents/Resources/pax"]];
-
-		for (i = 0; i < [_excludedFiles count]; i++) {
-			[args addObject:@"-s"];
-			[args addObject:[NSString stringWithFormat:@"|.*/%@||",
-			    [_excludedFiles objectAtIndex:i]]];
-		}
-
-		switch (_mode) {
-		case TAR:
-		case TAR_GZIP:
-		case TAR_BZIP2:
-			[args addObject:@"-w"];
-			if ([_output isKindOfClass:[NSFileHandle class]] ||
-			    [_output isKindOfClass:[NSPipe class]])
-				[_task setStandardOutput:_output];
-			else if ([_output isKindOfClass:[NSString class]]) {
-				[args addObject:@"-f"];
-				[args addObject:_output];
-			}
-
-			if (_mode == TAR_GZIP)
-				[args addObject:@"-z"];
-			else if (_mode == TAR_BZIP2)
-				[args addObject:@"-j"];
-
-			if ([_input isKindOfClass:[NSFileHandle class]] ||
-			    [_input isKindOfClass:[NSPipe class]]) {
-				[args addObject:@"-r"];
-				[_task setStandardInput:_input];
-			} else if ([_input isKindOfClass:[NSArray class]])
-				[args addObjectsFromArray:_input];
-			else if ([_input isKindOfClass:[NSString class]])
-				[args addObject:_input];
-			break;
-		case UNTAR:
-		case UNTAR_GZIP:
-		case UNTAR_BZIP2:
-		default:
-			exit(1);
-		}
+		if ([_input isKindOfClass:[NSFileHandle class]] ||
+		    [_input isKindOfClass:[NSPipe class]]) {
+			[args addObject:@"-r"];
+			[_task setStandardInput:_input];
+		} else if ([_input isKindOfClass:[NSArray class]])
+			[args addObjectsFromArray:_input];
+		else if ([_input isKindOfClass:[NSString class]])
+			[args addObject:_input];
+		break;
+	case UNTAR:
+	case UNTAR_GZIP:
+	case UNTAR_BZIP2:
+	default:
+		exit(1);
 	}
 
 	[_task setArguments:args];
