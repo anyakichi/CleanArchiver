@@ -46,7 +46,6 @@
 		B5E1B9C805544F66007E53BD /* Zip.h in Headers */ = {isa = PBXBuildFile; fileRef = B5E1B9BC05544F66007E53BD /* Zip.h */; };
 		B5E1B9C905544F66007E53BD /* Zip.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E1B9BD05544F66007E53BD /* Zip.m */; };
 		B5F5068A0664C8D3009CDA53 /* CleanArchiverHelp in Resources */ = {isa = PBXBuildFile; fileRef = B5F506890664C8D3009CDA53 /* CleanArchiverHelp */; };
-		B5FB31C0082E651A004AD870 /* pax in Resources */ = {isa = PBXBuildFile; fileRef = B5FB31BF082E651A004AD870 /* pax */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
@@ -54,7 +53,7 @@
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -70,7 +69,7 @@
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 27;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				ZERO_LINK = NO;
@@ -120,7 +119,6 @@
 		B5E1B9BC05544F66007E53BD /* Zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zip.h; sourceTree = "<group>"; };
 		B5E1B9BD05544F66007E53BD /* Zip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zip.m; sourceTree = "<group>"; };
 		B5F506AE0664C8D9009CDA53 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Japanese; path = Japanese.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
-		B5FB31BF082E651A004AD870 /* pax */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = pax; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,7 +206,6 @@
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				B57D83790579EB3A0071EFEB /* Localizable.strings */,
 				B57219BD0660ABF0007A621B /* MainMenu.nib */,
-				B5FB31BF082E651A004AD870 /* pax */,
 				B56C236F07BC8BA700DB93B4 /* mkdmg */,
 			);
 			name = Resources;
@@ -266,9 +263,9 @@
 			buildRules = (
 			);
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 27;
 				DYLIB_COMPATIBILITY_VERSION = "";
-				DYLIB_CURRENT_VERSION = 23;
+				DYLIB_CURRENT_VERSION = 27;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -337,7 +334,6 @@
 				B56C237007BC8BA700DB93B4 /* mkdmg in Resources */,
 				B5866A1A07D9F7EC00F9FEF3 /* bg.png in Resources */,
 				B5866A1E07D9F7F600F9FEF3 /* bgactive.png in Resources */,
-				B5FB31C0082E651A004AD870 /* pax in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,9 +406,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 27;
 				DYLIB_COMPATIBILITY_VERSION = "";
-				DYLIB_CURRENT_VERSION = 23;
+				DYLIB_CURRENT_VERSION = 27;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
@@ -457,9 +453,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 27;
 				DYLIB_COMPATIBILITY_VERSION = "";
-				DYLIB_CURRENT_VERSION = 23;
+				DYLIB_CURRENT_VERSION = 27;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
