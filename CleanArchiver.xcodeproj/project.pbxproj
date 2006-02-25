@@ -23,6 +23,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B50BFDA609B058C80080E362 /* Tar.h in Headers */ = {isa = PBXBuildFile; fileRef = B50BFDA409B058C70080E362 /* Tar.h */; };
+		B50BFDA709B058C80080E362 /* Tar.m in Sources */ = {isa = PBXBuildFile; fileRef = B50BFDA509B058C70080E362 /* Tar.m */; };
 		B52CCA3B05531C0F00F5FEAE /* Archiver.h in Headers */ = {isa = PBXBuildFile; fileRef = B52CCA3905531C0F00F5FEAE /* Archiver.h */; };
 		B52CCA3C05531C0F00F5FEAE /* Archiver.m in Sources */ = {isa = PBXBuildFile; fileRef = B52CCA3A05531C0F00F5FEAE /* Archiver.m */; };
 		B56C237007BC8BA700DB93B4 /* mkdmg in Resources */ = {isa = PBXBuildFile; fileRef = B56C236F07BC8BA700DB93B4 /* mkdmg */; };
@@ -45,8 +47,6 @@
 		B5E1B9C905544F66007E53BD /* Zip.m in Sources */ = {isa = PBXBuildFile; fileRef = B5E1B9BD05544F66007E53BD /* Zip.m */; };
 		B5F5068A0664C8D3009CDA53 /* CleanArchiverHelp in Resources */ = {isa = PBXBuildFile; fileRef = B5F506890664C8D3009CDA53 /* CleanArchiverHelp */; };
 		B5FB31C0082E651A004AD870 /* pax in Resources */ = {isa = PBXBuildFile; fileRef = B5FB31BF082E651A004AD870 /* pax */; };
-		B5FB31C5082E6556004AD870 /* Pax.h in Headers */ = {isa = PBXBuildFile; fileRef = B5FB31C3082E6556004AD870 /* Pax.h */; };
-		B5FB31C6082E6556004AD870 /* Pax.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FB31C4082E6556004AD870 /* Pax.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
@@ -89,6 +89,8 @@
 		32CA4F630368D1EE00C91783 /* CleanArchiver_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CleanArchiver_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CleanArchiver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanArchiver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B50BFDA409B058C70080E362 /* Tar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tar.h; sourceTree = "<group>"; };
+		B50BFDA509B058C70080E362 /* Tar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tar.m; sourceTree = "<group>"; };
 		B5276B8A0938BAC5001598C2 /* French */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5276B9C0938BC2D001598C2 /* French */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B52CCA3905531C0F00F5FEAE /* Archiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Archiver.h; sourceTree = "<group>"; };
@@ -119,8 +121,6 @@
 		B5E1B9BD05544F66007E53BD /* Zip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zip.m; sourceTree = "<group>"; };
 		B5F506AE0664C8D9009CDA53 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Japanese; path = Japanese.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
 		B5FB31BF082E651A004AD870 /* pax */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = pax; sourceTree = "<group>"; };
-		B5FB31C3082E6556004AD870 /* Pax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pax.h; sourceTree = "<group>"; };
-		B5FB31C4082E6556004AD870 /* Pax.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pax.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,8 +150,8 @@
 				B5D2342705790BAB004ACB8D /* Dmg.m */,
 				B5E1B9B805544F66007E53BD /* Gzip.h */,
 				B5E1B9B905544F66007E53BD /* Gzip.m */,
-				B5FB31C3082E6556004AD870 /* Pax.h */,
-				B5FB31C4082E6556004AD870 /* Pax.m */,
+				B50BFDA409B058C70080E362 /* Tar.h */,
+				B50BFDA509B058C70080E362 /* Tar.m */,
 				B5E1B9BC05544F66007E53BD /* Zip.h */,
 				B5E1B9BD05544F66007E53BD /* Zip.m */,
 			);
@@ -246,7 +246,7 @@
 				B5E1B9C805544F66007E53BD /* Zip.h in Headers */,
 				B5D2342805790BAB004ACB8D /* Dmg.h in Headers */,
 				B577E97C065FBD2E00DB450B /* CAView.h in Headers */,
-				B5FB31C5082E6556004AD870 /* Pax.h in Headers */,
+				B50BFDA609B058C80080E362 /* Tar.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,7 +356,7 @@
 				B5E1B9C905544F66007E53BD /* Zip.m in Sources */,
 				B5D2342905790BAB004ACB8D /* Dmg.m in Sources */,
 				B577E97D065FBD2E00DB450B /* CAView.m in Sources */,
-				B5FB31C6082E6556004AD870 /* Pax.m in Sources */,
+				B50BFDA709B058C80080E362 /* Tar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

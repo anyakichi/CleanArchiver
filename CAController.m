@@ -34,7 +34,7 @@
 #import "CAView.h"
 #import "Dmg.h"
 #import "Gzip.h"
-#import "Pax.h"
+#import "Tar.h"
 #import "Zip.h"
 
 NSString *AOArchiveIndividually	= @"Archive Individually";
@@ -435,7 +435,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 			_mainTask = [[Gzip alloc] init];
 			[_mainTask setArchiveMode:GZIP];
 		} else {
-			_mainTask = [[Pax alloc] init];
+			_mainTask = [[Tar alloc] init];
 			[_mainTask setArchiveMode:TAR_GZIP];
 		}
 		break;
@@ -444,7 +444,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 			_mainTask = [[Bzip2 alloc] init];
 			[_mainTask setArchiveMode:BZIP2];
 		} else {
-			_mainTask = [[Pax alloc] init];
+			_mainTask = [[Tar alloc] init];
 			[_mainTask setArchiveMode:TAR_BZIP2];
 		}
 		break;

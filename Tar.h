@@ -30,6 +30,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Archiver.h"
+
 enum {
 	TAR = 0,
 	TAR_GZIP,
@@ -39,9 +41,7 @@ enum {
 	UNTAR_BZIP2
 };
 
-#import "Archiver.h"
-
-@interface Pax : Archiver
+@interface Tar : Archiver
 {
 }
 /*

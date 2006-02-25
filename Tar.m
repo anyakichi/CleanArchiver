@@ -28,15 +28,15 @@
  * SUCH DAMAGE.
  */
 
-#import "Pax.h"
+#import "Tar.h"
 
-@implementation Pax
+@implementation Tar
 
 - (id)init
 {
 
 	if (self = [super init])
-		[_task setLaunchPath:@"/bin/pax"];
+		[_task setLaunchPath:@"/usr/bin/tar"];
 	return self;
 }
 
@@ -54,34 +54,31 @@
 			forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"]];
 
 	for (i = 0; i < [_excludedFiles count]; i++) {
-		[args addObject:@"-s"];
-		[args addObject:[NSString stringWithFormat:@"|.*/%@||",
-		    [_excludedFiles objectAtIndex:i]]];
+		[args addObject:@"--exclude"];
+		[args addObject:[_excludedFiles objectAtIndex:i]];
 	}
 
 	switch (_mode) {
 	case TAR:
 	case TAR_GZIP:
 	case TAR_BZIP2:
-		[args addObject:@"-w"];
+		[args addObject:@"-cf"];
 		if ([_output isKindOfClass:[NSFileHandle class]] ||
-		    [_output isKindOfClass:[NSPipe class]])
+		    [_output isKindOfClass:[NSPipe class]]) {
+			[args addObject:@"-"];
 			[_task setStandardOutput:_output];
-		else if ([_output isKindOfClass:[NSString class]]) {
-			[args addObject:@"-f"];
+		} else if ([_output isKindOfClass:[NSString class]])
 			[args addObject:_output];
-		}
 
 		if (_mode == TAR_GZIP)
-			[args addObject:@"-z"];
+			[args addObject:@"--gzip"];
 		else if (_mode == TAR_BZIP2)
-			[args addObject:@"-j"];
+			[args addObject:@"--bzip2"];
 
 		if ([_input isKindOfClass:[NSFileHandle class]] ||
-		    [_input isKindOfClass:[NSPipe class]]) {
-			[args addObject:@"-r"];
+		    [_input isKindOfClass:[NSPipe class]])
 			[_task setStandardInput:_input];
-		} else if ([_input isKindOfClass:[NSArray class]])
+		else if ([_input isKindOfClass:[NSArray class]])
 			[args addObjectsFromArray:_input];
 		else if ([_input isKindOfClass:[NSString class]])
 			[args addObject:_input];
@@ -89,6 +86,19 @@
 	case UNTAR:
 	case UNTAR_GZIP:
 	case UNTAR_BZIP2:
+		[args addObject:@"-xf"];
+		if ([_input isKindOfClass:[NSFileHandle class]] ||
+		    [_input isKindOfClass:[NSPipe class]]) {
+			[args addObject:@"-"];
+			[_task setStandardInput:_input];
+		} else if ([_input isKindOfClass:[NSString class]])
+			[args addObject:_input];
+
+		if (_mode == UNTAR_GZIP)
+			[args addObject:@"--gzip"];
+		else if (_mode == UNTAR_BZIP2)
+			[args addObject:@"--bzip2"];
+		break;
 	default:
 		exit(1);
 	}
