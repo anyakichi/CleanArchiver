@@ -80,7 +80,7 @@
 
 	for (i = 0; i < [_excludedFiles count]; i++) {
 		[args addObject:@"-x"];
-		[args addObject:[@"*" stringByAppendingString:
+		[args addObject:[@"*/" stringByAppendingString:
 				    [_excludedFiles objectAtIndex:i]]];
 	}
 
