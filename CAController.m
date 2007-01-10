@@ -39,6 +39,7 @@
 
 NSString *AOArchiveIndividually	= @"Archive Individually";
 NSString *AOArchiveType		= @"Archive Type";
+NSString *AOExcludeDot_		= @"Exclude ._*";
 NSString *AOExcludeDSS		= @"Exclude .DS_Store";
 NSString *AOExcludeIcon		= @"Exclude Icon";
 NSString *AOInternetEnabledDMG	= @"Internet-Enabled Disk Image";
@@ -56,6 +57,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	ud = [NSUserDefaults standardUserDefaults];
 
 	[defaults setObject:@"gzip" forKey:AOArchiveType];
+	[defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDot_];
 	[defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDSS];
 	[defaults setObject:[NSNumber numberWithBool:NO] forKey:AOExcludeIcon];
 	[defaults setObject:[NSNumber numberWithBool:NO]
@@ -80,6 +82,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	[_archiveTypeMenu selectItemWithTitle:
 	    [ud objectForKey:AOArchiveType]];
 	[self changeArchiveType:self];
+	[_excludeDot_Check setState:[ud boolForKey:AOExcludeDot_]];
 	[_excludeDSSCheck setState:[ud boolForKey:AOExcludeDSS]];
 	[_excludeIconCheck setState:[ud boolForKey:AOExcludeIcon]];
 	[_replaceAutomaticallyCheck setState:
@@ -215,6 +218,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 	[ud setObject:[_archiveTypeMenu titleOfSelectedItem]
 	    forKey:AOArchiveType];
+	[ud setBool:[_excludeDot_Check state] forKey:AOExcludeDot_];
 	[ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
 	[ud setBool:[_excludeIconCheck state] forKey:AOExcludeIcon];
 	[ud setBool:[_saveRSRCCheck state] forKey:AOSaveRSRC];
@@ -338,7 +342,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	NSString *dst, *src;
 	enum archive_type type;
 	int i;
-	BOOL ai, ed, ei, er, ie, ra;
+	BOOL ai, e_, ed, ei, er, ie, ra;
 
 	status = [[NSMutableDictionary alloc] init];
 
@@ -346,6 +350,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	type = [_archiveTypeMenu indexOfSelectedItem];
 	src = [srcs objectAtIndex:0];
 	ai = [_archiveIndividuallyCheck state];
+	e_ = [_excludeDot_Check state];
 	ed = [_excludeDSSCheck state];
 	ei = [_excludeIconCheck state];
 	er = [_saveRSRCCheck state];
@@ -353,6 +358,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	ra = [_replaceAutomaticallyCheck state];
 
 	[status setObject:[NSNumber numberWithInt:type] forKey:AOArchiveType];
+	[status setObject:[NSNumber numberWithBool:e_] forKey:AOExcludeDot_];
 	[status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
 	[status setObject:[NSNumber numberWithBool:ei] forKey:AOExcludeIcon];
 	[status setObject:[NSNumber numberWithBool:er] forKey:AOSaveRSRC];
@@ -422,6 +428,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	dst = [status objectForKey:@"dst"];
 	srcs = [status objectForKey:@"srcs"];
 	[fm fileExistsAtPath:[srcs objectAtIndex:0] isDirectory:&isDir];
+
+	if ([[status objectForKey:AOExcludeDot_] intValue])
+		[exfiles addObject:@"._*"];
 
 	if ([[status objectForKey:AOExcludeDSS] intValue])
 		[exfiles addObject:@".DS_Store"];

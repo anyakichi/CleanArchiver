@@ -32,6 +32,7 @@
 
 extern NSString *AOArchiveIndividually;
 extern NSString *AOArchiveType;
+extern NSString *AOExcludeDot_;
 extern NSString *AOExcludeDSS;
 extern NSString *AOExcludeIcon;
 extern NSString *AOInternetEnabledDMG;
@@ -49,6 +50,7 @@ enum archive_type {
 {
 	IBOutlet NSButton *_archiveIndividuallyCheck;
 	IBOutlet NSButton *_cancelButton;
+	IBOutlet NSButton *_excludeDot_Check;
 	IBOutlet NSButton *_excludeDSSCheck;
 	IBOutlet NSButton *_excludeIconCheck;
 	IBOutlet NSButton *_internetEnabledDMGCheck;

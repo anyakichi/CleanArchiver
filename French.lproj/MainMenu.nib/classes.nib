@@ -9,6 +9,7 @@
                 "_archiveTypeMenu" = NSPopUpButton; 
                 "_cancelButton" = NSButton; 
                 "_excludeDSSCheck" = NSButton; 
+                "_excludeDot_Check" = NSButton; 
                 "_excludeIconCheck" = NSButton; 
                 "_internetEnabledDMGCheck" = NSButton; 
                 "_mainView" = CAView; 
