@@ -64,6 +64,10 @@
 		B5276B9C0938BC2D001598C2 /* French */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B52CCA3905531C0F00F5FEAE /* Archiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Archiver.h; sourceTree = "<group>"; };
 		B52CCA3A05531C0F00F5FEAE /* Archiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Archiver.m; sourceTree = "<group>"; };
+		B556BFFC0BB7B35B00E58D74 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B556BFFE0BB7B37D00E58D74 /* German */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B556C0000BB7B39600E58D74 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		B556C0070BB7B47300E58D74 /* German */ = {isa = PBXFileReference; lastKnownFileType = folder; name = German; path = German.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
 		B56B5C8E09387AD900C3DECC /* French */ = {isa = PBXFileReference; lastKnownFileType = folder; name = French; path = French.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
 		B56B5CA109387AF600C3DECC /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = French.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B56C236F07BC8BA700DB93B4 /* mkdmg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = mkdmg; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 				B57D83650579E84C0071EFEB /* Japanese */,
 				B5276B8A0938BAC5001598C2 /* French */,
+				B556BFFC0BB7B35B00E58D74 /* German */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 				29B97319FDCFA39411CA2CEA /* English */,
 				B57219C10660ABF5007A621B /* Japanese */,
 				B56B5CA109387AF600C3DECC /* French */,
+				B556C0000BB7B39600E58D74 /* German */,
 			);
 			name = MainMenu.nib;
 			sourceTree = "<group>";
@@ -319,6 +325,7 @@
 				B57D836F0579EAD90071EFEB /* English */,
 				B57D837B0579EB490071EFEB /* Japanese */,
 				B5276B9C0938BC2D001598C2 /* French */,
+				B556BFFE0BB7B37D00E58D74 /* German */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -329,6 +336,7 @@
 				B59BBD0E05DE72AB0015AD29 /* English */,
 				B5F506AE0664C8D9009CDA53 /* Japanese */,
 				B56B5C8E09387AD900C3DECC /* French */,
+				B556C0070BB7B47300E58D74 /* German */,
 			);
 			name = CleanArchiverHelp;
 			sourceTree = "<group>";
