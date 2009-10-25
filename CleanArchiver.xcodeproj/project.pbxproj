@@ -80,7 +80,7 @@
 		B5866A1907D9F7EC00F9FEF3 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		B5866A1D07D9F7F600F9FEF3 /* bgactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgactive.png; sourceTree = "<group>"; };
 		B59BBD0E05DE72AB0015AD29 /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = English.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
-		B59F68D807B8BFC400C71D12 /* README.txt */ = {isa = PBXFileReference; fileEncoding = "-2147483647"; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		B59F68D807B8BFC400C71D12 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 0; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		B59FB4F50608696C003EB187 /* CleanArchiver.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = CleanArchiver.icns; sourceTree = "<group>"; };
 		B5D2342605790BAB004ACB8D /* Dmg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dmg.h; sourceTree = "<group>"; };
 		B5D2342705790BAB004ACB8D /* Dmg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dmg.m; sourceTree = "<group>"; };
@@ -250,9 +250,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = B5EA5CE808F15FD40064B72D /* Build configuration list for PBXProject "CleanArchiver" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CleanArchiver */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* CleanArchiver */,
 			);
@@ -379,13 +381,11 @@
 		B535A1F1097A4F430018C1F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
@@ -428,9 +428,11 @@
 		B5EA5CE908F15FD40064B72D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
