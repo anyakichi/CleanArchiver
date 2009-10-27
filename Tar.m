@@ -54,10 +54,23 @@
 	args = [[NSMutableArray alloc] init];
 
 	if (!_rsrc)
-		[_task setEnvironment:
-		    [NSDictionary
-			dictionaryWithObject:@"1"
-			forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"]]; //FIXME: 10.5+ use COPYFILE_DISABLE
+    {
+        long version = 0;
+        OSStatus res = Gestalt(gestaltSystemVersion, &version);
+        if((res == 0) && (version >= 0x1050)) {
+            [_task setEnvironment:
+             [NSDictionary
+              dictionaryWithObject:@"1"
+              forKey:@"COPYFILE_DISABLE"]];
+        }
+        else
+        {
+            [_task setEnvironment:
+             [NSDictionary
+              dictionaryWithObject:@"1"
+              forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"]];
+        }
+    }
 
 	for (i = 0; i < [_excludedFiles count]; i++) {
 		[args addObject:@"--exclude"];
