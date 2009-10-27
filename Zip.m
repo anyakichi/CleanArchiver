@@ -32,6 +32,9 @@
 
 @implementation Zip
 
+#pragma mark -
+#pragma mark Running and Stopping a Task
+
 - (void)launch
 {
 	NSFileManager *fm;
@@ -90,6 +93,23 @@
 	[args release];
 }
 
++ (Zip *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
+{
+	Zip *zip;
+    
+	zip = [[Zip alloc] init];
+    
+	[zip setInput:i];
+	[zip setOutput:o];
+	[zip setArchiveMode:m];
+    
+	[zip launch];
+	return [zip autorelease]; // ???: Where is the autoreleasepool?
+}
+
+#pragma mark -
+#pragma mark Querying the Task State
+
 - (void)taskDidTerminate:(NSNotification *)n
 {
     NSFileHandle *fh;
@@ -101,20 +121,6 @@
     }
 
     [super taskDidTerminate:n];
-}
-
-+ (Zip *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
-{
-	Zip *zip;
-	    
-	zip = [[Zip alloc] init];
-
-	[zip setInput:i];
-	[zip setOutput:o];
-	[zip setArchiveMode:m];
-
-	[zip launch];
-	return [zip autorelease];
 }
 
 @end

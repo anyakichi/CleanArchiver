@@ -32,6 +32,9 @@
 
 @implementation Gzip
 
+#pragma mark -
+#pragma mark Creating and Deallocating Objects
+
 - (id)init
 {
 
@@ -39,6 +42,9 @@
 		[_task setLaunchPath:@"/usr/bin/gzip"];
 	return self;
 }
+
+#pragma mark -
+#pragma mark Running and Stopping a Task
 
 - (void)launch
 {
@@ -75,6 +81,23 @@
 	[args release];
 }
 
++ (Gzip *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
+{
+	Gzip *gzip;
+	
+	gzip = [[Gzip alloc] init];
+    
+	[gzip setInput:i];
+	[gzip setOutput:o];
+	[gzip setArchiveMode:m];
+    
+	[gzip launch];
+	return [gzip autorelease]; // ???: Where is the autoreleasepool?
+}
+
+#pragma mark -
+#pragma mark Querying the Task State
+
 - (void)taskDidTerminate:(NSNotification *)n
 {
 	NSFileHandle *fh;
@@ -86,20 +109,6 @@
 	}
 
 	[super taskDidTerminate:n];
-}
-
-+ (Gzip *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
-{
-	Gzip *gzip;
-	
-	gzip = [[Gzip alloc] init];
-
-	[gzip setInput:i];
-	[gzip setOutput:o];
-	[gzip setArchiveMode:m];
-
-	[gzip launch];
-	return [gzip autorelease];
 }
 
 @end

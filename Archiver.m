@@ -32,6 +32,9 @@
 
 @implementation Archiver
 
+#pragma mark -
+#pragma mark Creating and Deallocating Objects
+
 - (id)init
 {
 	NSNotificationCenter *nc;
@@ -64,16 +67,30 @@
 	[self terminate];
 	[nc removeObserver:self];
 
-	[_input release];
+	[_input release]; // ???: check when _input and _output will be released. 
 	[_output release];
 	[_task release];
 	[super dealloc];
 }
 
+#pragma mark -
+#pragma mark Running and Stopping a Task
 - (void)launch
 {
 
 	[_task launch];
+}
+
+- (void)resume
+{
+    
+	[_task resume];
+}
+
+- (void)suspend
+{
+    
+	[_task suspend];
 }
 
 - (void)terminate
@@ -87,6 +104,9 @@
 
 	[_task waitUntilExit];
 }
+
+#pragma mark -
+#pragma mark Querying the Task State
 
 - (int)terminationStatus
 {
@@ -103,6 +123,9 @@
 			AOArchiverDidFinishArchivingNotification
 		    object:self];
 }
+
+#pragma mark -
+#pragma mark Setter and Getter method
 
 - (NSString *)currentDirectoryPath
 {

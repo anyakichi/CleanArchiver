@@ -32,6 +32,9 @@
 
 @implementation Tar
 
+#pragma mark -
+#pragma mark Creating and Deallocating Objects
+
 - (id)init
 {
 
@@ -39,6 +42,9 @@
 		[_task setLaunchPath:@"/usr/bin/tar"];
 	return self;
 }
+
+#pragma mark -
+#pragma mark Running and Stopping a Task
 
 - (void)launch
 {
@@ -51,7 +57,7 @@
 		[_task setEnvironment:
 		    [NSDictionary
 			dictionaryWithObject:@"1"
-			forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"]];
+			forKey:@"COPY_EXTENDED_ATTRIBUTES_DISABLE"]]; //FIXME: 10.5+ use COPYFILE_DISABLE
 
 	for (i = 0; i < [_excludedFiles count]; i++) {
 		[args addObject:@"--exclude"];

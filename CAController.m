@@ -48,6 +48,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 @implementation CAController
 
+#pragma mark -
+#pragma mark Initializing
+
 + (void)initialize
 {
 	NSMutableDictionary *defaults;
@@ -100,6 +103,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	    name:AOArchiverDidFinishArchivingNotification object:nil];
 }
 
+#pragma mark -
+#pragma mark Launching Applications
+
 - (void)applicationWillFinishLaunching:(NSNotification *)n
 {
 
@@ -116,11 +122,8 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 		_terminateAfterArchiving = NO;
 }
 
-- (void)windowWillClose:(NSNotification *)n
-{
-
-	[NSApp terminate:self];
-}
+#pragma mark -
+#pragma mark Opening Files
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
 {
@@ -130,9 +133,12 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	[self prepare:filenames];
 }
 
+#pragma mark -
+#pragma mark Notification handlers
+
 - (void)handleFilesDropped:(NSNotification *)n
 {
-
+    
 	[self prepare:[n object]];
 }
 
@@ -140,27 +146,27 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 {
 	NSFileHandle *fh;
 	NSFileManager *fm;
-
+    
 	fm = [NSFileManager defaultManager];
-
+    
 	if ([[_mainTask output] isKindOfClass:[NSFileHandle class]]) {
 		fh = [_mainTask output];
 		[fh truncateFileAtOffset:[fh offsetInFile]];
 		[fh closeFile];
 	}
-
+    
 	if (_archivingCancelled == NO && [_mainTask terminationStatus] != 0) {
 		NSRunAlertPanel(@"", 
-		    [NSString localizedStringWithFormat:
-		    @"Can't make %@.", [_mainTask output]], 
-		    nil, nil, nil);
+                        [NSString localizedStringWithFormat:
+                         @"Can't make %@.", [_mainTask output]], 
+                        nil, nil, nil);
 	}
-
+    
 	[[NSWorkspace sharedWorkspace]
-	    noteFileSystemChanged:[_mainTask output]];
-
+     noteFileSystemChanged:[_mainTask output]];
+    
 	[_mainTask release];
-
+    
 	if ([_operationQueue count] > 0)
 		[self cleanArchive];
 	else {
@@ -169,22 +175,34 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 		if (_terminateAfterArchiving == 1)
 			[NSApp terminate:self];
 	}
-
+    
 	_archivingCancelled = NO;
 }
+
+#pragma mark -
+#pragma mark Closing
+
+- (void)windowWillClose:(NSNotification *)n
+{
+    
+	[NSApp terminate:self];
+}
+
+#pragma mark -
+#pragma mark Main menu outlet actions
 
 - (IBAction)cancelArchiving:(id)sender
 {
 	NSFileManager *fm;
 	NSString *dst;
-
+    
 	_archivingCancelled = YES;
-
+    
 	fm = [NSFileManager defaultManager];
 	dst  = [_mainTask output];
-
+    
 	[_mainTask terminate];
-
+    
 	if (![dst isEqualToString:@""])
 		[fm removeFileAtPath:dst handler:nil];
 }
@@ -230,6 +248,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	    forKey:AOInternetEnabledDMG];
 }
 
+#pragma mark -
+#pragma mark ProgressPanel actions
+
 - (void)beginProgressPanel
 {
 
@@ -255,6 +276,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	[_progressWindow orderOut:self];
 	[NSApp endSheet:_progressWindow];
 }
+
+#pragma mark -
+#pragma mark Treating filenames
 
 - (NSString *)getFileNameWithCandidate:(NSString *)name
 {
@@ -334,6 +358,21 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 	return dstname;
 }
+
+- (NSFileHandle *)getFileHandleOfFile:(NSString *)filename // ???: What purpose of this method?
+{
+	NSFileManager *fm;
+    
+	fm = [NSFileManager defaultManager];
+    
+	if (![fm fileExistsAtPath:filename])
+		[fm createFileAtPath:filename
+                    contents:nil attributes:nil];
+	return [NSFileHandle fileHandleForWritingAtPath:filename];
+}
+
+#pragma mark -
+#pragma mark Compressing and extracting
 
 - (void)prepare:(NSArray *)srcs
 {
@@ -505,16 +544,5 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	[status release];
 }
 
-- (NSFileHandle *)getFileHandleOfFile:(NSString *)filename
-{
-	NSFileManager *fm;
-
-	fm = [NSFileManager defaultManager];
-
-	if (![fm fileExistsAtPath:filename])
-		[fm createFileAtPath:filename
-		    contents:nil attributes:nil];
-	return [NSFileHandle fileHandleForWritingAtPath:filename];
-}
 
 @end

@@ -45,6 +45,8 @@
 
 /* same as the procedures of NSTask. */
 - (void)launch;
+- (void)resume;
+- (void)suspend;
 - (void)terminate;
 - (void)waitUntilExit;
 - (int)terminationStatus;

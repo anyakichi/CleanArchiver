@@ -32,14 +32,20 @@
 
 @implementation CAView
 
+#pragma mark -
+#pragma mark Responding to Being Loaded from a Nib File
+
 - (void)awakeFromNib
 {
 
 	_backgroundImage = [self image];
 	_activeBackgroundImage = [[NSImage alloc] initWithContentsOfFile:
 	    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:
-		@"/Contents/Resources/bgactive.png"]];
+		@"/Contents/Resources/bgactive.png"]]; // ???: Does this have to be released?
 }
+
+#pragma mark -
+#pragma mark Creating Instances
 
 - (id)initWithFrame:(NSRect)frameRect
 {
@@ -51,6 +57,9 @@
 	return self;
 }
 
+#pragma mark -
+#pragma mark Drawing
+
 - (void)drawRect:(NSRect)rect
 {
 
@@ -60,6 +69,9 @@
 		NSFrameRectWithWidth([self bounds], 3.0);
 	}
 }
+
+#pragma mark -
+#pragma mark Managing a Dragging Session Before an Image Is Released
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
@@ -84,6 +96,10 @@
 	[self setNeedsDisplay:YES];
 }
 
+
+#pragma mark -
+#pragma mark Managing a Dragging Session After an Image Is Released
+
 - (void)concludeDragOperation:(id <NSDraggingInfo>)sender
 {
 
@@ -106,7 +122,7 @@
 
 	nc = [NSNotificationCenter defaultCenter];
 	pb = [sender draggingPasteboard];
-	filenames = [pb propertyListForType:@"NSFilenamesPboardType"];
+	filenames = [pb propertyListForType:NSFilenamesPboardType];
 
 	[nc postNotificationName:AOFilesDroppedNotification
 	    object:filenames];

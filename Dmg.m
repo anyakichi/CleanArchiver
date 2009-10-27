@@ -32,6 +32,10 @@
 
 @implementation Dmg
 
+
+#pragma mark -
+#pragma mark Creating and Deallocating Objects
+
 - (id)init
 {
 
@@ -40,6 +44,9 @@
 		    stringByAppendingString:@"/Contents/Resources/mkdmg"]];
 	return self;
 }
+
+#pragma mark -
+#pragma mark Running and Stopping a Task
 
 - (void)launch
 {
@@ -77,7 +84,7 @@
 	[dmg setArchiveMode:m];
 
 	[dmg launch];
-	return [dmg autorelease];
+	return [dmg autorelease];  // ???: Where is the autoreleasepool?
 }
 
 @end

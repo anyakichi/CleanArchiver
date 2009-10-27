@@ -32,6 +32,9 @@
 
 @implementation Bzip2
 
+#pragma mark -
+#pragma mark Creating and Deallocating Objects
+
 - (id)init
 {
 
@@ -39,6 +42,9 @@
 		[_task setLaunchPath:@"/usr/bin/bzip2"];
 	return self;
 }
+
+#pragma mark -
+#pragma mark Running and Stopping a Task
 
 - (void)launch
 {
@@ -75,6 +81,23 @@
 	[args release];
 }
 
++ (Bzip2 *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
+{
+	Bzip2 *bzip2;
+	
+	bzip2 = [[Bzip2 alloc] init];
+    
+	[bzip2 setInput:i];
+	[bzip2 setOutput:o];
+	[bzip2 setArchiveMode:m];
+    
+	[bzip2 launch];
+	return [bzip2 autorelease]; // ???: Where is the autoreleasepool?
+}
+
+#pragma mark -
+#pragma mark Querying the Task State
+
 - (void)taskDidTerminate:(NSNotification *)n
 {
 	NSFileHandle *fh;
@@ -86,20 +109,6 @@
 	}
 
 	[super taskDidTerminate:n];
-}
-
-+ (Bzip2 *)launchedTaskWithInput:(id)i withOutput:(id)o withMode:(unsigned)m
-{
-	Bzip2 *bzip2;
-	
-	bzip2 = [[Bzip2 alloc] init];
-
-	[bzip2 setInput:i];
-	[bzip2 setOutput:o];
-	[bzip2 setArchiveMode:m];
-
-	[bzip2 launch];
-	return [bzip2 autorelease];
 }
 
 @end

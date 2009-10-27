@@ -30,6 +30,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+// Preference identifiers
 extern NSString *AOArchiveIndividually;
 extern NSString *AOArchiveType;
 extern NSString *AOExcludeDot_;
@@ -67,13 +68,13 @@ enum archive_type {
 	BOOL _archiveSessionInProgress;
 	BOOL _archivingCancelled;
 }
-- (IBAction)cancelArchiving:(id)sender;
-- (IBAction)changeArchiveType:(id)sender;
-- (IBAction)saveAsDefault:(id)sender;
-
 
 - (void)handleFilesDropped:(NSNotification *)n;
 - (void)handleArchiveTerminated:(NSNotification *)n;
+
+- (IBAction)cancelArchiving:(id)sender;
+- (IBAction)changeArchiveType:(id)sender;
+- (IBAction)saveAsDefault:(id)sender;
 
 - (void)beginProgressPanel;
 - (void)beginProgressPanelWithText:(NSString *)s;
@@ -82,9 +83,9 @@ enum archive_type {
 - (NSString *)getFileNameWithCandidate:(NSString *)cname;
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)sfiles
     withArchiveType:(enum archive_type)atype withReplaceAutomatically:(BOOL)ra;
+- (NSFileHandle *)getFileHandleOfFile:(NSString *)filename;
 
 - (void)prepare:(NSArray *)filenames;
 - (void)cleanArchive;
 
-- (NSFileHandle *)getFileHandleOfFile:(NSString *)filename;
 @end
