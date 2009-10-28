@@ -49,7 +49,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 @implementation CAController
 
 #pragma mark -
-#pragma mark Initializing
+#pragma mark Initializing and deallocating
 
 + (void)initialize
 {
@@ -101,6 +101,12 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 	[nc addObserver:self selector:@selector(handleArchiveTerminated:)
 	    name:AOArchiverDidFinishArchivingNotification object:nil];
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_operationQueue release];
+	[super dealloc];
 }
 
 #pragma mark -
@@ -172,7 +178,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	else {
 		[self endProgressPanel];
 		_archiveSessionInProgress = NO;
-		if (_terminateAfterArchiving == 1)
+		if (_terminateAfterArchiving == YES)
 			[NSApp terminate:self];
 	}
     
