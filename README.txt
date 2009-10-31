@@ -12,5 +12,5 @@ Thanks!
 
 Author:
 
-Inajima Daisuke <inajima@mac.com>
-Homepage: http://homepage3.nifty.com/analog_only/
+INAJIMA Daisuke <inajima@sopht.jp>
+Homepage: http://www.sopht.jp/cleanarchiver/
