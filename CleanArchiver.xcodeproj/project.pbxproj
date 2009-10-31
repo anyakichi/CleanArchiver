@@ -20,6 +20,9 @@
 
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B516A210109C850E0039610F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B516A20F109C850E0039610F /* Sparkle.framework */; };
+		B516A240109C8CC60039610F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B516A20F109C850E0039610F /* Sparkle.framework */; };
+		B516A25E109C9E5E0039610F /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B516A25D109C9E5E0039610F /* dsa_pub.pem */; };
 		B536BA42109C2BB6003C7479 /* CleanArchiver_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B536BA41109C2BB6003C7479 /* CleanArchiver_Prefix.pch */; };
 		B536BA51109C2D1C003C7479 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B536BA50109C2D1C003C7479 /* main.m */; };
 		B536BA72109C2D7F003C7479 /* Archiver.h in Headers */ = {isa = PBXBuildFile; fileRef = B536BA5F109C2D7F003C7479 /* Archiver.h */; };
@@ -49,11 +52,26 @@
 		B5F43ACE109C3298000150B6 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = B5F43AA0109C3298000150B6 /* MainMenu.nib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		B516A23F109C8CB70039610F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B516A240109C8CC60039610F /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* CleanArchiver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanArchiver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B516A20F109C850E0039610F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		B516A25D109C9E5E0039610F /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = CleanArchiver/dsa_pub.pem; sourceTree = "<group>"; };
 		B536BA15109C1ED1003C7479 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CleanArchiver/Info.plist; sourceTree = "<group>"; };
 		B536BA41109C2BB6003C7479 /* CleanArchiver_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CleanArchiver_Prefix.pch; path = CleanArchiver/CleanArchiver_Prefix.pch; sourceTree = "<group>"; };
 		B536BA50109C2D1C003C7479 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CleanArchiver/main.m; sourceTree = "<group>"; };
@@ -103,6 +121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				B516A210109C850E0039610F /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				B516A20F109C850E0039610F /* Sparkle.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -178,6 +198,7 @@
 				B536BA90109C2EBB003C7479 /* bgactive.png */,
 				B536BA8A109C2E27003C7479 /* CleanArchiver.icns */,
 				B545ACAC109C342C009CDDE0 /* CleanArchiverHelp */,
+				B516A25D109C9E5E0039610F /* dsa_pub.pem */,
 				B536BA15109C1ED1003C7479 /* Info.plist */,
 				B5F43A9C109C3298000150B6 /* InfoPlist.strings */,
 				B5F43A9E109C3298000150B6 /* Localizable.strings */,
@@ -236,6 +257,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				B58DD5B607BF466600A6D878 /* AppleScript */,
+				B516A23F109C8CB70039610F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -278,6 +300,7 @@
 				B5F43ACD109C3298000150B6 /* Localizable.strings in Resources */,
 				B5F43ACE109C3298000150B6 /* MainMenu.nib in Resources */,
 				B545ACB9109C342C009CDDE0 /* CleanArchiverHelp in Resources */,
+				B516A25E109C9E5E0039610F /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,7 +383,11 @@
 				CURRENT_PROJECT_VERSION = 33;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = 33;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -405,7 +432,11 @@
 				CURRENT_PROJECT_VERSION = 33;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = 33;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;

@@ -1,28 +1,97 @@
-{
-    IBClasses = (
-        {
-            ACTIONS = {cancelArchiving = id; changeArchiveType = id; saveAsDefault = id; }; 
-            CLASS = CAController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                "_archiveIndividuallyCheck" = NSButton; 
-                "_archiveTypeMenu" = NSPopUpButton; 
-                "_cancelButton" = NSButton; 
-                "_excludeDSSCheck" = NSButton; 
-                "_excludeDot_Check" = NSButton; 
-                "_excludeIconCheck" = NSButton; 
-                "_internetEnabledDMGCheck" = NSButton; 
-                "_mainView" = CAView; 
-                "_progressIndicator" = NSProgressIndicator; 
-                "_progressMessage" = NSTextField; 
-                "_progressWindow" = NSWindow; 
-                "_replaceAutomaticallyCheck" = NSButton; 
-                "_saveRSRCCheck" = NSButton; 
-            }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {CLASS = CAView; LANGUAGE = ObjC; SUPERCLASS = NSImageView; }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>NSObject</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>checkForUpdates</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>SUUpdater</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>delegate</key>
+				<string>id</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>cancelArchiving</key>
+				<string>id</string>
+				<key>changeArchiveType</key>
+				<string>id</string>
+				<key>saveAsDefault</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>CAController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>_archiveIndividuallyCheck</key>
+				<string>NSButton</string>
+				<key>_archiveTypeMenu</key>
+				<string>NSPopUpButton</string>
+				<key>_cancelButton</key>
+				<string>NSButton</string>
+				<key>_excludeDSSCheck</key>
+				<string>NSButton</string>
+				<key>_excludeDot_Check</key>
+				<string>NSButton</string>
+				<key>_excludeIconCheck</key>
+				<string>NSButton</string>
+				<key>_internetEnabledDMGCheck</key>
+				<string>NSButton</string>
+				<key>_mainView</key>
+				<string>CAView</string>
+				<key>_progressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>_progressMessage</key>
+				<string>NSTextField</string>
+				<key>_progressWindow</key>
+				<string>NSWindow</string>
+				<key>_replaceAutomaticallyCheck</key>
+				<string>NSButton</string>
+				<key>_saveRSRCCheck</key>
+				<string>NSButton</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>CAView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSImageView</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>
