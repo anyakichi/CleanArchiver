@@ -1,0 +1,190 @@
+#!/usr/bin/ruby
+#
+# carc:
+# 	Command line version of CleanArchiver
+#
+# Copyright (c) 2009 INAJIMA Daisuke All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+
+require 'optparse'
+
+$KCODE = 'UTF8'
+
+
+MACSPECS = ['._*', '.DS_Store', 'icon\r']
+
+def check_cmd(cmd)
+  if !system('/usr/bin/which', '-s', cmd)
+    warn("#{cmd} program is not found")
+    exit(1)
+  end
+end
+
+dmg_ie = false	# internet-enable disk image
+level = -1	# conpression level; -1 means 'not specified'
+macspec = false	# include mac specific files?
+rsrc = false	# save resource forks?
+type = nil	# archive type
+xfiles = []	# exclude files
+
+ARGV.options do |opt|
+  opt.on('-0')						{ |v| level = 0 }
+  opt.on('-1')						{ |v| level = 1 }
+  opt.on('-2')						{ |v| level = 2 }
+  opt.on('-3')						{ |v| level = 3 }
+  opt.on('-4')						{ |v| level = 4 }
+  opt.on('-5')						{ |v| level = 5 }
+  opt.on('-6')						{ |v| level = 6 }
+  opt.on('-7')						{ |v| level = 7 }
+  opt.on('-8')						{ |v| level = 8 }
+  opt.on('-9')						{ |v| level = 9 }
+  opt.on('-I')						{ |v| dmg_ie = true }
+  opt.on('-M',		'Include Mac-specific files')	{ |v| macspec = true }
+  opt.on('-O opts',	'Extra options')		{ |v| exopts = v }
+  opt.on('-R',		'Save resource forks')		{ |v| rsrc = true }
+  opt.on('-p password',	'Archive password')		{ |v| password = v }
+  opt.on('-t type',	'Archive type')			{ |v| type = v }
+  opt.on('-x pat',	'Exclude pattern')		{ |v| xfiles += v }
+
+  opt.parse!
+end
+
+dst = ARGV.shift
+srcs = ARGV
+
+cmdline = []
+
+case type
+when '7zip'
+  check_cmd('7za')
+when 'bzip2', 'gzip'
+  compress = type
+
+  check_cmd(compress)
+
+  if level != -1
+    if compress == 'bzip2'
+      ENV['BZIP2'] = "-#{level}"
+    else
+      ENV['GZIP'] = "-#{level}"
+    end
+  end
+
+  if srcs.size > 1 || FileTest.directory?(srcs[0]) || rsrc
+    check_cmd('tar')
+
+    cmdline = ['tar', '-cf', '-', '--use-compress-program', compress]
+
+    if !macspec
+      xfiles += MACSPECS
+    end
+
+    xfiles.each do |pat|
+      cmdline.push('--exclude', pat)
+    end
+
+    if !rsrc
+      # For Mac OS X 10.5 and later
+      ENV['COPYFILE_DISABLE'] = "1"
+      # For Mac OS X 10.4 and earlier
+      ENV['COPY_EXTENDED_ATTRIBUTES_DISABLE'] = "1"
+    end
+
+    cmdline += srcs
+  else
+    cmdline = [compress, '-c', srcs[0]]
+  end
+
+  if dst != '-'
+    stdout_sv = STDOUT.dup
+    STDOUT.reopen(dst)
+  end
+
+  system(*cmdline)
+
+  if dst != '-'
+    STDOUT.flush
+    STDOUT.reopen(stdout_sv)
+  end
+when 'dmg'
+  check_cmd('mkdmg')
+
+  if srcs.size != 1 || !FileTest.directory?(srcs[0])
+    warn("disk image can be made from only one directory")
+    exit(1)
+  end
+
+  if dst == '-'
+    warn("can't output disk image data to stdout")
+    exit(1)
+  end
+
+  cmdline = ['mkdmg', '-o', dst]
+
+  xfiles.each do |pat|
+    cmdline.push('-x', pat)
+  end
+
+  cmdline.push(srcs[0])
+
+  system(*cmdline)
+when 'rar'
+  check_cmd('rar')
+
+  cmdline = ['rar']
+when 'zip'
+  check_cmd('zip')
+
+  cmdline = ['zip', '-q']
+
+  if srcs.size > 1 || FileTest.directory?(srcs[0])
+    cmdline.push('-r')
+  end
+
+  if level != -1
+    cmdline.push("-#{level}")
+  end
+
+  if rsrc
+    # zip 3.1 may support to save resource forks
+    warn("saving resource forks is not supported")
+    exit 1
+  end
+
+  cmdline.push(dst)
+  cmdline += srcs
+
+  if !macspec
+    xfiles += MACSPECS
+  end
+
+  xfiles.each do |pat|
+    cmdline.push('-x', "*/#{pat}")
+  end
+
+  system(*cmdline)
+else
+  warn('no file type is specified')
+  exit(1)
+end
