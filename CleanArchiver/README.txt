@@ -1,16 +1,19 @@
-#	$Id$
+CleanArchiver -- simple and nifty archiving utility
 
 Building:
 
-CleanArchiver is written for Mac OS X v10.3 Panther and later, and source files
+CleanArchiver is written for Mac OS X v10.4 Tiger and later, and source files
 can be compiled by the Xcode application.
 
-Special Thanks:
+Homepage:
 
-The application icon is donated by taka Tombo <http://www11.plala.or.jp/takadf/>.
-Thanks!
+http://www.sopht.jp/cleanarchiver/
 
-Author:
+Authors:
 
-INAJIMA Daisuke <inajima@sopht.jp>
-Homepage: http://www.sopht.jp/cleanarchiver/
+INAJIMA Daisuke <http://www.sopht.jp/>
+Park, Chang-Beom <http://trip2me.pe.kr/>
+
+Icon Designer:
+
+taka Tombo <http://www11.plala.or.jp/takadf/>

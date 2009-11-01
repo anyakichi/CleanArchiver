@@ -1,4 +1,7 @@
-#	$Id$
+#
+# Makefile:
+# 	Make CleanArchiver application
+#
 
 XFLAGS=		-activeconfiguration
 
