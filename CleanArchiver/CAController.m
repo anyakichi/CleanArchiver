@@ -28,14 +28,9 @@
  * SUCH DAMAGE.
  */
 
-#import "Archiver.h"
-#import "Bzip2.h"
 #import "CAController.h"
 #import "CAView.h"
-#import "Dmg.h"
-#import "Gzip.h"
-#import "Tar.h"
-#import "Zip.h"
+#import "Carc.h"
 
 NSString *AOArchiveIndividually	= @"Archive Individually";
 NSString *AOArchiveType		= @"Archive Type";
@@ -100,7 +95,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	    name:AOFilesDroppedNotification object:nil];
 
 	[nc addObserver:self selector:@selector(handleArchiveTerminated:)
-	    name:AOArchiverDidFinishArchivingNotification object:nil];
+	    name:AOCarcDidFinishArchivingNotification object:nil];
 }
 
 - (void)dealloc {
@@ -483,44 +478,31 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	if ([[status objectForKey:AOExcludeIcon] intValue])
 		[exfiles addObject:@"Icon\r"];
 
+	_mainTask = [[Carc alloc] init];
+
 	switch (type) {
 	case GZIPT:
-		if ([srcs count] == 1 && !isDir) {
-			_mainTask = [[Gzip alloc] init];
-			[_mainTask setArchiveMode:GZIP];
-		} else {
-			_mainTask = [[Tar alloc] init];
-			[_mainTask setArchiveMode:TAR_GZIP];
-		}
+		[_mainTask setArchiveType:GZIP];
 		break;
 	case BZIP2T:
-		if ([srcs count] == 1 && !isDir) {
-			_mainTask = [[Bzip2 alloc] init];
-			[_mainTask setArchiveMode:BZIP2];
-		} else {
-			_mainTask = [[Tar alloc] init];
-			[_mainTask setArchiveMode:TAR_BZIP2];
-		}
+		[_mainTask setArchiveType:BZIP2];
 		break;
 	case ZIPT:
-		_mainTask = [[Zip alloc] init];
-		[_mainTask setArchiveMode:ZIP];
+		[_mainTask setArchiveType:ZIP];
 		break;
 	case DMGT:
-		_mainTask = [[Dmg alloc] init];
-		if ([[status objectForKey:AOInternetEnabledDMG] boolValue])
-			[_mainTask setArchiveMode:DMG_CREATE_IE];
-		else
-			[_mainTask setArchiveMode:DMG_CREATE];
+		[_mainTask setArchiveType:DMG];
+		[_mainTask setInternetEnabledDMG:
+		    [[status objectForKey:AOInternetEnabledDMG] boolValue]];
 		break;
 	default:
 		exit(1);
 	}
 
 	if ([[status objectForKey:AOSaveRSRC] intValue])
-		[_mainTask setSavingResourceFork:YES];
+		[_mainTask setSaveResourceFork:YES];
 	else
-		[_mainTask setSavingResourceFork:NO];
+		[_mainTask setSaveResourceFork:NO];
 
 	if ([srcs count] == 1)
 		[_mainTask setInput:[[srcs objectAtIndex:0] lastPathComponent]];

@@ -65,7 +65,7 @@ ARGV.options do |opt|
   opt.on('-R',		'Save resource forks')		{ |v| rsrc = true }
   opt.on('-p password',	'Archive password')		{ |v| password = v }
   opt.on('-t type',	'Archive type')			{ |v| type = v }
-  opt.on('-x pat',	'Exclude pattern')		{ |v| xfiles += v }
+  opt.on('-x pat',	'Exclude pattern')		{ |v| xfiles.push(v) }
 
   opt.parse!
 end
