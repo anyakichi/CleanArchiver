@@ -51,5 +51,9 @@
 	<string>http://www.sopht.jp/cleanarchiver/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
+	<key>SUEnableAutomaticChecks</key>
+	<string>true</string>
+	<key>SUShowReleaseNotes</key>
+	<string>false</string>
 </dict>
 </plist>
