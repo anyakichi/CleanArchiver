@@ -83,7 +83,6 @@
 
 - (void)launch
 {
-    NSString *copyfile_disable;
     NSString *path;
     NSMutableArray *args;
     int i;
