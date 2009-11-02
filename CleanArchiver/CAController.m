@@ -208,19 +208,19 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 - (IBAction)changeArchiveType:(id)sender
 {
-    enum archive_type type;
+    archiveType type;
 
     type = [_archiveTypeMenu indexOfSelectedItem];
     switch (type) {
-    case GZIPT:
-    case BZIP2T:
+    case GZIP:
+    case BZIP2:
 	[_saveRSRCCheck setEnabled:YES];
 	break;
-    case ZIPT:
+    case ZIP:
 	[_saveRSRCCheck setState:NSOffState];
 	[_saveRSRCCheck setEnabled:NO];
 	break;
-    case DMGT:
+    case DMG:
 	[_saveRSRCCheck setState:NSOnState];
 	[_saveRSRCCheck setEnabled:NO];
 	break;
@@ -302,7 +302,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 }
 
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)srcnames
-    withArchiveType:(enum archive_type)type withReplaceAutomatically:(BOOL)ra
+    withArchiveType:(archiveType)type withReplaceAutomatically:(BOOL)ra
 {
     NSFileManager *fm;
     NSString *dstname, *ext, *srcname;
@@ -316,22 +316,22 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     [fm fileExistsAtPath:srcname isDirectory:&isDir];
 
     switch (type) {
-    case GZIPT:
+    case GZIP:
 	if ([srcnames count] == 1 && !isDir)
 	    ext = @"gz";
 	else
 	    ext = @"tar.gz";
 	break;
-    case BZIP2T:
+    case BZIP2:
 	if ([srcnames count] == 1 && !isDir)
 	    ext = @"bz2";
 	else
 	    ext = @"tar.bz2";
 	break;
-    case ZIPT:
+    case ZIP:
 	ext = @"zip";
 	break;
-    case DMGT:
+    case DMG:
 	if (!isDir) {
 	    NSRunAlertPanel(@"", NSLocalizedString(
 		@"You can make a disk image only from a folder.", nil),
@@ -374,7 +374,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSFileManager *fm;
     NSMutableDictionary *status;
     NSString *dst, *src;
-    enum archive_type type;
+    archiveType type;
     int i;
     BOOL ai, e_, ed, ei, er, ie, ra;
 
@@ -446,7 +446,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSMutableArray *exfiles;
     NSMutableArray *srcbases;
     NSString *dst;
-    enum archive_type type;
+    archiveType type;
     int i;
     BOOL isDir;
 
@@ -474,16 +474,16 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     _mainTask = [[Carc alloc] init];
 
     switch (type) {
-    case GZIPT:
+    case GZIP:
 	[_mainTask setArchiveType:GZIP];
 	break;
-    case BZIP2T:
+    case BZIP2:
 	[_mainTask setArchiveType:BZIP2];
 	break;
-    case ZIPT:
+    case ZIP:
 	[_mainTask setArchiveType:ZIP];
 	break;
-    case DMGT:
+    case DMG:
 	[_mainTask setArchiveType:DMG];
 	[_mainTask setInternetEnabledDMG:
 	    [[status objectForKey:AOInternetEnabledDMG] boolValue]];

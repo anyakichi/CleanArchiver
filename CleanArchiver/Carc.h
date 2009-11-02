@@ -28,7 +28,7 @@
 
 #import <Foundation/Foundation.h>
 
-enum archiveType {
+typedef enum _archiveType {
     NULL_TYPE = 0,
     BZIP2,
     DMG,
@@ -36,7 +36,7 @@ enum archiveType {
     RAR,
     SZIP,
     ZIP,
-};
+} archiveType;
 
 @interface Carc : NSObject
 {
@@ -46,7 +46,7 @@ enum archiveType {
     id _output;
 
     NSString *_archivePassword;
-    enum archiveType _archiveType;
+    archiveType _archiveType;
     int _compressLevel;
     BOOL _excludeMacFiles;
     NSArray *_excludedFiles;
@@ -83,8 +83,8 @@ enum archiveType {
 - (void)setArchivePassword:(NSString *)password;
 
 // Type of archive
-- (enum archiveType)archiveType;
-- (void)setArchiveType:(enum archiveType)type;
+- (archiveType)archiveType;
+- (void)setArchiveType:(archiveType)type;
 
 // Compression level; -1 is archiver's default
 - (int)compressLevel;
