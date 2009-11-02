@@ -269,6 +269,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 - (void)endProgressPanel
 {
 
+    [_progressIndicator stopAnimation:self];
     [_progressWindow orderOut:self];
     [NSApp endSheet:_progressWindow];
 }
