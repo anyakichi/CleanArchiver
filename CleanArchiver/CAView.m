@@ -35,15 +35,17 @@
 
 - (void)awakeFromNib
 {
+    NSString *path;
+
+    path = [[[NSBundle mainBundle] bundlePath]
+	    stringByAppendingString:@"/Contents/Resources/bgactive.png"];
 
     _backgroundImage = [self image];
-    _activeBackgroundImage = [[NSImage alloc] initWithContentsOfFile:
-	[[[NSBundle mainBundle] bundlePath] stringByAppendingString:
-	    @"/Contents/Resources/bgactive.png"]]; // ???: Does this have to be released?
+    _activeBackgroundImage = [[NSImage alloc] initWithContentsOfFile:path];
 }
 
 #pragma mark -
-#pragma mark Creating Instances
+#pragma mark Initializing and deallocating
 
 - (id)initWithFrame:(NSRect)frameRect
 {
@@ -56,6 +58,13 @@
     return self;
 }
 
+- (void)dealloc
+{
+
+    [_activeBackgroundImage release];
+    [super dalloc];
+}
+
 #pragma mark -
 #pragma mark Drawing
 
@@ -64,7 +73,7 @@
 
     [super drawRect:rect];
     if (_dragSessionInProgress) {
-	[[NSColor selectedTextBackgroundColor] set];
+	[[NSColor selectedControlColor] set];
 	NSFrameRectWithWidth([self bounds], 3.0);
     }
 }
@@ -123,8 +132,7 @@
     pb = [sender draggingPasteboard];
     filenames = [pb propertyListForType:NSFilenamesPboardType];
 
-    [nc postNotificationName:AOFilesDroppedNotification
-	object:filenames];
+    [nc postNotificationName:AOFilesDroppedNotification object:filenames];
     return YES;
 }
 
