@@ -28,8 +28,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "Carc.h"
-
 // Preference identifiers
 extern NSString *AOArchiveIndividually;
 extern NSString *AOArchiveType;
@@ -39,6 +37,13 @@ extern NSString *AOExcludeIcon;
 extern NSString *AOInternetEnabledDMG;
 extern NSString *AOReplaceAutomatically;
 extern NSString *AOSaveRSRC;
+
+enum archive_type {
+    GZIPT = 0,
+    BZIP2T,
+    ZIPT,
+    DMGT
+};
 
 @interface CAController : NSObject
 {
@@ -75,7 +80,7 @@ extern NSString *AOSaveRSRC;
 
 - (NSString *)getFileNameWithCandidate:(NSString *)cname;
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)sfiles
-    withArchiveType:(archiveType)atype withReplaceAutomatically:(BOOL)ra;
+    withArchiveType:(enum archive_type)atype withReplaceAutomatically:(BOOL)ra;
 - (NSFileHandle *)getFileHandleOfFile:(NSString *)filename;
 
 - (void)prepare:(NSArray *)filenames;

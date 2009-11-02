@@ -264,12 +264,12 @@ fail:
     _archivePassword = password;
 }
 
-- (archiveType)archiveType
+- (enum archiveType)archiveType
 {
 
     return _archiveType;
 }
-- (void)setArchiveType:(archiveType)type
+- (void)setArchiveType:(enum archiveType)type
 {
 
     _archiveType = type;
