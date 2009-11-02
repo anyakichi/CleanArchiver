@@ -1,0 +1,157 @@
+SRCS=\
+	CompressDialog.cpp \
+	CompressDialog_rc.cpp \
+	ExtractDialog.cpp \
+	ExtractDialog_rc.cpp \
+	BenchmarkDialog.cpp \
+	BenchmarkDialog_rc.cpp \
+	ExtractGUI.cpp \
+	GUI.cpp \
+	wxGUI.cpp \
+	UpdateCallbackGUI.cpp \
+	UpdateGUI.cpp \
+	../Common/ArchiveCommandLine.cpp \
+	../Common/ArchiveExtractCallback.cpp \
+	../Common/ArchiveOpenCallback.cpp \
+	../Common/DefaultName.cpp \
+	../Common/EnumDirItems.cpp \
+	../Common/Extract.cpp \
+	../Common/ExtractingFilePath.cpp \
+	../Common/LoadCodecs.cpp \
+	../Common/OpenArchive.cpp \
+	../Common/PropIDUtils.cpp \
+	../Common/SetProperties.cpp \
+	../Common/SortUtils.cpp \
+	../Common/TempFiles.cpp \
+	../Common/Update.cpp \
+	../Common/UpdateAction.cpp \
+	../Common/UpdateCallback.cpp \
+	../Common/UpdatePair.cpp \
+	../Common/UpdateProduce.cpp \
+	../Common/WorkDir.cpp \
+	../Common/ZipRegistry.cpp \
+	../Explorer/MyMessages.cpp \
+	../FileManager/FormatUtils.cpp \
+	../FileManager/ProgramLocation.cpp \
+	../FileManager/ProgressDialog2.cpp \
+	../FileManager/ProgressDialog2_rc.cpp \
+	../FileManager/MessagesDialog.cpp \
+	../FileManager/MessagesDialog_rc.cpp \
+	../FileManager/OverwriteDialog.cpp \
+	../FileManager/OverwriteDialog_rc.cpp \
+	../FileManager/PasswordDialog.cpp \
+	../FileManager/PasswordDialog_rc.cpp \
+	../FileManager/ExtractCallback.cpp \
+	../FileManager/SplitUtils.cpp \
+	../FileManager/StringUtils.cpp \
+	../FileManager/LangUtils.cpp \
+	../../Archive/Common/OutStreamWithCRC.cpp \
+	../../Common/FilePathAutoRename.cpp \
+	../../Common/FileStreams.cpp \
+	../../Common/ProgressUtils.cpp \
+	../../Common/StreamUtils.cpp \
+	../../Compress/CopyCoder.cpp \
+	../../Compress/LZMA_Alone/LzmaBench.cpp \
+	../../../Common/CommandLineParser.cpp \
+	../../../Common/CRC.cpp \
+	../../../Common/IntToString.cpp \
+	../../../Common/Lang.cpp \
+	../../../Common/ListFileUtils.cpp \
+	../../../Common/MyString.cpp \
+	../../../Common/MyVector.cpp \
+	../../../Common/StringConvert.cpp \
+	../../../Common/StringToInt.cpp \
+	../../../Common/TextConfig.cpp \
+	../../../Common/UTFConvert.cpp \
+	../../../Common/Wildcard.cpp \
+	../../../Windows/DLL.cpp \
+	../../../Windows/Error.cpp \
+	../../../Windows/FileDir.cpp \
+	../../../Windows/FileFind.cpp \
+	../../../Windows/FileIO.cpp \
+	../../../Windows/FileName.cpp \
+	../../../Windows/PropVariant.cpp \
+	../../../Windows/PropVariantConversions.cpp \
+	../../../Windows/Registry.cpp \
+	../../../Windows/Synchronization.cpp \
+	../../../Windows/Time.cpp \
+	../../../Windows/System.cpp \
+	../../../Windows/Window.cpp \
+	../../../Windows/Control/Dialog.cpp \
+	../../../Windows/Control/Controls.cpp \
+	../../../Common/MyWindows.cpp \
+	../../../myWindows/myGetTickCount.cpp \
+	../../../myWindows/wine_date_and_time.cpp \
+	../../../myWindows/wine_GetXXXDefaultLangID.cpp
+
+
+SRCS_OUT=\
+	../FileManager/HelpUtils.cpp \
+	../FileManager/OpenCallback.cpp \
+	../FileManager/RegistryUtils.cpp \
+	../../../Common/NewHandler.cpp \
+	../../../Windows/MemoryLock.cpp \
+	../../../Windows/Registry.cpp \
+	../../../Windows/ResourceString.cpp \
+	../../../Windows/Shell.cpp
+
+SRCS_C=\
+	../../../../C/7zCrc.c \
+	../../../../C/Threads.c
+
+include ../../../../makefile.rules
+
+CompressDialog.o : CompressDialog.cpp
+	$(CXX) $(CXXFLAGS) CompressDialog.cpp
+CompressDialog_rc.o : CompressDialog_rc.cpp
+	$(CXX) $(CXXFLAGS) CompressDialog_rc.cpp
+ExtractDialog.o : ExtractDialog.cpp
+	$(CXX) $(CXXFLAGS) ExtractDialog.cpp
+ExtractDialog_rc.o : ExtractDialog_rc.cpp
+	$(CXX) $(CXXFLAGS) ExtractDialog_rc.cpp
+BenchmarkDialog.o : BenchmarkDialog.cpp
+	$(CXX) $(CXXFLAGS) BenchmarkDialog.cpp
+BenchmarkDialog_rc.o : BenchmarkDialog_rc.cpp
+	$(CXX) $(CXXFLAGS) BenchmarkDialog_rc.cpp
+ExtractGUI.o : ExtractGUI.cpp
+	$(CXX) $(CXXFLAGS) ExtractGUI.cpp
+GUI.o : GUI.cpp
+	$(CXX) $(CXXFLAGS) GUI.cpp
+wxGUI.o : wxGUI.cpp
+	$(CXX) $(CXXFLAGS) wxGUI.cpp
+UpdateCallbackGUI.o : UpdateCallbackGUI.cpp
+	$(CXX) $(CXXFLAGS) UpdateCallbackGUI.cpp
+UpdateGUI.o : UpdateGUI.cpp
+	$(CXX) $(CXXFLAGS) UpdateGUI.cpp
+
+MyMessages.o : ../Explorer/MyMessages.cpp
+	$(CXX) $(CXXFLAGS) ../Explorer/MyMessages.cpp
+FormatUtils.o : ../FileManager/FormatUtils.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/FormatUtils.cpp
+ProgramLocation.o : ../FileManager/ProgramLocation.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/ProgramLocation.cpp
+ProgressDialog2.o : ../FileManager/ProgressDialog2.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/ProgressDialog2.cpp
+ProgressDialog2_rc.o : ../FileManager/ProgressDialog2_rc.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/ProgressDialog2_rc.cpp
+MessagesDialog.o : ../FileManager/MessagesDialog.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/MessagesDialog.cpp
+MessagesDialog_rc.o : ../FileManager/MessagesDialog_rc.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/MessagesDialog_rc.cpp
+OverwriteDialog.o : ../FileManager/OverwriteDialog.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/OverwriteDialog.cpp
+OverwriteDialog_rc.o : ../FileManager/OverwriteDialog_rc.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/OverwriteDialog_rc.cpp
+PasswordDialog.o : ../FileManager/PasswordDialog.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/PasswordDialog.cpp
+PasswordDialog_rc.o : ../FileManager/PasswordDialog_rc.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/PasswordDialog_rc.cpp
+ExtractCallback.o : ../FileManager/ExtractCallback.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/ExtractCallback.cpp
+SplitUtils.o : ../FileManager/SplitUtils.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/SplitUtils.cpp
+StringUtils.o : ../FileManager/StringUtils.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/StringUtils.cpp
+LangUtils.o : ../FileManager/LangUtils.cpp
+	$(CXX) $(CXXFLAGS) ../FileManager/LangUtils.cpp
+
