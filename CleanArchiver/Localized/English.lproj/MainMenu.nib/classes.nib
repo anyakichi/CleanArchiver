@@ -62,6 +62,8 @@
 				<string>NSButton</string>
 				<key>_mainView</key>
 				<string>CAView</string>
+				<key>_passwordField</key>
+				<string>NSSecureTextField</string>
 				<key>_progressIndicator</key>
 				<string>NSProgressIndicator</string>
 				<key>_progressMessage</key>

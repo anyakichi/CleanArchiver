@@ -37,6 +37,7 @@ foreach (qw(HUP INT TERM)) {
 my @exc_files;
 my $dst;
 my $dst_temp;
+my $password;
 my $src;
 my $internet_enable = 0;
 
@@ -46,7 +47,8 @@ while ($_ = shift @ARGV) {
     my @options = split //, $1;
     
     foreach my $option (@options) {
-	if    ($option eq 'i') { $internet_enable = 1 }
+	if    ($option eq 'P') { $password = shift @ARGV }
+	elsif ($option eq 'i') { $internet_enable = 1 }
 	elsif ($option eq 'o') { $dst = shift @ARGV }
 	elsif ($option eq 't') { $dst_temp = shift @ARGV }
 	elsif ($option eq 'x') { push @exc_files, shift @ARGV }
@@ -78,8 +80,8 @@ create($src, $dst_temp) or die;
 attach($dst_temp, \$device, \$volume) or die;
 exclude($volume, @exc_files) if @exc_files;
 detach($device) or die;
-convert($dst_temp, $dst) or die;
-internet_enable($dst) or die if $internet_enable;
+convert($dst_temp, $dst, $password) or die;
+internet_enable($dst, $password) or die if $internet_enable;
 
 unlink $dst_temp;
 
@@ -119,15 +121,37 @@ sub detach {
 sub convert {
     my $src = shift;
     my $dst = shift;
+    my $password = shift;
+    my @cmd;
 
-    return system('hdiutil', 'convert', '-quiet', '-format', 'UDZO',
-		  '-o', $dst, '-ov', $src) == 0;
+    @cmd = ('hdiutil', 'convert', '-quiet', '-format', 'UDZO', '-o', $dst,
+	    '-ov', $src);
+
+    if ($password) {
+	push(@cmd, '-encryption', '-stdinpass');
+	open(my $fh, '|-', @cmd) or die;
+	print $fh $password;
+	close($fh);
+    } else {
+	return system(@cmd) == 0;
+    }
 }
 
 sub internet_enable {
     my $src = shift;
+    my $password = shift;
+    my @cmd;
 
-    return system('hdiutil', 'internet-enable', '-quiet', '-yes', $src) == 0;
+    @cmd = ('hdiutil', 'internet-enable', '-quiet', '-yes', $src);
+
+    if ($password) {
+	push(@cmd, '-encryption', '-stdinpass');
+	open(my $fh, '|-', @cmd) or die;
+	print $fh $password;
+	close($fh);
+    } else {
+	return system(@cmd) == 0;
+    }
 }
 
 sub exclude {

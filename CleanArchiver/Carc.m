@@ -114,8 +114,7 @@
     }
 
     if (_archivePassword != nil) {
-	[args addObject:@"-e"];
-	[args addObject:@"-p"];
+	[args addObject:@"-P"];
 	[args addObject:_archivePassword];
     }
 

@@ -43,6 +43,7 @@ end
 
 dmg_ie = false		# internet-enable disk image
 level = -1		# conpression level; -1 means 'not specified'
+password = ''		# archive password
 rsrc = false		# save resource forks?
 type = nil		# archive type
 xdss = false		# exclude .DS_Store?
@@ -65,7 +66,7 @@ ARGV.options do |opt|
   opt.on('-M',		'Exclude Mac-specific files')	{ |v| xmacspec = true }
   opt.on('-O opts',	'Extra options')		{ |v| exopts = v }
   opt.on('-R',		'Save resource forks')		{ |v| rsrc = true }
-  opt.on('-p password',	'Archive password')		{ |v| password = v }
+  opt.on('-P password',	'Archive password')		{ |v| password = v }
   opt.on('-t type',	'Archive type')			{ |v| type = v }
   opt.on('-x pat',	'Exclude pattern')		{ |v| xfiles.push(v) }
 
@@ -100,6 +101,10 @@ when '7zip'
 
   xfiles.each do |pat|
     cmdline.push("-xr!#{pat}")
+  end
+
+  if password != ""
+    cmdline.push("-p#{password}")
   end
 
   cmdline.push(dst)
@@ -173,6 +178,10 @@ when 'dmg'
 
   cmdline = ['mkdmg', '-o', dst]
 
+  if password != ''
+    cmdline.push('-P', password)
+  end
+
   xfiles.each do |pat|
     cmdline.push('-x', pat)
   end
@@ -195,6 +204,10 @@ when 'zip'
 
   if level != -1
     cmdline.push("-#{level}")
+  end
+
+  if password != ''
+    cmdline.push('-P', password)
   end
 
   if rsrc

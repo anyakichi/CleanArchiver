@@ -58,6 +58,7 @@ enum archiveTypeIndex {
     IBOutlet NSButton *_saveRSRCCheck;
     IBOutlet NSPopUpButton *_archiveTypeMenu;
     IBOutlet NSProgressIndicator *_progressIndicator;
+    IBOutlet NSSecureTextField *_passwordField;
     IBOutlet NSTextField *_progressMessage;
     IBOutlet NSWindow *_progressWindow;
 

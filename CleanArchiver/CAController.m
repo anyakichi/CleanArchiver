@@ -213,15 +213,18 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     type = [_archiveTypeMenu indexOfSelectedItem];
     switch (type) {
     case DMGT:
+	[_passwordField setEnabled:YES];
 	[_saveRSRCCheck setState:NSOnState];
 	[_saveRSRCCheck setEnabled:NO];
 	break;
     case BZIP2T:
     case GZIPT:
+	[_passwordField setEnabled:NO];
 	[_saveRSRCCheck setEnabled:YES];
 	break;
     case SZIPT:
     case ZIPT:
+	[_passwordField setEnabled:YES];
 	[_saveRSRCCheck setState:NSOffState];
 	[_saveRSRCCheck setEnabled:NO];
 	break;
@@ -452,6 +455,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSMutableArray *exfiles;
     NSMutableArray *srcbases;
     NSString *dst;
+    NSString *password;
     enum archiveTypeIndex type;
     int i;
     BOOL isDir;
@@ -464,6 +468,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     [_operationQueue removeObjectAtIndex:0];
 
     type = [[status objectForKey:AOArchiveType] intValue];
+
+    password = [_passwordField stringValue];
+
     dst = [status objectForKey:@"dst"];
     srcs = [status objectForKey:@"srcs"];
     [fm fileExistsAtPath:[srcs objectAtIndex:0] isDirectory:&isDir];
@@ -500,6 +507,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     default:
 	exit(1);
     }
+
+    if (![password isEqualToString:@""])
+	[_mainTask setArchivePassword:password];
 
     if ([[status objectForKey:AOSaveRSRC] intValue])
 	[_mainTask setSaveResourceFork:YES];
