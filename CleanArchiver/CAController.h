@@ -38,11 +38,12 @@ extern NSString *AOInternetEnabledDMG;
 extern NSString *AOReplaceAutomatically;
 extern NSString *AOSaveRSRC;
 
-enum archive_type {
-    GZIPT = 0,
+enum archiveTypeIndex {
+    DMGT = 0,
+    SZIPT,
     BZIP2T,
+    GZIPT,
     ZIPT,
-    DMGT
 };
 
 @interface CAController : NSObject
@@ -80,7 +81,8 @@ enum archive_type {
 
 - (NSString *)getFileNameWithCandidate:(NSString *)cname;
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)sfiles
-    withArchiveType:(enum archive_type)atype withReplaceAutomatically:(BOOL)ra;
+    withArchiveType:(enum archiveTypeIndex)atype
+    withReplaceAutomatically:(BOOL)ra;
 - (NSFileHandle *)getFileHandleOfFile:(NSString *)filename;
 
 - (void)prepare:(NSArray *)filenames;

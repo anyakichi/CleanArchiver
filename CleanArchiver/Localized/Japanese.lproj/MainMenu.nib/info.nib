@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>IBFramework Version</key>
-	<string>670</string>
+	<string>677</string>
 	<key>IBLastKnownRelativeProjectPath</key>
 	<string>../..</string>
 	<key>IBOldestOS</key>
 	<integer>5</integer>
 	<key>IBOpenObjects</key>
 	<array>
-		<integer>220</integer>
 		<integer>259</integer>
-		<integer>57</integer>
+		<integer>29</integer>
+		<integer>220</integer>
 	</array>
 	<key>IBSystem Version</key>
 	<string>9L31a</string>

@@ -208,20 +208,21 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 - (IBAction)changeArchiveType:(id)sender
 {
-    enum archive_type type;
+    enum archiveTypeIndex type;
 
     type = [_archiveTypeMenu indexOfSelectedItem];
     switch (type) {
-    case GZIPT:
-    case BZIP2T:
-	[_saveRSRCCheck setEnabled:YES];
-	break;
-    case ZIPT:
-	[_saveRSRCCheck setState:NSOffState];
-	[_saveRSRCCheck setEnabled:NO];
-	break;
     case DMGT:
 	[_saveRSRCCheck setState:NSOnState];
+	[_saveRSRCCheck setEnabled:NO];
+	break;
+    case BZIP2T:
+    case GZIPT:
+	[_saveRSRCCheck setEnabled:YES];
+	break;
+    case SZIPT:
+    case ZIPT:
+	[_saveRSRCCheck setState:NSOffState];
 	[_saveRSRCCheck setEnabled:NO];
 	break;
     }
@@ -303,7 +304,8 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 }
 
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)srcnames
-    withArchiveType:(enum archive_type)type withReplaceAutomatically:(BOOL)ra
+    withArchiveType:(enum archiveTypeIndex)type
+    withReplaceAutomatically:(BOOL)ra
 {
     NSFileManager *fm;
     NSString *dstname, *ext, *srcname;
@@ -317,21 +319,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     [fm fileExistsAtPath:srcname isDirectory:&isDir];
 
     switch (type) {
-    case GZIPT:
-	if ([srcnames count] == 1 && !isDir)
-	    ext = @"gz";
-	else
-	    ext = @"tar.gz";
-	break;
-    case BZIP2T:
-	if ([srcnames count] == 1 && !isDir)
-	    ext = @"bz2";
-	else
-	    ext = @"tar.bz2";
-	break;
-    case ZIPT:
-	ext = @"zip";
-	break;
     case DMGT:
 	if (!isDir) {
 	    NSRunAlertPanel(@"", NSLocalizedString(
@@ -340,6 +327,24 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	    return nil;
 	}
 	ext = @"dmg";
+	break;
+    case SZIPT:
+	ext = @"7z";
+	break;
+    case BZIP2T:
+	if ([srcnames count] == 1 && !isDir)
+	    ext = @"bz2";
+	else
+	    ext = @"tar.bz2";
+	break;
+    case GZIPT:
+	if ([srcnames count] == 1 && !isDir)
+	    ext = @"gz";
+	else
+	    ext = @"tar.gz";
+	break;
+    case ZIPT:
+	ext = @"zip";
 	break;
     default:
 	exit(1);
@@ -375,7 +380,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSFileManager *fm;
     NSMutableDictionary *status;
     NSString *dst, *src;
-    enum archive_type type;
+    enum archiveTypeIndex type;
     int i;
     BOOL ai, e_, ed, ei, er, ie, ra;
 
@@ -447,7 +452,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSMutableArray *exfiles;
     NSMutableArray *srcbases;
     NSString *dst;
-    enum archive_type type;
+    enum archiveTypeIndex type;
     int i;
     BOOL isDir;
 
@@ -475,19 +480,22 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     _mainTask = [[Carc alloc] init];
 
     switch (type) {
-    case GZIPT:
-	[_mainTask setArchiveType:GZIP];
-	break;
-    case BZIP2T:
-	[_mainTask setArchiveType:BZIP2];
-	break;
-    case ZIPT:
-	[_mainTask setArchiveType:ZIP];
-	break;
     case DMGT:
 	[_mainTask setArchiveType:DMG];
 	[_mainTask setInternetEnabledDMG:
 	    [[status objectForKey:AOInternetEnabledDMG] boolValue]];
+	break;
+    case SZIPT:
+	[_mainTask setArchiveType:SZIP];
+	break;
+    case BZIP2T:
+	[_mainTask setArchiveType:BZIP2];
+	break;
+    case GZIPT:
+	[_mainTask setArchiveType:GZIP];
+	break;
+    case ZIPT:
+	[_mainTask setArchiveType:ZIP];
 	break;
     default:
 	exit(1);

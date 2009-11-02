@@ -41,12 +41,13 @@ def check_cmd(cmd)
   end
 end
 
-dmg_ie = false	# internet-enable disk image
-level = -1	# conpression level; -1 means 'not specified'
-macspec = false	# include mac specific files?
-rsrc = false	# save resource forks?
-type = nil	# archive type
-xfiles = []	# exclude files
+dmg_ie = false		# internet-enable disk image
+level = -1		# conpression level; -1 means 'not specified'
+rsrc = false		# save resource forks?
+type = nil		# archive type
+xdss = false		# exclude .DS_Store?
+xfiles = []		# exclude files
+xmacspec = false	# exclude mac specific files?
 
 ARGV.options do |opt|
   opt.on('-0')						{ |v| level = 0 }
@@ -59,8 +60,9 @@ ARGV.options do |opt|
   opt.on('-7')						{ |v| level = 7 }
   opt.on('-8')						{ |v| level = 8 }
   opt.on('-9')						{ |v| level = 9 }
-  opt.on('-I')						{ |v| dmg_ie = true }
-  opt.on('-M',		'Include Mac-specific files')	{ |v| macspec = true }
+  opt.on('-D',		'Exclude .DS_Store')		{ |v| xdss = true }
+  opt.on('-I',		'Create internet-enable DMG')	{ |v| dmg_ie = true }
+  opt.on('-M',		'Exclude Mac-specific files')	{ |v| xmacspec = true }
   opt.on('-O opts',	'Extra options')		{ |v| exopts = v }
   opt.on('-R',		'Save resource forks')		{ |v| rsrc = true }
   opt.on('-p password',	'Archive password')		{ |v| password = v }
@@ -73,11 +75,44 @@ end
 dst = ARGV.shift
 srcs = ARGV
 
+if xdss
+  xfiles.push('.DS_Store')
+end
+
+if xmacspec
+  xfiles += MACSPECS
+end
+
+xfiles.uniq!
+
 cmdline = []
 
 case type
 when '7zip'
   check_cmd('7za')
+
+  if dst == '-'
+    warn("7zip not support to write stdout")
+    exit(1)
+  end
+
+  cmdline = ['7za', 'a']
+
+  xfiles.each do |pat|
+    cmdline.push("-xr!#{pat}")
+  end
+
+  cmdline.push(dst)
+  cmdline += srcs
+
+  # Stop verbose output 7za always report it.
+  stdout_sv = STDOUT.dup
+  STDOUT.reopen('/dev/null')
+
+  system(*cmdline)
+
+  STDOUT.flush
+  STDOUT.reopen(stdout_sv)
 when 'bzip2', 'gzip'
   compress = type
 
@@ -95,10 +130,6 @@ when 'bzip2', 'gzip'
     check_cmd('tar')
 
     cmdline = ['tar', '-cf', '-', '--use-compress-program', compress]
-
-    if !macspec
-      xfiles += MACSPECS
-    end
 
     xfiles.each do |pat|
       cmdline.push('--exclude', pat)
@@ -174,10 +205,6 @@ when 'zip'
 
   cmdline.push(dst)
   cmdline += srcs
-
-  if !macspec
-    xfiles += MACSPECS
-  end
 
   xfiles.each do |pat|
     cmdline.push('-x', "*/#{pat}")
