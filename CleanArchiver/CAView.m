@@ -36,10 +36,10 @@
 - (void)awakeFromNib
 {
 
-	_backgroundImage = [self image];
-	_activeBackgroundImage = [[NSImage alloc] initWithContentsOfFile:
-	    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:
-		@"/Contents/Resources/bgactive.png"]]; // ???: Does this have to be released?
+    _backgroundImage = [self image];
+    _activeBackgroundImage = [[NSImage alloc] initWithContentsOfFile:
+	[[[NSBundle mainBundle] bundlePath] stringByAppendingString:
+	    @"/Contents/Resources/bgactive.png"]]; // ???: Does this have to be released?
 }
 
 #pragma mark -
@@ -47,12 +47,13 @@
 
 - (id)initWithFrame:(NSRect)frameRect
 {
-	if (self = [super initWithFrame:frameRect]) {
-		[self registerForDraggedTypes:
-		    [NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
-		_dragSessionInProgress = NO;
-	}
-	return self;
+
+    if (self = [super initWithFrame:frameRect]) {
+	[self registerForDraggedTypes:
+	    [NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
+	_dragSessionInProgress = NO;
+    }
+    return self;
 }
 
 #pragma mark -
@@ -61,11 +62,11 @@
 - (void)drawRect:(NSRect)rect
 {
 
-	[super drawRect:rect];
-	if (_dragSessionInProgress) {
-		[[NSColor selectedTextBackgroundColor] set];
-		NSFrameRectWithWidth([self bounds], 3.0);
-	}
+    [super drawRect:rect];
+    if (_dragSessionInProgress) {
+	[[NSColor selectedTextBackgroundColor] set];
+	NSFrameRectWithWidth([self bounds], 3.0);
+    }
 }
 
 #pragma mark -
@@ -73,25 +74,25 @@
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
-	unsigned mask, ret;
+    unsigned mask, ret;
 
-	mask = [sender draggingSourceOperationMask];
-	ret = (NSDragOperationGeneric & mask);
+    mask = [sender draggingSourceOperationMask];
+    ret = (NSDragOperationGeneric & mask);
 
-	if (ret != NSDragOperationNone) {
-		_dragSessionInProgress = YES;
-		[self setImage:_activeBackgroundImage];
-		[self setNeedsDisplay:YES];
-	}
-	return ret;
+    if (ret != NSDragOperationNone) {
+	_dragSessionInProgress = YES;
+	[self setImage:_activeBackgroundImage];
+	[self setNeedsDisplay:YES];
+    }
+    return ret;
 }
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
 
-	_dragSessionInProgress = NO;
-	[self setImage:_backgroundImage];
-	[self setNeedsDisplay:YES];
+    _dragSessionInProgress = NO;
+    [self setImage:_backgroundImage];
+    [self setNeedsDisplay:YES];
 }
 
 
@@ -101,30 +102,30 @@
 - (void)concludeDragOperation:(id <NSDraggingInfo>)sender
 {
 
-	_dragSessionInProgress = NO;
-	[self setImage:_backgroundImage];
-	[self setNeedsDisplay:YES];
+    _dragSessionInProgress = NO;
+    [self setImage:_backgroundImage];
+    [self setNeedsDisplay:YES];
 }
 
 - (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
 {
 
-	return YES;
+    return YES;
 }
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
-	NSArray *filenames;
-	NSNotificationCenter *nc;
-	NSPasteboard *pb;
+    NSArray *filenames;
+    NSNotificationCenter *nc;
+    NSPasteboard *pb;
 
-	nc = [NSNotificationCenter defaultCenter];
-	pb = [sender draggingPasteboard];
-	filenames = [pb propertyListForType:NSFilenamesPboardType];
+    nc = [NSNotificationCenter defaultCenter];
+    pb = [sender draggingPasteboard];
+    filenames = [pb propertyListForType:NSFilenamesPboardType];
 
-	[nc postNotificationName:AOFilesDroppedNotification
-	    object:filenames];
-	return YES;
+    [nc postNotificationName:AOFilesDroppedNotification
+	object:filenames];
+    return YES;
 }
 
 @end

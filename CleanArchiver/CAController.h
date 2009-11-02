@@ -39,32 +39,32 @@ extern NSString *AOReplaceAutomatically;
 extern NSString *AOSaveRSRC;
 
 enum archive_type {
-	GZIPT = 0,
-	BZIP2T,
-	ZIPT,
-	DMGT
+    GZIPT = 0,
+    BZIP2T,
+    ZIPT,
+    DMGT
 };
 
 @interface CAController : NSObject
 {
-	IBOutlet NSButton *_archiveIndividuallyCheck;
-	IBOutlet NSButton *_cancelButton;
-	IBOutlet NSButton *_excludeDot_Check;
-	IBOutlet NSButton *_excludeDSSCheck;
-	IBOutlet NSButton *_excludeIconCheck;
-	IBOutlet NSButton *_internetEnabledDMGCheck;
-	IBOutlet NSButton *_replaceAutomaticallyCheck;
-	IBOutlet NSButton *_saveRSRCCheck;
-	IBOutlet NSPopUpButton *_archiveTypeMenu;
-	IBOutlet NSProgressIndicator *_progressIndicator;
-	IBOutlet NSTextField *_progressMessage;
-	IBOutlet NSWindow *_progressWindow;
+    IBOutlet NSButton *_archiveIndividuallyCheck;
+    IBOutlet NSButton *_cancelButton;
+    IBOutlet NSButton *_excludeDot_Check;
+    IBOutlet NSButton *_excludeDSSCheck;
+    IBOutlet NSButton *_excludeIconCheck;
+    IBOutlet NSButton *_internetEnabledDMGCheck;
+    IBOutlet NSButton *_replaceAutomaticallyCheck;
+    IBOutlet NSButton *_saveRSRCCheck;
+    IBOutlet NSPopUpButton *_archiveTypeMenu;
+    IBOutlet NSProgressIndicator *_progressIndicator;
+    IBOutlet NSTextField *_progressMessage;
+    IBOutlet NSWindow *_progressWindow;
 
-	NSMutableArray *_operationQueue;
-	id _mainTask;
-	int _terminateAfterArchiving;
-	BOOL _archiveSessionInProgress;
-	BOOL _archivingCancelled;
+    NSMutableArray *_operationQueue;
+    id _mainTask;
+    int _terminateAfterArchiving;
+    BOOL _archiveSessionInProgress;
+    BOOL _archivingCancelled;
 }
 
 - (void)handleFilesDropped:(NSNotification *)n;

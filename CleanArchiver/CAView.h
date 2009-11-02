@@ -30,9 +30,9 @@
 
 @interface CAView : NSImageView
 {
-	NSImage *_backgroundImage;
-	NSImage *_activeBackgroundImage;
-	BOOL _dragSessionInProgress;
+    NSImage *_backgroundImage;
+    NSImage *_activeBackgroundImage;
+    BOOL _dragSessionInProgress;
 }
 @end
 
