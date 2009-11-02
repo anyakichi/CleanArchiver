@@ -41,7 +41,18 @@
 		B5F43ACC109C3298000150B6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5F43A9C109C3298000150B6 /* InfoPlist.strings */; };
 		B5F43ACD109C3298000150B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5F43A9E109C3298000150B6 /* Localizable.strings */; };
 		B5F43ACE109C3298000150B6 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = B5F43AA0109C3298000150B6 /* MainMenu.nib */; };
+		B5FE4A13109E928D00E1608F /* 7za in Resources */ = {isa = PBXBuildFile; fileRef = B5FE4A12109E928D00E1608F /* 7za */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B5FE49F4109E871D00E1608F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5FE49F1109E870100E1608F /* p7zip */;
+			remoteInfo = p7zip;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		B516A23F109C8CB70039610F /* CopyFiles */ = {
@@ -95,6 +106,7 @@
 		B5F43AC3109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5F43AC4109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5F43AC5109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		B5FE4A12109E928D00E1608F /* 7za */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = 7za; path = p7zip/bin/7za; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +178,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B5FE4A12109E928D00E1608F /* 7za */,
 				B536BA8F109C2EBB003C7479 /* bg.png */,
 				B536BA90109C2EBB003C7479 /* bgactive.png */,
 				B56CCAE2109D680A00993EE9 /* carc */,
@@ -215,6 +228,23 @@
 		};
 /* End PBXHeadersBuildPhase section */
 
+/* Begin PBXLegacyTarget section */
+		B5FE49F1109E870100E1608F /* p7zip */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION) OPTFLAGS=\"-arch i386 -arch ppc\"";
+			buildConfigurationList = B5FE49FD109E873600E1608F /* Build configuration list for PBXLegacyTarget "p7zip" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = p7zip;
+			dependencies = (
+			);
+			name = p7zip;
+			passBuildSettingsInEnvironment = 1;
+			productName = p7zip;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		8D1107260486CEB800E47090 /* CleanArchiver */ = {
 			isa = PBXNativeTarget;
@@ -230,6 +260,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B5FE49F5109E871D00E1608F /* PBXTargetDependency */,
 			);
 			name = CleanArchiver;
 			productInstallPath = "$(HOME)/Applications";
@@ -250,6 +281,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* CleanArchiver */,
+				B5FE49F1109E870100E1608F /* p7zip */,
 			);
 		};
 /* End PBXProject section */
@@ -270,6 +302,7 @@
 				B545ACB9109C342C009CDDE0 /* CleanArchiverHelp in Resources */,
 				B516A25E109C9E5E0039610F /* dsa_pub.pem in Resources */,
 				B56CCAE3109D680A00993EE9 /* carc in Resources */,
+				B5FE4A13109E928D00E1608F /* 7za in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +321,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B5FE49F5109E871D00E1608F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5FE49F1109E870100E1608F /* p7zip */;
+			targetProxy = B5FE49F4109E871D00E1608F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B545ACAC109C342C009CDDE0 /* CleanArchiverHelp */ = {
@@ -438,6 +479,27 @@
 			};
 			name = Debug;
 		};
+		B5FE49F2109E870100E1608F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = p7zip;
+			};
+			name = Debug;
+		};
+		B5FE49F3109E870100E1608F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = p7zip;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -455,6 +517,15 @@
 			buildConfigurations = (
 				B5EA5CE908F15FD40064B72D /* Debug */,
 				B535A1F1097A4F430018C1F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B5FE49FD109E873600E1608F /* Build configuration list for PBXLegacyTarget "p7zip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5FE49F2109E870100E1608F /* Debug */,
+				B5FE49F3109E870100E1608F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
