@@ -306,15 +306,9 @@ svr4package:
 	@echo " "
 
 macosx:
-	@case $(ARCH) in					\
-	i386)							\
-		$(MAKE) $(MAKEF) generic CC="gcc -arch i386"	\
-		;;						\
-	ppc)							\
-		$(MAKE) $(MAKEF) generic CC="gcc -arch ppc"	\
-		;;						\
-	x86_64)							\
-		$(MAKE) $(MAKEF) generic CC="gcc -arch x86_64"	\
+	@case "$(ARCH)" in					\
+	i386|ppc|x86_64)					\
+		$(MAKE) $(MAKEF) generic CC="gcc -arch $(ARCH)"	\
 		;;						\
 	*)							\
 		$(MAKE) $(MAKEF) generic			\
