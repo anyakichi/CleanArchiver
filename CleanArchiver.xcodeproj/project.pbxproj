@@ -6,6 +6,20 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		B5FE4AF8109FBBC600E1608F /* zip */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B5FE4AFB109FBBCB00E1608F /* Build configuration list for PBXAggregateTarget "zip" */;
+			buildPhases = (
+				B5FE4AFE109FBC3800E1608F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = zip;
+			productName = zip;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXAppleScriptBuildPhase section */
 		B58DD5B607BF466600A6D878 /* AppleScript */ = {
 			isa = PBXAppleScriptBuildPhase;
@@ -42,6 +56,7 @@
 		B5F43ACD109C3298000150B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5F43A9E109C3298000150B6 /* Localizable.strings */; };
 		B5F43ACE109C3298000150B6 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = B5F43AA0109C3298000150B6 /* MainMenu.nib */; };
 		B5FE4A13109E928D00E1608F /* 7za in Resources */ = {isa = PBXBuildFile; fileRef = B5FE4A12109E928D00E1608F /* 7za */; };
+		B5FE4B3D109FD2DC00E1608F /* zip in Resources */ = {isa = PBXBuildFile; fileRef = B5FE4B3C109FD2DB00E1608F /* zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +66,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B5FE49F1109E870100E1608F;
 			remoteInfo = p7zip;
+		};
+		B5FE4B25109FC47500E1608F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5FE4AF8109FBBC600E1608F /* zip */;
+			remoteInfo = zip;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -107,6 +129,7 @@
 		B5F43AC4109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5F43AC5109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B5FE4A12109E928D00E1608F /* 7za */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = 7za; path = p7zip/bin/7za; sourceTree = "<group>"; };
+		B5FE4B3C109FD2DB00E1608F /* zip */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = zip; path = zip/zip; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +214,7 @@
 				B5F43AA0109C3298000150B6 /* MainMenu.nib */,
 				B536BA91109C2EBB003C7479 /* mkdmg */,
 				B536BA9C109C2F5A003C7479 /* version.plist */,
+				B5FE4B3C109FD2DB00E1608F /* zip */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -261,6 +285,7 @@
 			);
 			dependencies = (
 				B5FE49F5109E871D00E1608F /* PBXTargetDependency */,
+				B5FE4B26109FC47500E1608F /* PBXTargetDependency */,
 			);
 			name = CleanArchiver;
 			productInstallPath = "$(HOME)/Applications";
@@ -282,6 +307,7 @@
 			targets = (
 				8D1107260486CEB800E47090 /* CleanArchiver */,
 				B5FE49F1109E870100E1608F /* p7zip */,
+				B5FE4AF8109FBBC600E1608F /* zip */,
 			);
 		};
 /* End PBXProject section */
@@ -303,10 +329,27 @@
 				B516A25E109C9E5E0039610F /* dsa_pub.pem in Resources */,
 				B56CCAE3109D680A00993EE9 /* carc in Resources */,
 				B5FE4A13109E928D00E1608F /* 7za in Resources */,
+				B5FE4B3D109FD2DC00E1608F /* zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B5FE4AFE109FBC3800E1608F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd zip\n\n[ -e \"zip\" ] && exit 0\n\nfor arch in ${ARCHS}; do\n  build_dir=../build/${arch}\n  mkdir -p ${build_dir}\n\n  make -f unix/Makefile clean\n  make -f unix/Makefile macosx ARCH=${arch}\n  cp zip ${build_dir}\ndone\n\nlipo -create ../build/*/zip -output zip\n\necho \"Done\"\nexit 0";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -327,6 +370,11 @@
 			isa = PBXTargetDependency;
 			target = B5FE49F1109E870100E1608F /* p7zip */;
 			targetProxy = B5FE49F4109E871D00E1608F /* PBXContainerItemProxy */;
+		};
+		B5FE4B26109FC47500E1608F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5FE4AF8109FBBC600E1608F /* zip */;
+			targetProxy = B5FE4B25109FC47500E1608F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -500,6 +548,27 @@
 			};
 			name = Release;
 		};
+		B5FE4AF9109FBBC700E1608F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = zip;
+			};
+			name = Debug;
+		};
+		B5FE4AFA109FBBC700E1608F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = zip;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -526,6 +595,15 @@
 			buildConfigurations = (
 				B5FE49F2109E870100E1608F /* Debug */,
 				B5FE49F3109E870100E1608F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B5FE4AFB109FBBCB00E1608F /* Build configuration list for PBXAggregateTarget "zip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5FE4AF9109FBBC700E1608F /* Debug */,
+				B5FE4AFA109FBBC700E1608F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
