@@ -32,10 +32,12 @@
 
 NSString *AOArchiveIndividually	= @"Archive Individually";
 NSString *AOArchiveType		= @"Archive Type";
+NSString *AOCompressionLevel	= @"Compression Level";
 NSString *AOExcludeDot_		= @"Exclude ._*";
 NSString *AOExcludeDSS		= @"Exclude .DS_Store";
 NSString *AOExcludeIcon		= @"Exclude Icon";
 NSString *AOInternetEnabledDMG	= @"Internet-Enabled Disk Image";
+NSString *AOPassword		= @"Password";
 NSString *AOReplaceAutomatically= @"Replace Automatically";
 NSString *AOSaveRSRC		= @"Save Resource Fork";
 
@@ -53,6 +55,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     ud = [NSUserDefaults standardUserDefaults];
 
     [defaults setObject:@"gzip" forKey:AOArchiveType];
+    [defaults setObject:[NSNumber numberWithInt:-1] forKey:AOCompressionLevel];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDot_];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDSS];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:AOExcludeIcon];
@@ -77,6 +80,17 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
     [_archiveTypeMenu selectItemWithTitle:
 	[ud objectForKey:AOArchiveType]];
+    switch ([ud integerForKey:AOCompressionLevel]) {
+    case 1:
+	[_compressionLevelMenu selectItemAtIndex:FAST];
+	break;
+    case 9:
+	[_compressionLevelMenu selectItemAtIndex:BEST];
+	break;
+    default:
+	[_compressionLevelMenu selectItemAtIndex:NORMAL];
+	break;
+    }
     [self changeArchiveType:self];
     [_excludeDot_Check setState:[ud boolForKey:AOExcludeDot_]];
     [_excludeDSSCheck setState:[ud boolForKey:AOExcludeDSS]];
@@ -208,7 +222,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 - (IBAction)changeArchiveType:(id)sender
 {
-    enum archiveTypeIndex type;
+    enum archiveTypeMenuIndex type;
 
     type = [_archiveTypeMenu indexOfSelectedItem];
     switch (type) {
@@ -234,10 +248,23 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 - (IBAction)saveAsDefault:(id)sender
 {
     NSUserDefaults *ud;
+    int level;
 
     ud = [NSUserDefaults standardUserDefaults];
 
     [ud setObject:[_archiveTypeMenu titleOfSelectedItem] forKey:AOArchiveType];
+    switch ([_compressionLevelMenu indexOfSelectedItem]) {
+    case FAST:
+	    level = 1;
+	    break;
+    case BEST:
+	    level = 9;
+	    break;
+    default:
+	    level = -1;
+	    break;
+    }
+    [ud setInteger:level forKey:AOCompressionLevel];
     [ud setBool:[_excludeDot_Check state] forKey:AOExcludeDot_];
     [ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
     [ud setBool:[_excludeIconCheck state] forKey:AOExcludeIcon];
@@ -307,7 +334,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 }
 
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)srcnames
-    withArchiveType:(enum archiveTypeIndex)type
+    withArchiveType:(enum archiveTypeMenuIndex)type
     withReplaceAutomatically:(BOOL)ra
 {
     NSFileManager *fm;
@@ -382,9 +409,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 {
     NSFileManager *fm;
     NSMutableDictionary *status;
-    NSString *dst, *src;
-    enum archiveTypeIndex type;
-    int i;
+    NSString *dst, *password, *src;
+    enum archiveTypeMenuIndex type;
+    int i, level;
     BOOL ai, e_, ed, ei, er, ie, ra;
 
     status = [[NSMutableDictionary alloc] init];
@@ -396,14 +423,29 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     e_ = [_excludeDot_Check state];
     ed = [_excludeDSSCheck state];
     ei = [_excludeIconCheck state];
+    password = [_passwordField stringValue];
     er = [_saveRSRCCheck state];
     ie = [_internetEnabledDMGCheck state];
     ra = [_replaceAutomaticallyCheck state];
 
+    switch ([_compressionLevelMenu indexOfSelectedItem]) {
+    case FAST:
+	    level = 1;
+	    break;
+    case BEST:
+	    level = 9;
+	    break;
+    default:
+	    level = -1;
+	    break;
+    }
+
     [status setObject:[NSNumber numberWithInt:type] forKey:AOArchiveType];
+    [status setObject:[NSNumber numberWithInt:level] forKey:AOCompressionLevel];
     [status setObject:[NSNumber numberWithBool:e_] forKey:AOExcludeDot_];
     [status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
     [status setObject:[NSNumber numberWithBool:ei] forKey:AOExcludeIcon];
+    [status setObject:password forKey:AOPassword];
     [status setObject:[NSNumber numberWithBool:er] forKey:AOSaveRSRC];
     [status setObject:[NSNumber numberWithBool:ie]
 	forKey:AOInternetEnabledDMG];
@@ -456,8 +498,8 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSMutableArray *srcbases;
     NSString *dst;
     NSString *password;
-    enum archiveTypeIndex type;
-    int i;
+    enum archiveTypeMenuIndex type;
+    int i, level;
     BOOL isDir;
 
     exfiles = [[NSMutableArray alloc] init];
@@ -468,8 +510,8 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     [_operationQueue removeObjectAtIndex:0];
 
     type = [[status objectForKey:AOArchiveType] intValue];
-
-    password = [_passwordField stringValue];
+    level = [[status objectForKey:AOCompressionLevel] intValue];
+    password = [status objectForKey:AOPassword];
 
     dst = [status objectForKey:@"dst"];
     srcs = [status objectForKey:@"srcs"];
@@ -507,6 +549,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     default:
 	exit(1);
     }
+
+    if (level != -1)
+	[_mainTask setCompressionLevel:level];
 
     if (![password isEqualToString:@""])
 	[_mainTask setArchivePassword:password];

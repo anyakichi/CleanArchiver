@@ -38,12 +38,18 @@ extern NSString *AOInternetEnabledDMG;
 extern NSString *AOReplaceAutomatically;
 extern NSString *AOSaveRSRC;
 
-enum archiveTypeIndex {
+enum archiveTypeMenuIndex {
     DMGT = 0,
     SZIPT,
     BZIP2T,
     GZIPT,
     ZIPT,
+};
+
+enum compressionLevelMenuIndex {
+    FAST = 0,
+    NORMAL,
+    BEST,
 };
 
 @interface CAController : NSObject
@@ -57,6 +63,7 @@ enum archiveTypeIndex {
     IBOutlet NSButton *_replaceAutomaticallyCheck;
     IBOutlet NSButton *_saveRSRCCheck;
     IBOutlet NSPopUpButton *_archiveTypeMenu;
+    IBOutlet NSPopUpButton *_compressionLevelMenu;
     IBOutlet NSProgressIndicator *_progressIndicator;
     IBOutlet NSSecureTextField *_passwordField;
     IBOutlet NSTextField *_progressMessage;
@@ -82,7 +89,7 @@ enum archiveTypeIndex {
 
 - (NSString *)getFileNameWithCandidate:(NSString *)cname;
 - (NSString *)getArchiveFileNameWithSourceFileNames:(NSArray *)sfiles
-    withArchiveType:(enum archiveTypeIndex)atype
+    withArchiveType:(enum archiveTypeMenuIndex)atype
     withReplaceAutomatically:(BOOL)ra;
 - (NSFileHandle *)getFileHandleOfFile:(NSString *)filename;
 

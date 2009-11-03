@@ -51,7 +51,7 @@
 
 	[self setArchiveType:NULL_TYPE];
 	[self setArchivePassword:nil];
-	[self setCompressLevel:-1];
+	[self setCompressionLevel:-1];
 	[self setExcludeMacFiles:NO];
 	[self setExcludedFiles:nil];
 	[self setSaveResourceFork:YES];
@@ -118,8 +118,8 @@
 	[args addObject:_archivePassword];
     }
 
-    if (_compressLevel != -1)
-	[args addObject:[NSString stringWithFormat:@"-%@", _compressLevel]];
+    if (_compressionLevel != -1)
+	[args addObject:[NSString stringWithFormat:@"-%d", _compressionLevel]];
 
     if (_excludeMacFiles)
 	[args addObject:@"-M"];
@@ -274,15 +274,15 @@ fail:
     _archiveType = type;
 }
 
-- (int)compressLevel
+- (int)compressionLevel
 {
 
-    return _compressLevel;
+    return _compressionLevel;
 }
-- (void)setCompressLevel:(int)level
+- (void)setCompressionLevel:(int)level
 {
 
-    _compressLevel = level;
+    _compressionLevel = level;
 }
 
 - (BOOL)excludeMacFiles

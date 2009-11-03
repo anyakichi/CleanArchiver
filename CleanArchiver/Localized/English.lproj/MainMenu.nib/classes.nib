@@ -52,6 +52,8 @@
 				<string>NSPopUpButton</string>
 				<key>_cancelButton</key>
 				<string>NSButton</string>
+				<key>_compressionLevelMenu</key>
+				<string>NSPopUpButton</string>
 				<key>_excludeDSSCheck</key>
 				<string>NSButton</string>
 				<key>_excludeDot_Check</key>

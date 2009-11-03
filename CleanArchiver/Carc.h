@@ -47,7 +47,7 @@ enum archiveType {
 
     NSString *_archivePassword;
     enum archiveType _archiveType;
-    int _compressLevel;
+    int _compressionLevel;
     BOOL _excludeMacFiles;
     NSArray *_excludedFiles;
     BOOL _internetEnabledDMG;
@@ -87,8 +87,8 @@ enum archiveType {
 - (void)setArchiveType:(enum archiveType)type;
 
 // Compression level; -1 is archiver's default
-- (int)compressLevel;
-- (void)setCompressLevel:(int)level;
+- (int)compressionLevel;
+- (void)setCompressionLevel:(int)level;
 
 // Exclude mac-specific files such as ._*, .DS_Store, and icon\r.
 - (BOOL)excludeMacFiles;
