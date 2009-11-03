@@ -18,9 +18,9 @@
 trap "rm -f conftest* core a.out; exit 1" 1 2 3 15
 
 CC=${1-cc}
-CFLAGS=${2-"-I. -DUNIX"}
+CFLAGS=${2-"-I. -DUNIX -DUSE_ICONV"}
 LFLAGS1=''
-LFLAGS2=''
+LFLAGS2='-liconv'
 LN="ln -s"
 
 CFLAGS_OPT=''

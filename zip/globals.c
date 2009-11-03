@@ -154,6 +154,12 @@ int all_ascii = 0;      /* Skip binary check and handle all files as text */
 #ifdef UNICODE_SUPPORT
  int utf8_force = 0;    /* 1=force storing UTF-8 as standard per AppNote bit 11 */
 #endif
+#ifdef USE_ICONV
+int use_filename_conversion = 0;  /* 1= convert encoding in archive */
+const char *from_encoding;	/* Encoding of filesystem */
+const char *to_encoding;	/* Encoding of archive */
+iconv_t encoding_converter = NULL; /* Path name converter */
+#endif
 int unicode_escape_all = 0; /* 1=escape all non-ASCII characters in paths */
 int unicode_mismatch = 1; /* unicode mismatch is 0=error, 1=warn, 2=ignore, 3=no */
 

@@ -58,10 +58,10 @@ IZ_OUR_BZIP2_DIR = bzip2
 #   CFLAGS    flags for C compile
 #   LFLAGS1   flags after output file spec, before obj file list
 #   LFLAGS2   flags after obj file list (libraries, etc)
-CFLAGS_NOOPT = -I. -DUNIX $(LOCAL_ZIP)
+CFLAGS_NOOPT = -I. -DUNIX -DUSE_ICONV $(LOCAL_ZIP)
 CFLAGS = -O2 $(CFLAGS_NOOPT)
 LFLAGS1 =
-LFLAGS2 = -s
+LFLAGS2 = -s -liconv
 
 # object file lists
 OBJZ = zip.o zipfile.o zipup.o fileio.o util.o globals.o crypt.o ttyio.o \

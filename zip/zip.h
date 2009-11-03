@@ -96,6 +96,10 @@ typedef unsigned long ulg;      /* unsigned 32-bit value */
 #  include "zlib.h"
 #endif
 
+#ifdef USE_ICONV
+#include <iconv.h>
+#endif
+
 /* In the utilities, the crc32() function is only used for UNICODE_SUPPORT. */
 #if defined(UTIL) && !defined(UNICODE_SUPPORT)
 #  define CRC_TABLE_ONLY
@@ -479,6 +483,12 @@ extern FILE *y;                 /* output file now global for splits */
 
 #ifdef UNICODE_SUPPORT
   extern int utf8_force;         /* 1=store UTF-8 as standard per AppNote bit 11 */
+#endif
+#ifdef USE_ICONV
+extern int use_filename_conversion; /* 1=convert encoding in archive */
+extern const char *from_encoding; /* Encoding of filesystem */
+extern const char *to_encoding;	/* Encoding of archive */
+extern iconv_t encoding_converter; /* filename_converter */
 #endif
 extern int unicode_escape_all;  /* 1=escape all non-ASCII characters in paths */
 extern int unicode_mismatch;    /* unicode mismatch is 0=error, 1=warn, 2=ignore, 3=no */

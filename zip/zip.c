@@ -265,6 +265,12 @@ local void freeup()
     free((zvoid *)key);
     key = NULL;
   }
+#ifdef USE_ICONV
+  if (encoding_converter != NULL) {
+    iconv_close(encoding_converter);
+    encoding_converter = NULL;
+  }
+#endif
 
   /* close any open files */
   if (in_file != NULL)
@@ -2041,6 +2047,10 @@ int set_filetype(out_path)
 #define o_ws            0x149
 #define o_ww            0x150
 #define o_z64           0x151
+#ifdef USE_ICONV
+#define o_CF            0x152
+#define o_CT            0x153
+#endif
 
 
 /* the below is mainly from the old main command line
@@ -2099,6 +2109,10 @@ struct option_struct far options[] = {
     {"e",  "encrypt",     o_NO_VALUE,       o_NOT_NEGATABLE, 'e',  "encrypt entries, ask for password"},
 #ifdef OS2
     {"E",  "longnames",   o_NO_VALUE,       o_NOT_NEGATABLE, 'E',  "use OS2 longnames"},
+#endif
+#ifdef USE_ICONV
+    {"CF", "code-from", o_REQUIRED_VALUE, o_NOT_NEGATABLE, o_CF, "convert paths in filesystem from given encoding"},
+    {"CT", "code-to", o_REQUIRED_VALUE, o_NOT_NEGATABLE, o_CT, "convert paths in archive to given encoding"},
 #endif
     {"F",  "fix",         o_NO_VALUE,       o_NOT_NEGATABLE, 'F',  "fix mostly intact archive (try first)"},
     {"FF", "fixfix",      o_NO_VALUE,       o_NOT_NEGATABLE, o_FF, "try harder to fix archive (not as reliable)"},
@@ -2525,6 +2539,12 @@ char **argv;            /* command line tokens */
 
 #ifdef UNICODE_SUPPORT
   utf8_force = 0;         /* 1=force storing UTF-8 as standard per AppNote bit 11 */
+#endif
+#ifdef USE_ICONV
+  use_filename_conversion = 0; /* 1= convert encoding in archive */
+  from_encoding = NULL;      /* Encoding of filesystem */
+  to_encoding = NULL;        /* Encoding of archive */
+  encoding_converter = NULL; /* filename_converter */
 #endif
 
   unicode_escape_all = 0; /* 1=escape all non-ASCII characters in paths */
@@ -3508,6 +3528,15 @@ char **argv;            /* command line tokens */
           break;
 #endif
 
+#ifdef USE_ICONV
+        case o_CF:
+	  from_encoding = value;
+	  break;
+        case o_CT:
+	  to_encoding = value;
+	  break;
+#endif
+
         case o_NON_OPTION_ARG:
           /* not an option */
           /* no more options as permuting */
@@ -3946,6 +3975,28 @@ char **argv;            /* command line tokens */
       !filelist && (kk < 3 || (action != UPDATE && action != FRESHEN))) {
     ZIPERR(ZE_PARMS, "nothing to select from");
   }
+
+#ifdef USE_ICONV
+  if (to_encoding) {
+    const char *fenc;
+
+    if (from_encoding)
+      fenc = from_encoding;
+    else
+      fenc = nl_langinfo(CODESET);
+
+    if ((encoding_converter = iconv_open(to_encoding, fenc)) != (iconv_t)-1) {
+      use_filename_conversion = 1;
+    } else {
+      encoding_converter = NULL;
+      ZIPERR(ZE_PARMS, "invalid encoding");
+    }
+
+    if (from_encoding)
+      free((zvoid *)from_encoding);
+    free((zvoid *)to_encoding);
+  }
+#endif /* USE_ICONV */
 
 /*
   -------------------------------------

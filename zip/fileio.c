@@ -79,6 +79,10 @@ local int ucs4_string_to_utf8 OF((ZCONST ulg *ucs4, char *utf8buf,
 #endif
 #endif /* UNICODE_SUPPORT */
 
+#ifdef USE_ICONV
+local char *convert_encoding OF((char *, size_t));
+#endif
+
 #ifndef UTIL    /* the companion #endif is a bit of ways down ... */
 
 local int fqcmp  OF((ZCONST zvoid *, ZCONST zvoid *));
@@ -944,6 +948,21 @@ int newname(name, flags, casesensitive)
     name_flsys = name;
   }
 #endif /* defined( UNIX) && defined( __APPLE__) */
+
+#ifdef USE_ICONV
+  if (use_filename_conversion) {
+    char *new_name;
+
+    if ((new_name = convert_encoding(name_archv, strlen(name_archv))) != NULL) {
+      if (name_archv != name_flsys)
+	free(name_archv);
+      name_archv = new_name;
+    } else {
+      sprintf(errbuf,"failed file name conversion: %s", name_archv);
+      ZIPERR(ZE_COMPERR, errbuf);
+    }
+  }
+#endif /* USE_ICONV */
 
   /* Scanning files ...
    *
@@ -2944,6 +2963,34 @@ size_t bfwrite(buffer, size, count, mode)
   return bytes_written;
 }
 
+
+#ifdef USE_ICONV
+local char *
+convert_encoding(char *src, size_t srclen)
+{
+  size_t dstlen;
+  char *dst, *dst_save;
+
+  if (srclen == 0)
+    return NULL;
+
+  dstlen = srclen * 4 + 1;
+  if ((dst = dst_save = malloc(dstlen)) == NULL)
+    return NULL;
+
+  if (iconv(encoding_converter, (char **)&src, &srclen, &dst, &dstlen) ==
+      (size_t)(-1)) {
+    /* XXX: ERROR */
+    return NULL;
+  }
+  *dst = '\0';
+
+  dst = dst_save;
+  dst = realloc(dst, strlen(dst) + 1);
+
+  return dst;
+}
+#endif /* USE_ICONV */
 
 #ifdef UNICODE_SUPPORT
 
