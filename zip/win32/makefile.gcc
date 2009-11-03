@@ -1,0 +1,347 @@
+# Makefile for Zip, ZipCloak, ZipNote and ZipSplit for port of gcc producing
+# native Win32-Intel binaries. Derived from makefile.w32.
+# Currently supported implementations: Cygwin and MinGW.
+# Authors: Cosmin Truta, Christian Spieler, and possibly others.
+# Last updated: 2009-Feb-21.
+#
+# To use, do "make -f win32/makefile.gcc".
+
+# Configuration switches supported:
+#   NOASMCRC=1  disable assembler crc32 code, the generic C source code
+#               is used instead.
+#   NOASMATCH=1 disable assembler match code for deflate.
+#   NOASM=1     disable crc32 and match assembler code.
+#   NOCRC_OPT=1 disable "unfolding CRC tables" optimization.
+#   OPT_P6=1    add "modern gcc" tuning option for PentiumPro family CPU.
+#   USEBZ2=1    activate integrated compilation of bzip2 compression support,
+#               this requires the bzip2 sources present in the bzip2 subfolder.
+#   USEZLIB=1   replace internal deflate code by externally provided zlib.
+
+ifdef NOASM
+NOASMATCH=1
+NOASMCRC=1
+endif
+
+ifdef NOASMCRC
+USE_ASMCRC=
+else
+USE_ASMCRC=1
+endif
+
+ifdef NOASMATCH
+USE_ASMATCH=
+else
+USE_ASMATCH=1
+endif
+
+ifdef NOCRC_OPT
+IZCRCOPT=
+else
+IZCRCOPT=-DIZ_CRCOPTIM_UNFOLDTBL
+endif
+
+ifdef OPT_P6
+TUNE_CPU=-mtune=_pentiumpro_
+endif
+
+# Optional nonstandard preprocessor flags (as -DMEDIUM_MEM or -DNO_ASM)
+# should be added to the environment via "set LOCAL_ZIP=-DFOO" or added
+# to the declaration of LOC here:
+LOC = $(LOCAL_ZIP)
+
+.PHONY: FORCE
+
+# ------------ GNU C ------------
+CC=gcc
+CFLG_OPT=-Wall -O3 $(TUNE_CPU)
+CFLAGS=$(CFLG_OPT) -DWIN32 -DFORCE_WIN32_OVER_UNIX $(IZCRCOPT)
+ifndef USEZLIB
+CCFLAGS=$(CFLAGS) $(ASMFLG) $(LOC)
+else
+CCFLAGS=$(CFLAGS) -DUSE_ZLIB $(LOC)
+endif
+UTILFLAGS=$(CCFLAGS) -DUTIL -o$@
+DLLFLAGS=$(CCFLAGS) -DWINDLL -DUSE_ZIPMAIN $(INC_BZ2LIB) -o$@
+CFLAGS_BZ=$(CFLG_OPT) -DBZ_NO_STDIO
+
+#AS=as
+AS=$(CC)
+ifndef USEZLIB
+ASDEFS=
+else
+ASDEFS=-DUSE_ZLIB
+endif
+ASFLAGS=-c $(ASDEFS) $(LOC)
+
+RC=windres
+
+LD=$(CC)
+LDFLAGS=-o$@ -s
+ifndef USEZLIB
+LIBS=-luser32 -ladvapi32
+else
+LIBS=-L. -lz -luser32 -ladvapi32
+endif
+
+OSDEP_H = win32/osdep.h
+ZIPUP_H = win32/zipup.h
+
+# variables
+ifndef USEZLIB
+
+# defaults for crc32 stuff and system dependent headers
+ifdef USE_ASMCRC
+ASCRC_FLG = -DASM_CRC
+CRCA_O = crc_i386.o
+CRCAUO = crci386_.o
+CRCALO = crci386l.o
+else
+ASCRC_FLG = -DNO_ASM_CRC
+CRCA_O =
+CRCAUO =
+CRCALO =
+endif
+
+# defaults for match32 assembler code in deflate algorithm
+ifdef USE_ASMATCH
+NOAS_FLG = -DASMV
+MATCH_O = match.o
+MATCHLO = matchl.o
+else
+NOAS_FLG = -DNO_ASM
+MATCH_O =
+MATCHLO =
+endif
+
+# the assembler preprocessor switches must be combined in this sequence:
+ASMFLG = $(NOAS_FLG) $(ASCRC_FLG)
+
+else    # def USEZLIB
+
+CRCA_O =
+CRCAUO =
+CRCALO =
+MATCH_O =
+MATCHLO =
+
+endif   # def UZEZLIB
+#use second definition for linking against libz
+
+# optional inclusion of bzip2 compression
+IZ_BZIP2 = bzip2
+ifdef USEBZ2
+INC_BZ2LIB = -I$(IZ_BZIP2)
+LOCAL_ZIP:=-DBZIP2_SUPPORT $(LOCAL_ZIP)
+LD_BZ2LIB = -L$(IZ_BZIP2) -lbz2
+LIBBZIP2 = $(IZ_BZIP2)/libbz2.a
+else
+INC_BZ2LIB =
+LD_BZ2LIB =
+LIBBZIP2 =
+endif
+
+OBJZ1 = zip.o crypt.o ttyio.o zipfile.o zipup.o fileio.o util.o \
+	crc32.o $(CRCA_O) globals.o
+OBJZ2 = deflate.o trees.o $(MATCH_O) zbz2err.o
+OBJZS = win32.o win32zip.o win32i64.o nt.o
+OBJZ  = $(OBJZ1) $(OBJZ2) $(OBJZS)
+
+OBJU1 = zipfile_.o fileio_.o util_.o crc32_.o $(CRCAUO) globals.o
+OBJUS = win32_.o win32i64.o
+OBJU  = $(OBJU1) $(OBJUS)
+
+OBJN  = zipnote.o $(OBJU)
+OBJS  = zipsplit.o $(OBJU)
+OBJC1 = zipcloak.o crypt_.o ttyio.o
+OBJC  = $(OBJC1) $(OBJU)
+
+OBJDLL = windll.o windllrc.o api.o
+OBJD1 = zipl.o cryptl.o ttyiol.o zipfilel.o zipupl.o fileiol.o utill.o \
+	crc32l.o $(CRCALO) globalsl.o
+OBJD2 = deflatel.o treesl.o $(MATCHLO) zbz2errl.o
+OBJDS = win32l.o win32zpl.o win32i64l.o ntl.o
+OBJD  = $(OBJDLL) $(OBJD1) $(OBJD2) $(OBJDS)
+
+ZIP_H = zip.h ziperr.h tailor.h $(OSDEP_H)
+WINDLL_H = windll/windll.h windll/structs.h api.h
+DLLDEF = windll/windll32.def
+
+ZIPS = zip.exe zipnote.exe zipsplit.exe zipcloak.exe
+
+# rules
+
+.SUFFIXES: .c .o
+
+.c.o:
+	$(CC) -c $(CCFLAGS) -I. $(INC_BZ2LIB) -o$@ $<
+
+# targets
+
+zips:   $(ZIPS)
+dll:    zip32z64.dll
+dllsample: example.exe
+all:    zips dll dllsample
+
+zip.o: zip.c $(ZIP_H) revision.h crc32.h crypt.h ttyio.h
+zipfile.o: zipfile.c $(ZIP_H) crc32.h
+zipup.o: zipup.c $(ZIP_H) revision.h crc32.h crypt.h $(ZIPUP_H)
+fileio.o: fileio.c $(ZIP_H) crc32.h
+util.o: util.c $(ZIP_H)
+globals.o: globals.c $(ZIP_H)
+deflate.o: deflate.c $(ZIP_H)
+trees.o: trees.c $(ZIP_H)
+crc32.o: crc32.c $(ZIP_H) crc32.h
+crypt.o: crypt.c $(ZIP_H) crypt.h crc32.h ttyio.h
+ttyio.o: ttyio.c $(ZIP_H) crypt.h ttyio.h
+zbz2err.o: zbz2err.c $(ZIP_H)
+
+win32zip.o: win32/win32zip.c $(ZIP_H) win32/win32zip.h win32/nt.h
+	$(CC) -c $(CCFLAGS) -I. $<
+
+win32.o: win32/win32.c $(ZIP_H) win32/win32zip.h
+	$(CC) -c $(CCFLAGS) -I. $<
+
+win32i64.o: win32/win32i64.c $(ZIP_H)
+	$(CC) -c $(CCFLAGS) -I. $<
+
+nt.o: win32/nt.c $(ZIP_H) win32/nt.h
+	$(CC) -c $(CCFLAGS) -I. $<
+
+zipcloak.o: zipcloak.c $(ZIP_H) revision.h crc32.h crypt.h ttyio.h
+zipnote.o: zipnote.c $(ZIP_H) revision.h
+zipsplit.o: zipsplit.c $(ZIP_H) revision.h
+
+zipfile_.o: zipfile.c $(ZIP_H) crc32.h
+	$(CC) -c $(UTILFLAGS) $<
+
+fileio_.o: fileio.c $(ZIP_H) crc32.h
+	$(CC) -c $(UTILFLAGS) $<
+
+util_.o: util.c $(ZIP_H)
+	$(CC) -c $(UTILFLAGS) $<
+
+crc32_.o: crc32.c $(ZIP_H) crc32.h
+	$(CC) -c $(UTILFLAGS) $<
+
+crypt_.o: crypt.c $(ZIP_H) crypt.h crc32.h ttyio.h
+	$(CC) -c $(UTILFLAGS) $<
+
+win32_.o: win32/win32.c $(ZIP_H) win32/win32zip.h
+	$(CC) -c $(UTILFLAGS) -I. $<
+
+match.o: match.S
+	$(AS) $(ASFLAGS) $<
+
+crc_i386.o: crc_i386.S
+	$(AS) $(ASFLAGS) $<
+
+crci386_.o: crc_i386.S
+	$(AS) $(ASFLAGS) -DUTIL -o$@ $<
+
+ziprc.o: win32/zip.rc revision.h
+	- $(RC) -o $@ $<
+
+zipl.o: zip.c $(ZIP_H) $(WINDLL_H) revision.h crc32.h crypt.h ttyio.h
+	$(CC) -c $(DLLFLAGS) $<
+
+zipfilel.o: zipfile.c $(ZIP_H) crc32.h
+	$(CC) -c $(DLLFLAGS) $<
+
+zipupl.o: zipup.c $(ZIP_H) revision.h crc32.h crypt.h $(ZIPUP_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+fileiol.o: fileio.c $(ZIP_H) crc32.h
+	$(CC) -c $(DLLFLAGS) $<
+
+utill.o: util.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+globalsl.o: globals.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+deflatel.o: deflate.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+treesl.o: trees.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+crc32l.o: crc32.c $(ZIP_H) crc32.h
+	$(CC) -c $(DLLFLAGS) $<
+
+cryptl.o: crypt.c $(ZIP_H) crypt.h crc32.h ttyio.h
+	$(CC) -c $(DLLFLAGS) $<
+
+ttyiol.o: ttyio.c $(ZIP_H) crypt.h ttyio.h
+	$(CC) -c $(DLLFLAGS) $<
+
+zbz2errl.o: zbz2err.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+win32zpl.o: win32/win32zip.c $(ZIP_H) win32/win32zip.h win32/nt.h
+	$(CC) -c $(DLLFLAGS) -I. $<
+
+win32l.o: win32/win32.c $(ZIP_H) win32/win32zip.h
+	$(CC) -c $(DLLFLAGS) -I. $<
+
+win32i64l.o: win32/win32i64.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) -I. $<
+
+ntl.o: win32/nt.c $(ZIP_H) win32/nt.h
+	$(CC) -c $(DLLFLAGS) -I. $<
+
+crci386l.o: crc_i386.S
+	$(AS) $(ASFLAGS) -DWINDLL -o$@ $<
+
+matchl.o: match.S
+	$(AS) $(ASFLAGS) -DWINDLL -o$@ $<
+
+api.o: api.c $(ZIP_H) $(WINDLL_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+windll.o: windll/windll.c $(ZIP_H) $(WINDLL_H)
+	$(CC) -c $(DLLFLAGS) $<
+
+windllrc.o: windll/windll.rc revision.h
+	- $(RC) -o $@ $<
+
+example.o: windll/examples/example.c windll/examples/example.h \
+           windll/structs.h api.h $(ZIP_H) revision.h
+	$(CC) -c $(CFLAGS) -I. -I./windll $<
+
+
+zip.exe: $(OBJZ) ziprc.o $(LIBBZIP2)
+	$(LD) $(LDFLAGS) $(OBJZ) ziprc.o $(LD_BZ2LIB) $(LIBS)
+
+zipcloak.exe: $(OBJC)
+	$(LD) $(LDFLAGS) $(OBJC) $(LIBS)
+
+zipnote.exe: $(OBJN)
+	$(LD) $(LDFLAGS) $(OBJN)
+
+zipsplit.exe: $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS)
+
+zip32z64.dll: $(DLLDEF) $(OBJD) $(LIBBZIP2)
+	dllwrap --driver-name $(CC) -Wl,--enable-stdcall-fixup \
+	 --def $(DLLDEF)  $(LDFLAGS) $(OBJD) $(LD_BZ2LIB) $(LIBS)
+
+example.exe: example.o
+	$(LD) $(LDFLAGS) $^ -lversion $(LIBS)
+
+# create/update the library for the optional bzip2 support:
+# Info: The generic makefile provided by the bzip2 source distribution applies
+#       some helper commands which are unavailable on the win32 console.
+#       However, these commands are not mandatory to build a valid libbz2.a
+#       library.  So, instead of taking the additional trouble of supplying
+#       an adapted Makefile, we simply use the -i "ignore errors" switch for
+#       Make to skip over the non-working supplementary commands.
+$(IZ_BZIP2)/libbz2.a:
+	@echo "Building bzip2 object library..."
+	$(subst /,\,$(MAKE)) -i -C $(IZ_BZIP2) CC="$(CC)" \
+	 CFLAGS="$(CFLAGS_BZ)" RM="$(RM)" libbz2.a
+	@echo "   bzip2 object library created."
+FORCE:
+
+clean:
+	-$(MAKE) -C $(IZ_BZIP2) CC="$(CC)" RM="$(RM)" clean
+	rm -f *.o $(ZIPS)

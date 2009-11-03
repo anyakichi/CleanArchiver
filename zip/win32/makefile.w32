@@ -1,0 +1,430 @@
+# Makefile for Zip, ZipCloak, ZipNote and ZipSplit for
+# 32-bit Microsoft Visual C++
+
+# Last updated 21 February 2009
+
+# To use, do "nmake -f makefile.w32"
+
+# Option switches
+# (specify OPTFLAG as "OPTFLAG={1|0}" on the nmake command line)
+#   USEBZ2DLL=1         : bzip2 support, link against externally supplied dll
+#   USEBZ2STAT=1        : bzip2 support by static library created during build
+#   USEBZ2=1            : alias for USEBZ2STAT=1
+#
+#   USEZLIBDLL=1        : replace built-in deflate by external zlib dll
+#   USEZLIBSTAT=1       : replace built-in deflate by external zlib static lib
+#   USEZLIB=1           : alias for USEZLIBSTAT=1
+#
+#   USE_DLLRUNTIME      : link executables against C runtime dll
+#                         (default: executables are linked against static lib)
+#                         USEBZ2DLL or USEZLIBDLL imply USE_DLLRUNTIME !
+#
+#   NOASMCRC            : disable assembler crc32 code, the generic C source
+#                         code is used instead
+#   NOASMATCH           : disable assembler match code for deflate
+#   NOASM               : disable crc32 and match assembler code
+#   USEML               : use MS macro assembler (ML driver) to create crc32
+#                         when asm match code usage is disabled
+#                         (default: use C inline assembler code for crc32)
+#
+#   NOCRC_OPT=1         : disable "unfolding CRC tables" optimization
+#
+#   USEIZTIMEZONE       : =0 (default) timezone setup by built-in C RTL
+#                         =1 apply InfoZip replacement code for timezone setup
+#                            (recognizes extended syntax when timezone setup
+#                            is overridden by environment variable)
+
+# Optional nonstandard preprocessor flags (as -DMEDIUM_MEM)
+# should be added to the environment via "set LOCAL_ZIP=-DFOO" or added
+# to the declaration of LOC here:
+LOC = $(LOCAL_ZIP)
+
+!IFNDEF debug
+NODEBUG=1
+!ENDIF
+
+!IFDEF NOASM
+NOASMATCH=1
+NOASMCRC=1
+!ENDIF
+
+!IFDEF NOASMCRC
+CRCA_O =
+CRCALO =
+CFLG_ASM = -DNO_ASM_CRC
+!ELSE
+!if defined(NOASMATCH) && !defined(USEML)
+CRCA_O = crci386c.obj
+!else
+CRCA_O = crc_i386.obj
+!endif
+CRCALO = $(CRCA_O)
+CFLG_ASM = -DASM_CRC
+!ENDIF
+
+!IFDEF NOASMATCH
+MATCH_O =
+MATCHLO =
+CFLG_ASM = -DNO_ASM $(CFLG_ASM)
+!ELSE
+MATCH_O = match32.obj
+MATCHLO = match32.obj
+CFLG_ASM = -DASMV $(CFLG_ASM)
+!ENDIF
+
+!ifndef USE_IZTIMEZONE
+#default: do not use the IZ timezone replacement
+USE_IZTIMEZONE=0
+!endif
+
+!if $(USE_IZTIMEZONE) != 0
+LOC=-DW32_USE_IZ_TIMEZONE $(LOC)
+TIMEZONE_OBJ = timezone.obj
+!else
+TIMEZONE_OBJ =
+!endif
+
+
+# Options to include optional support for bzip2 decompression
+!if defined(USEBZ2STAT) || defined(USEBZ2DLL)
+USEBZ2=1
+!endif
+
+IZ_BZIP2 = bzip2
+
+!IFDEF USEBZ2
+!if defined(USEBZ2STAT) && defined(USEBZ2DLL)
+!ERROR Conflicting options USEBZ2STAT and USEBZ2DLL requested!
+!endif
+INC_BZ2LIB=-I$(IZ_BZIP2)
+# Set static bzip2 linkage as default in case nothing is specified.
+!if !defined(USEBZ2STAT) && !defined(USEBZ2DLL)
+USEBZ2STAT=1
+!endif
+
+LOC=$(LOC) -DBZIP2_SUPPORT
+!IFNDEF debug
+!ifdef USEBZ2STAT
+BZIP2LIB=$(IZ_BZIP2)/libbz2.lib
+!else
+BZIP2LIB=libbz2.lib
+!endif
+!ELSE
+BZIP2LIB=libbz2.lib
+!ENDIF
+EXTLIB=$(EXTLIB) $(BZIP2LIB)
+!ELSE  # !USEBZ2
+INC_BZ2LIB=
+BZIP2LIB=
+!ENDIF # ?USEBZ2
+
+# Options to decide whether using zlib as decompression library.
+# Specify USEZLIBDLL or USEZLIBSTAT to replace Zip's built-in deflation code
+# by the deflate service of the zlib library.
+# (The option USEZLIB is currently set as a synonym for USEZLIBSTAT.)
+!if defined(USEZLIBSTAT) || defined(USEZLIBDLL)
+USEZLIB=1
+!endif
+
+!IFDEF USEZLIB
+!if defined(USEZLIBSTAT) && defined(USEZLIBDLL)
+!ERROR Conflicting options USEZLIBSTAT and USEZLIBDLL requested!
+!endif
+# Set static zlib linkage as default in case nothing is specified.
+!if !defined(USEZLIBSTAT) && !defined(USEZLIBDLL)
+USEZLIBSTAT=1
+!endif
+
+LOC=$(LOC) -DUSE_ZLIB
+CRCA_O=
+CRCALO=
+MATCH_O=
+MATCHLO=
+CFLG_ASM=-DNO_ASM
+!IFNDEF debug
+EXTLIB=$(EXTLIB) zlib.lib
+!ELSE
+EXTLIB=$(EXTLIB) zlib.lib
+!ENDIF
+!ENDIF # USEZLIB
+
+!IF !defined(NOCRC_OPT) && !defined(USEZLIB)
+LOC=$(LOC) -DIZ_CRCOPTIM_UNFOLDTBL
+!ENDIF
+
+!IF defined(USEZLIBDLL) || defined(USEBZ2DLL) || defined(USE_DLLRUNTIME)
+USE_MSVCRT=1
+!ELSE
+USE_MSVCRT=0
+!ENDIF
+
+!IF $(USE_MSVCRT) == 1
+CRTLIB=-MD
+!ELSE
+!IF "$(VS80COMNTOOLS)" == ""
+CRTLIB=-ML
+!ELSE
+# no single-threaded CRT static lib, only multi-threaded in VC8
+CRTLIB=-MT
+!ENDIF
+!ENDIF
+
+!IFDEF NODEBUG
+cdebug = -O2
+cdbgsz = -O1
+!ELSE
+cdebug = -Od
+cdbgsz = $(cdebug)
+!ENDIF
+
+# ------------- 32-bit Microsoft Visual C++ -------------
+CC=cl -nologo
+CFLAGS=-W3 $(cdebug) -DWIN32 $(CFLG_ASM) $(INC_BZ2LIB) $(CRTLIB) $(LOC)
+UTILFLAGS=$(CFLAGS) -DUTIL -Fo$@
+DLLFLAGS=$(CFLAGS) -DWINDLL -DUSE_ZIPMAIN -Fo$@
+CFLAGS_BZ=-W3 $(cdebug) $(CRTLIB) -DBZ_NO_STDIO
+
+# Remove "-coff" from ASFLAGS if you do not have MASM 6.11.
+
+AS=ml -nologo
+ASFLAGS=-c -coff -Cx $(LOC)
+
+RC=rc
+
+# If you build 16-bit executables with MS Visual C++ v1.0/1.5 and link them
+# with the /KNOWEAS switch, you can build dual-mode MS-DOS/Win32 executables
+# by passing the -stub switch to the 32-bit linker to specify the 16-bit part.
+
+LD=link -nologo
+LDFLAGS=user32.lib advapi32.lib /INCREMENTAL:NO /PDB:$*.pdb $(EXTLIB)
+SYMS=/DEBUG:full /DEBUGTYPE:CV
+!IFDEF debug
+LDFLAGS=$(LDFLAGS) $(SYMS)
+CFLAGS=$(CFLAGS) /Zi
+CFLAGS_BZ=$(CFLAGS_BZ) -Zi
+!ELSE
+LDFLAGS=$(LDFLAGS) /RELEASE
+!IFDEF sym
+LDFLAGS=$(LDFLAGS) $(SYMS)
+CFLAGS=$(CFLAGS) /Zi
+CFLAGS_BZ=$(CFLAGS_BZ) -Zi
+!ENDIF
+!ENDIF
+
+# variables
+OBJZ = zip.obj crypt.obj ttyio.obj zipfile.obj zipup.obj fileio.obj util.obj \
+ crc32.obj $(CRCA_O) globals.obj
+
+OBJI = deflate.obj trees.obj $(MATCH_O) zbz2err.obj $(TIMEZONE_OBJ) \
+ win32.obj win32zip.obj nt.obj win32i64.obj
+
+OBJU1 = zipfile_.obj fileio_.obj util_.obj crc32_.obj $(CRCA_O) globals.obj
+OBJUS = win32_.obj win32i64.obj
+OBJU  = $(OBJU1) $(OBJUS)
+
+OBJN = zipnote.obj $(OBJU)
+OBJC = zipcloak.obj crypt_.obj ttyio.obj $(OBJU)
+OBJS = zipsplit.obj $(OBJU)
+
+OBJDLL = windll.obj api.obj
+OBJD1 = zipl.obj cryptl.obj ttyiol.obj zipfilel.obj zipupl.obj fileiol.obj \
+ utill.obj crc32l.obj $(CRCALO) globalsl.obj
+OBJD2 = deflatel.obj treesl.obj $(MATCHLO) zbz2errl.obj
+OBJDS = win32l.obj win32zpl.obj win32i64l.obj ntl.obj
+OBJD  = $(OBJDLL) $(OBJD1) $(OBJD2) $(OBJDS)
+
+ZIP_H = zip.h ziperr.h tailor.h win32/osdep.h
+WINDLL_H = windll/windll.h windll/structs.h
+DLLDEF = windll/windll32.def
+
+ZIPS = zip.exe zipnote.exe zipsplit.exe zipcloak.exe
+
+zips:   $(ZIPS)
+dll:    zip32z64.dll
+dllsample: example.exe
+all:    zips dll dllsample
+
+zip.obj:        zip.c $(ZIP_H) revision.h crc32.h crypt.h ttyio.h
+	$(CC) -c $(CFLAGS) $*.c
+
+zipfile.obj:    zipfile.c $(ZIP_H) crc32.h
+	$(CC) -c $(CFLAGS) $*.c
+
+zipup.obj:      zipup.c $(ZIP_H) revision.h crc32.h crypt.h win32/zipup.h
+	$(CC) -c $(CFLAGS) $*.c
+
+fileio.obj:     fileio.c $(ZIP_H) crc32.h
+	$(CC) -c $(CFLAGS) $*.c
+
+util.obj:       util.c $(ZIP_H)
+	$(CC) -c $(CFLAGS) $*.c
+
+globals.obj:    globals.c $(ZIP_H)
+	$(CC) -c $(CFLAGS) $*.c
+
+deflate.obj:    deflate.c $(ZIP_H)
+	$(CC) -c $(CFLAGS) $*.c
+
+trees.obj:      trees.c $(ZIP_H)
+	$(CC) -c $(CFLAGS) $*.c
+
+crc32.obj:      crc32.c $(ZIP_H) crc32.h
+	$(CC) -c $(CFLAGS) $*.c
+
+crypt.obj:      crypt.c $(ZIP_H) crypt.h crc32.h ttyio.h
+	$(CC) -c $(CFLAGS) $*.c
+
+ttyio.obj:      ttyio.c $(ZIP_H) crypt.h ttyio.h
+	$(CC) -c $(CFLAGS) $*.c
+
+win32i64.obj:   win32/win32i64.c $(ZIP_H)
+	$(CC) -c $(CFLAGS) -I. win32/win32i64.c
+
+win32zip.obj:   win32/win32zip.c $(ZIP_H) win32/win32zip.h win32/nt.h
+	$(CC) -c $(CFLAGS) -I. win32/win32zip.c
+
+win32.obj:      win32/win32.c $(ZIP_H) win32/win32zip.h
+	$(CC) -c $(CFLAGS) -I. win32/win32.c
+
+nt.obj:         win32/nt.c $(ZIP_H) win32/nt.h
+	$(CC) -c $(CFLAGS) -I. win32/nt.c
+
+zipcloak.obj:   zipcloak.c $(ZIP_H) revision.h crc32.h crypt.h ttyio.h
+	$(CC) -c $(CFLAGS) $*.c
+
+zipnote.obj:    zipnote.c $(ZIP_H) revision.h
+	$(CC) -c $(CFLAGS) $*.c
+
+zipsplit.obj:   zipsplit.c $(ZIP_H) revision.h
+	$(CC) -c $(CFLAGS) $*.c
+
+zipfile_.obj:   zipfile.c $(ZIP_H) crc32.h
+	$(CC) -c $(UTILFLAGS) zipfile.c
+
+fileio_.obj:    fileio.c $(ZIP_H) crc32.h
+	$(CC) -c $(UTILFLAGS) fileio.c
+
+util_.obj:      util.c $(ZIP_H)
+	$(CC) -c $(UTILFLAGS) util.c
+
+crc32_.obj:     crc32.c $(ZIP_H) crc32.h
+	$(CC) -c $(UTILFLAGS) crc32.c
+
+crypt_.obj:     crypt.c $(ZIP_H) crypt.h crc32.h ttyio.h
+	$(CC) -c $(UTILFLAGS) crypt.c
+
+win32_.obj:     win32/win32.c $(ZIP_H) win32/win32zip.h
+	$(CC) -c $(UTILFLAGS) -I. win32/win32.c
+
+crci386c.obj:   win32/crc_i386.c $(ZIP_H) crc32.h
+	$(CC) -c $(CFLAGS) -I. -Fo$@ win32/crc_i386.c
+
+crc_i386.obj:   win32/crc_i386.asm
+	$(AS) $(ASFLAGS) win32\crc_i386.asm
+
+match32.obj:    win32/match32.asm
+	$(AS) $(ASFLAGS) win32\match32.asm
+
+zip.res:        win32/zip.rc revision.h
+	$(RC) /l 0x409 /fo$@ /i win32 /d WIN32 win32/zip.rc
+
+zipl.obj:       zip.c $(ZIP_H) $(WINDLL_H) revision.h crc32.h crypt.h ttyio.h
+	$(CC) -c $(DLLFLAGS) zip.c
+
+zipfilel.obj:   zipfile.c $(ZIP_H) crc32.h
+	$(CC) -c $(DLLFLAGS) zipfile.c
+
+zipupl.obj:     zipup.c $(ZIP_H) revision.h crc32.h crypt.h $(ZIPUP_H)
+	$(CC) -c $(DLLFLAGS) zipup.c
+
+fileiol.obj:    fileio.c $(ZIP_H) crc32.h
+	$(CC) -c $(DLLFLAGS) fileio.c
+
+utill.obj:      util.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) util.c
+
+globalsl.obj:   globals.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) globals.c
+
+deflatel.obj:   deflate.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) deflate.c
+
+treesl.obj:     trees.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) trees.c
+
+crc32l.obj:     crc32.c $(ZIP_H) crc32.h
+	$(CC) -c $(DLLFLAGS) crc32.c
+
+cryptl.obj:     crypt.c $(ZIP_H) crypt.h crc32.h ttyio.h
+	$(CC) -c $(DLLFLAGS) crypt.c
+
+ttyiol.obj:     ttyio.c $(ZIP_H) crypt.h ttyio.h
+	$(CC) -c $(DLLFLAGS) ttyio.c
+
+zbz2errl.obj:   zbz2err.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) zbz2err.c
+
+win32zpl.obj:   win32/win32zip.c $(ZIP_H) win32/win32zip.h win32/nt.h
+	$(CC) -c $(DLLFLAGS) -I. win32/win32zip.c
+
+win32l.obj:     win32/win32.c $(ZIP_H) win32/win32zip.h
+	$(CC) -c $(DLLFLAGS) -I. win32/win32.c
+
+win32i64l.obj:  win32/win32i64.c $(ZIP_H)
+	$(CC) -c $(DLLFLAGS) -I. win32/win32i64.c
+
+ntl.obj:        win32/nt.c $(ZIP_H) win32/nt.h
+	$(CC) -c $(DLLFLAGS) -I. win32/nt.c
+
+api.obj:        api.c $(ZIP_H) $(WINDLL_H)
+	$(CC) -c $(DLLFLAGS) $*.c
+
+windll.obj:     windll/windll.c $(ZIP_H) $(WINDLL_H)
+	$(CC) -c $(DLLFLAGS) windll/windll.c
+
+windll.res:     windll/windll.rc revision.h
+	$(RC) /l 0x409 /fo$@ /i win32 /d WIN32 win32/zip.rc
+
+example.obj:    windll/examples/example.c windll/examples/example.h \
+                windll/structs.h api.h $(ZIP_H) revision.h
+	$(CC) -c $(CFLAGS) -I. -I./windll windll/examples/example.c
+
+$(IZ_BZIP2)/libbz2.lib:
+	@echo "Building bzip2 object library..."
+	cd $(IZ_BZIP2)
+	$(MAKE) -f ./makefile.msc CC="$(CC)"\
+	CFLAGS="$(CFLAGS_BZ)" lib
+	cd ..
+	@echo "   bzip2 object library created."
+
+zip.exe: $(OBJZ) $(OBJI) zip.res $(BZIP2LIB)
+	$(LD) $(LDFLAGS) $(OBJZ) $(OBJI) zip.res
+
+zipcloak.exe: $(OBJC)
+	$(LD) $(LDFLAGS) $(OBJC)
+
+zipnote.exe: $(OBJN)
+	$(LD) $(LDFLAGS) $(OBJN)
+
+zipsplit.exe: $(OBJS)
+	$(LD) $(LDFLAGS) $(OBJS)
+
+zip32z64.dll: $(DLLDEF) $(OBJD) windll.res $(BZIP2LIB)
+	$(LD) -def:$(DLLDEF) /DLL $(LDFLAGS) $(OBJD) windll.res -out:$@
+
+example.exe: example.obj
+	$(LD) $(LDFLAGS) example.obj version.lib
+
+clean: clean_bz2_lib
+	-del *.obj
+	-del *.res
+	-del *.exe
+	-del zip32z64.dll
+	-del zip32z64.lib
+	-del zip32z64.exp
+	-del zip32z64.dll.manifest
+
+clean_bz2_lib:
+	-cd $(IZ_BZIP2)
+	-$(MAKE) -f ./makefile.msc clean
+	-cd ..

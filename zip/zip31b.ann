@@ -1,0 +1,27 @@
+Zip 3.1b
+
+We have posted Zip Beta 3.1b, April 9th 2009.  This is a beta
+release and considerable additional work is planned before Zip 3.1
+is released.  See the file WhatsNew for details and send in your
+feature suggestions and bug reports.
+
+Quick list of major changes in Zip 3.1b:
+
+- EBCDIC updates, including new -aa option to process all files
+  as text (and so with EBCDIC translation).
+- z/OS updates.
+- MVS updates, including new -MV option to control path
+  translations.
+- New -pp to set a prefix that will be prepended to paths.
+- ZipNote bug fixes.
+- License update.
+- Zip DLL fixes.
+- Other bug fixes.
+- VMS ACL update.  Additional VMS updates.
+- Pass password to UnZip when testing archive.
+- Documentation updates.
+
+As always, see the Zip manual page and the extended help in Zip
+for details on what Zip has and how to use all features.
+
+Enjoy!

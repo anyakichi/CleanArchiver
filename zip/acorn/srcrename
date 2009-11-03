@@ -1,0 +1,138 @@
+   10REM srcrename replacement - © Jeffrey Lee, 2008
+   20REM This is a public domain release.
+   30ON ERROR PRINT REPORT$;" at ";ERL : END
+   40
+   50REM Defaults
+   60exts$ = "c:h:s:o:y:l:cpp:c++"
+   70recurse% = FALSE
+   80verbose% = FALSE
+   90dir$ = ""
+  100
+  110REM Parse command line args
+  120SYS "OS_GetEnv" TO args$
+  130REM First 3 options will (hopefully) be 'BASIC -quit "<file>"'
+  140opt$ = FNgetopt : opt$ = FNgetopt : opt$=FNgetopt
+  150WHILE ASC(args$)>31
+  160  opt$ = FNgetopt
+  170  IF opt$="-e" AND ASC(args$)>31 THEN
+  180    exts$=FNgetopt
+  190  ELSE IF LEFT$(opt$,13)="--extensions=" THEN
+  200    exts$=MID$(opt$,13)
+  210  ELSE IF opt$="-r" OR opt$="--recurse" THEN
+  220    recurse%=TRUE
+  230  ELSE IF opt$="-V" OR opt$="--verbose" THEN
+  240    verbose%=TRUE
+  250  ELSE IF opt$="--help" THEN
+  260    PRINT "Usage: srcrename [OPTION]... DIRECTORY"'
+  270    PRINT "  -e, --extensions=LIST  specify the filename extensions to be swapped"
+  280    PRINT "                         (':'-seperated list, default c:h:s:o:y:l:cpp:c++)"
+  290    PRINT "  -r, --recurse          recurse into subdirectories"
+  300    PRINT "  -V, --verbose          be (more) verbose"
+  310    PRINT "      --help             display this help"
+  320    PRINT "      --version          output version information"
+  330    END
+  340  ELSE IF opt$="--version" THEN
+  350    PRINT "srcrename 1.0.0 BASIC clone"
+  360    END
+  370  ELSE IF ASC(args$)>31 THEN
+  380    PRINT "srcrename: invalid option -- "+opt$
+  390    PRINT "Try `srcrename --help' for more information."
+  400    END
+  410  ELSE
+  420    dir$ = opt$
+  430  ENDIF
+  440  ENDIF
+  450  ENDIF
+  460  ENDIF
+  470  ENDIF
+  480  ENDIF
+  490  ENDIF
+  500ENDWHILE
+  510
+  520IF dir$="" THEN PRINT "srcrename: missing directory name" : END
+  530
+  540DIM result% 1024
+  550
+  560PROCprocess(dir$)
+  570END
+  580
+  590DEF PROCprocess(dir$)
+  600  LOCAL item%,files%
+  610  REM If we're recursing, process the subfolders first to avoid any recursive renaming
+  620  IF recurse% THEN
+  630    item%=0
+  640    files%=0
+  650    WHILE item%<>-1
+  660      SYS "OS_GBPB",10,dir$,result%,1,item%,1024,0 TO ,,,read%,item%
+  670      IF read%>0 THEN
+  680        n%=20
+  690        name$=""
+  700        WHILE result%?n%<>0
+  710          name$ = name$+CHR$(result%?n%)
+  720          n%+=1
+  730        ENDWHILE
+  740        IF result%!16=2 THEN
+  750          REM object is a directory
+  760          PROCprocess(dir$+"."+name$)
+  770        ENDIF
+  780      ENDIF
+  790    ENDWHILE
+  800  ENDIF
+  810  REM Now process files
+  820  IF verbose% PRINT "Processing folder '"+dir$+"'"
+  830  item%=0
+  840  files%=0
+  850  WHILE item%<>-1
+  860    SYS "OS_GBPB",10,dir$,result%,1,item%,1024,0 TO ,,,read%,item%
+  870    IF read%>0 THEN
+  880      n%=20
+  890      name$=""
+  900      WHILE result%?n%<>0
+  910        name$ = name$+CHR$(result%?n%)
+  920        n%+=1
+  930      ENDWHILE
+  940      IF result%!16<>2 THEN
+  950        REM object is a file/image file
+  960        ext$ = FNfindext(name$)
+  970        IF ext$<>"" THEN
+  980          name2$ = LEFT$(name$,LEN(name$)-(LEN(ext$)+1))
+  990          IF name2$<>"" THEN
+ 1000            IF verbose% PRINT "Renaming file '"+dir$+"."+name$+"' to '"+dir$+"."+ext$+"."+name2$+"'"
+ 1010            OSCLI("cdir "+dir$+"."+ext$)
+ 1020            OSCLI("rename "+dir$+"."+name$+" "+dir$+"."+ext$+"."+name2$)
+ 1030            REM Re-scan folder from the start because we'll have changed the entries. This is somewhat simpler than remembering all the file names and renaming them all at once.
+ 1040            item%=0
+ 1050          ELSE
+ 1060REM            IF verbose% THEN PRINT "Ignoring file '"+dir$+"."+name$+"': Extension found, but no base filename"
+ 1070          ENDIF
+ 1080        ELSE
+ 1090REM          IF verbose% THEN PRINT "Ignoring file '"+dir$+"."+name$+"'"
+ 1100        ENDIF
+ 1110      ENDIF
+ 1120    ENDIF
+ 1130  ENDWHILE
+ 1140ENDPROC
+ 1150
+ 1160DEF FNfindext(name$)
+ 1170  IF INSTR(name$,"/")=0 THEN =""
+ 1180  WHILE INSTR(name$,"/")>0
+ 1190    name$ = MID$(name$,INSTR(name$,"/")+1)
+ 1200  ENDWHILE
+ 1210  pos%=0
+ 1220  WHILE INSTR(exts$,name$,pos%)>0
+ 1230    pos%=INSTR(exts$,name$,pos%)
+ 1240    IF (pos%=1 OR MID$(exts$,pos%-1,1)=":") AND (pos%+LEN(name$)=LEN(exts$) OR MID$(exts$,pos%+LEN(name$),1)=":") THEN =name$
+ 1250  ENDWHILE
+ 1260=""
+ 1270
+ 1280DEF FNgetopt
+ 1290  LOCAL opt$
+ 1300  opt$=""
+ 1310  WHILE ASC(args$)>32
+ 1320    opt$ = opt$+LEFT$(args$,1)
+ 1330    args$ = MID$(args$,2)
+ 1340  ENDWHILE
+ 1350  WHILE ASC(args$)=32
+ 1360    args$ = MID$(args$,2)
+ 1370  ENDWHILE
+ 1380=opt$

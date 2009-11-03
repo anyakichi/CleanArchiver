@@ -1,0 +1,18 @@
+| This Obey file prepares the zip port for a GCC/Desktop C re-compile.
+| Run it and it will copy all the needed files into the correct
+| place.
+
+| Run 'srcrename' on the main zip directory with recursion enabled
+BASIC -quit "<Obey$Dir>.srcrename" -r -e c:h:s:o <Obey$Dir>.^
+
+| Put the Makefile in its correct place and set the correct filetype
+Copy <Obey$Dir>.GMakefile <Obey$Dir>.^.makefile ~C~VF
+
+| Uncomment the following lines if you're using Acorn C/C++
+|| Put the Makefile in its correct place and set the correct filetype
+|Copy <Obey$Dir>.makefile <Obey$Dir>.^.makefile ~C ~V F
+|| Create the 'o' directory
+|CDir <Obey$Dir>.^.o
+
+SetType <Obey$Dir>.^.makefile FE1
+SetType <Obey$Dir>.zipsfx Obey

@@ -1,0 +1,25 @@
+Zip 3.1a
+
+We have posted Zip Beta 3.1a, September 21st 2008.  This is a beta
+release and considerable work still is needed before Zip 3.1 is
+released.  See the file WhatsNew for details and send in your
+feature suggestions and bug reports.
+
+Quick list of major changes in Zip 3.1a:
+
+- Better Unicode support for WIN32 DLL.
+- Preliminary support for Mac OS X file resource data.
+- VMS bzip2 fixes.
+- WINDLL fixes.
+- Fix UTF-8 bug for native UTF-8 option on WIN32.
+- Update Acorn port.
+- Compiler makefile updates for MSDOS and WIN32 ports.
+- Add support for ZLIB for VMS.
+- Better handling of VMS dots.
+- Update WINDLL C example.
+- Debian patches 844_003 and 5988_006 for manuals.
+
+As always, see the Zip manual page for details on what Zip has and
+how to use all features.
+
+Enjoy!

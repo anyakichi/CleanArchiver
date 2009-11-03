@@ -1,0 +1,106 @@
+# Makefile for Zip, ZipNote, ZipCloak and ZipSplit
+
+# add -g to CC to debug
+# add -d to BIND to debug
+CC   = gcc
+BIND = $(CC)
+ASM  = $(CC) -mhard-float -xassembler-with-cpp -c
+E    = 
+
+# flags
+#   CFLAGS    flags for C compile
+#   LFLAGS1   flags after output file spec, before obj file list
+#   LFLAGS2   flags after obj file list (libraries, etc)
+#   ASMFLAGS  flags for assembler
+#
+CFLAGS   = -mthrowback -mlibscl -I. -O2 -Wall
+LFLAGS1  = -mlibscl
+LFLAGS2  =
+ASMFLAGS = -mthrowback
+
+# Uncomment the following line to enable support for Unix
+# Extra Field (Timezone)
+#CFLAGS  = $(CFLAGS) -DUSE_EF_UT_TIME
+
+# object file lists
+OBJZ = zip.o zipfile.o zipup.o fileio.o util.o globals.o crypt.o ttyio.o \
+	crc32.o riscos.o acornzip.o swiven.o
+
+OBJI = deflate.o trees.o
+OBJA = 
+OCRCU8 = 
+OCRCTB = crc32_.o
+OBJU = zipfile_.o fileio_.o util_.o globals.o riscos.o acornzip_.o swiven.o \
+	$(OCRCUB)
+OBJN = zipnote.o  $(OBJU)
+OBJC = zipcloak.o $(OBJU) $(OCRCTB) crypt_.o ttyio.o
+OBJS = zipsplit.o $(OBJU)
+
+ifndef NOASM
+OBJA = match.o sendbits.o
+CFLAGS += -DASMV
+endif
+
+ZIP_H = zip.h ziperr.h tailor.h acorn/osdep.h acorn/riscos.h acorn/swiven.h
+
+all:      zips
+
+VPATH = .:acorn
+
+# suffix rules
+.SUFFIXES:
+.SUFFIXES: _.o .o .c .s
+.c_.o:
+	$(CC) -c $(CFLAGS) -DUTIL -o $@ $<
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+.s.o:
+	$(ASM) $(ASMFLAGS) -o $@ $<
+
+# rules for zip, zipnote, zipcloak, zipsplit, and the Zip MANUALs.
+$(OBJZ): $(ZIP_H)
+$(OBJI): $(ZIP_H)
+$(OBJN): $(ZIP_H)
+$(OBJS): $(ZIP_H)
+$(OBJC): $(ZIP_H)
+zip.o zipup.o zipfile.o fileio.o crc32.o crypt.o: crc32.h
+zipcloak.o zipfile_.o fileio_.o crc32_.o crypt_.o: crc32.h
+zip.o zipup.o crypt.o ttyio.o zipcloak.o crypt_.o: crypt.h
+zip.o zipup.o zipnote.o zipcloak.o zipsplit.o: revision.h
+zip.o crypt.o ttyio.o zipcloak.o crypt_.o: ttyio.h
+zipup.o: unix/zipup.h
+
+ZIPS = zip$E zipcloak$E zipnote$E zipsplit$E
+
+zips: $(ZIPS)
+
+zip$E: $(OBJZ) $(OBJI) $(OBJA) $(LIB_BZ)
+	$(BIND) -o zip$E $(LFLAGS1) $(OBJZ) $(OBJI) $(OBJA) $(LFLAGS2)
+zipnote$E: $(OBJN)
+	$(BIND) -o zipnote$E $(LFLAGS1) $(OBJN) $(LFLAGS2)
+zipcloak$E: $(OBJC) $(OCRCTB)
+	$(BIND) -o zipcloak$E $(LFLAGS1) $(OBJC) $(LFLAGS2)
+zipsplit$E: $(OBJS)
+	$(BIND) -o zipsplit$E $(LFLAGS1) $(OBJS) $(LFLAGS2)
+
+# install
+install:  %.zip %.zipnote %.zipsplit %.zipcloak \
+          zip zipnote zipsplit zipcloak acorn/zipsfx
+	$(SQUEEZE) zip %.zip
+	$(SQUEEZE) zipnote %.zipnote
+	$(SQUEEZE) zipsplit %.zipsplit
+	$(SQUEEZE) zipcloak %.zipcloak
+	copy acorn.zipsfx %.zipsfx ~CVF
+
+# clean up after making stuff and installing it
+clean:
+	remove zip
+	remove zipcloak
+	remove zipsplit
+	remove zipnote
+	create o.!fake! 0
+	wipe o.* ~cf
+
+# end of Makefile

@@ -1,0 +1,110 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zip", "zip.vcproj", "{B47AB933-A595-4853-A772-266BD99E38E3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zipbz2", "zipbz2.vcproj", "{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zipcloak", "zipcloak.vcproj", "{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zipnote", "zipnote.vcproj", "{37795DDC-FC92-4312-A0B8-4279F540251A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zipsplit", "zipsplit.vcproj", "{CB78ADB5-E097-4193-9D9B-4B75CFC76648}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ASM Debug bzip2|Win32 = ASM Debug bzip2|Win32
+		ASM Debug|Win32 = ASM Debug|Win32
+		ASM Release bzip2|Win32 = ASM Release bzip2|Win32
+		ASM Release|Win32 = ASM Release|Win32
+		Debug bzip2|Win32 = Debug bzip2|Win32
+		Debug|Win32 = Debug|Win32
+		Release bzip2|Win32 = Release bzip2|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Debug bzip2|Win32.ActiveCfg = ASM Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Debug bzip2|Win32.Build.0 = ASM Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Debug|Win32.ActiveCfg = ASM Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Debug|Win32.Build.0 = ASM Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Release bzip2|Win32.ActiveCfg = ASM Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Release bzip2|Win32.Build.0 = ASM Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Release|Win32.ActiveCfg = ASM Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.ASM Release|Win32.Build.0 = ASM Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Debug bzip2|Win32.ActiveCfg = Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Debug bzip2|Win32.Build.0 = Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Debug|Win32.Build.0 = Debug|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Release bzip2|Win32.ActiveCfg = Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Release bzip2|Win32.Build.0 = Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Release|Win32.ActiveCfg = Release|Win32
+		{B47AB933-A595-4853-A772-266BD99E38E3}.Release|Win32.Build.0 = Release|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Debug bzip2|Win32.ActiveCfg = ASM Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Debug bzip2|Win32.Build.0 = ASM Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Debug|Win32.ActiveCfg = ASM Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Debug|Win32.Build.0 = ASM Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Release bzip2|Win32.ActiveCfg = ASM Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Release bzip2|Win32.Build.0 = ASM Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Release|Win32.ActiveCfg = ASM Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.ASM Release|Win32.Build.0 = ASM Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Debug bzip2|Win32.ActiveCfg = Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Debug bzip2|Win32.Build.0 = Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Debug|Win32.ActiveCfg = Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Debug|Win32.Build.0 = Debug bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Release bzip2|Win32.ActiveCfg = Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Release bzip2|Win32.Build.0 = Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Release|Win32.ActiveCfg = Release bzip2|Win32
+		{BB4CEFC0-80B6-4BF6-8861-00BF9DE5540B}.Release|Win32.Build.0 = Release bzip2|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Debug bzip2|Win32.ActiveCfg = ASM Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Debug bzip2|Win32.Build.0 = ASM Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Debug|Win32.ActiveCfg = ASM Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Debug|Win32.Build.0 = ASM Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Release bzip2|Win32.ActiveCfg = ASM Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Release bzip2|Win32.Build.0 = ASM Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Release|Win32.ActiveCfg = ASM Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.ASM Release|Win32.Build.0 = ASM Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Debug bzip2|Win32.ActiveCfg = Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Debug bzip2|Win32.Build.0 = Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Debug|Win32.Build.0 = Debug|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Release bzip2|Win32.ActiveCfg = Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Release bzip2|Win32.Build.0 = Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Release|Win32.ActiveCfg = Release|Win32
+		{D59F6447-85AF-4D9A-A01D-4F8B3C8A5621}.Release|Win32.Build.0 = Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Debug bzip2|Win32.ActiveCfg = ASM Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Debug bzip2|Win32.Build.0 = ASM Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Debug|Win32.ActiveCfg = ASM Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Debug|Win32.Build.0 = ASM Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Release bzip2|Win32.ActiveCfg = ASM Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Release bzip2|Win32.Build.0 = ASM Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Release|Win32.ActiveCfg = ASM Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.ASM Release|Win32.Build.0 = ASM Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Debug bzip2|Win32.ActiveCfg = Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Debug bzip2|Win32.Build.0 = Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Debug|Win32.Build.0 = Debug|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Release bzip2|Win32.ActiveCfg = Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Release bzip2|Win32.Build.0 = Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Release|Win32.ActiveCfg = Release|Win32
+		{37795DDC-FC92-4312-A0B8-4279F540251A}.Release|Win32.Build.0 = Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Debug bzip2|Win32.ActiveCfg = ASM Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Debug bzip2|Win32.Build.0 = ASM Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Debug|Win32.ActiveCfg = ASM Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Debug|Win32.Build.0 = ASM Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Release bzip2|Win32.ActiveCfg = ASM Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Release bzip2|Win32.Build.0 = ASM Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Release|Win32.ActiveCfg = ASM Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.ASM Release|Win32.Build.0 = ASM Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Debug bzip2|Win32.ActiveCfg = Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Debug bzip2|Win32.Build.0 = Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Debug|Win32.Build.0 = Debug|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Release bzip2|Win32.ActiveCfg = Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Release bzip2|Win32.Build.0 = Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Release|Win32.ActiveCfg = Release|Win32
+		{CB78ADB5-E097-4193-9D9B-4B75CFC76648}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

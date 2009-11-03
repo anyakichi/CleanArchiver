@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zip32dll", "dll\zip32dll.vcproj", "{5F13D14C-56FE-4342-B169-A6A00B89694E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zip32lib", "lib\zip32lib.vcproj", "{F9D47BC1-45AE-4C34-8F1C-C0188120BE52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F13D14C-56FE-4342-B169-A6A00B89694E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5F13D14C-56FE-4342-B169-A6A00B89694E}.Debug|Win32.Build.0 = Debug|Win32
+		{5F13D14C-56FE-4342-B169-A6A00B89694E}.Release|Win32.ActiveCfg = Release|Win32
+		{5F13D14C-56FE-4342-B169-A6A00B89694E}.Release|Win32.Build.0 = Release|Win32
+		{F9D47BC1-45AE-4C34-8F1C-C0188120BE52}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F9D47BC1-45AE-4C34-8F1C-C0188120BE52}.Debug|Win32.Build.0 = Debug|Win32
+		{F9D47BC1-45AE-4C34-8F1C-C0188120BE52}.Release|Win32.ActiveCfg = Release|Win32
+		{F9D47BC1-45AE-4C34-8F1C-C0188120BE52}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
