@@ -305,6 +305,22 @@ svr4package:
 	@echo "issue the command (as root):  pkgadd -d $(PKGDIR)_`uname -p`.pkg"
 	@echo " "
 
+macosx:
+	@case $(ARCH) in					\
+	i386)							\
+		$(MAKE) $(MAKEF) generic CC="gcc -arch i386"	\
+		;;						\
+	ppc)							\
+		$(MAKE) $(MAKEF) generic CC="gcc -arch ppc"	\
+		;;						\
+	x86_64)							\
+		$(MAKE) $(MAKEF) generic CC="gcc -arch x86_64"	\
+		;;						\
+	*)							\
+		$(MAKE) $(MAKEF) generic			\
+		;;						\
+	esac
+
 # make a distribution
 dist:	$(ZIPMANUAL)
 	eval zip -r9 zip`sed -e '/VERSION/!d' -e 's/.*"\(.*\)".*/\1/' \
