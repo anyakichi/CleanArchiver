@@ -18,6 +18,17 @@
 			name = zip;
 			productName = zip;
 		};
+		B5FE4B64109FD88600E1608F /* p7zip */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B5FE4B69109FD89200E1608F /* Build configuration list for PBXAggregateTarget "p7zip" */;
+			buildPhases = (
+				B5FE4B63109FD88600E1608F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = p7zip;
+			productName = p7zip;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXAppleScriptBuildPhase section */
@@ -60,19 +71,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B5FE49F4109E871D00E1608F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B5FE49F1109E870100E1608F;
-			remoteInfo = p7zip;
-		};
 		B5FE4B25109FC47500E1608F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B5FE4AF8109FBBC600E1608F /* zip */;
 			remoteInfo = zip;
+		};
+		B5FE4B6A109FD8B500E1608F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5FE4B64109FD88600E1608F /* p7zip */;
+			remoteInfo = p7zip;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -252,23 +263,6 @@
 		};
 /* End PBXHeadersBuildPhase section */
 
-/* Begin PBXLegacyTarget section */
-		B5FE49F1109E870100E1608F /* p7zip */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION) OPTFLAGS=\"-arch i386 -arch ppc\"";
-			buildConfigurationList = B5FE49FD109E873600E1608F /* Build configuration list for PBXLegacyTarget "p7zip" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = p7zip;
-			dependencies = (
-			);
-			name = p7zip;
-			passBuildSettingsInEnvironment = 1;
-			productName = p7zip;
-		};
-/* End PBXLegacyTarget section */
-
 /* Begin PBXNativeTarget section */
 		8D1107260486CEB800E47090 /* CleanArchiver */ = {
 			isa = PBXNativeTarget;
@@ -284,7 +278,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				B5FE49F5109E871D00E1608F /* PBXTargetDependency */,
+				B5FE4B6B109FD8B500E1608F /* PBXTargetDependency */,
 				B5FE4B26109FC47500E1608F /* PBXTargetDependency */,
 			);
 			name = CleanArchiver;
@@ -306,7 +300,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* CleanArchiver */,
-				B5FE49F1109E870100E1608F /* p7zip */,
+				B5FE4B64109FD88600E1608F /* p7zip */,
 				B5FE4AF8109FBBC600E1608F /* zip */,
 			);
 		};
@@ -349,6 +343,19 @@
 			shellPath = /bin/sh;
 			shellScript = "cd zip\n\n[ -e \"zip\" ] && exit 0\n\nfor arch in ${ARCHS}; do\n  build_dir=../build/${arch}\n  mkdir -p ${build_dir}\n\n  make -f unix/Makefile clean\n  make -f unix/Makefile macosx ARCH=${arch}\n  cp zip ${build_dir}\ndone\n\nlipo -create ../build/*/zip -output zip\n\necho \"Done\"\nexit 0";
 		};
+		B5FE4B63109FD88600E1608F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd p7zip\n\n[ -e \"bin/7za\" ] && exit 0\n\nfor arch in ${ARCHS}; do\n  build_dir=../build/${arch}\n  mkdir -p ${build_dir}\n\n  make clean\n  make OPTFLAGS=\"-arch ${arch}\"\n  cp bin/7za ${build_dir}\ndone\n\nlipo -create ../build/*/7za -output bin/7za\n\necho \"Done\"\nexit 0";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -366,15 +373,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B5FE49F5109E871D00E1608F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B5FE49F1109E870100E1608F /* p7zip */;
-			targetProxy = B5FE49F4109E871D00E1608F /* PBXContainerItemProxy */;
-		};
 		B5FE4B26109FC47500E1608F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B5FE4AF8109FBBC600E1608F /* zip */;
 			targetProxy = B5FE4B25109FC47500E1608F /* PBXContainerItemProxy */;
+		};
+		B5FE4B6B109FD8B500E1608F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5FE4B64109FD88600E1608F /* p7zip */;
+			targetProxy = B5FE4B6A109FD8B500E1608F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -527,27 +534,6 @@
 			};
 			name = Debug;
 		};
-		B5FE49F2109E870100E1608F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = p7zip;
-			};
-			name = Debug;
-		};
-		B5FE49F3109E870100E1608F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = p7zip;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		B5FE4AF9109FBBC700E1608F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -565,6 +551,27 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = zip;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		B5FE4B65109FD88600E1608F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = p7zip;
+			};
+			name = Debug;
+		};
+		B5FE4B66109FD88600E1608F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = p7zip;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -590,20 +597,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		B5FE49FD109E873600E1608F /* Build configuration list for PBXLegacyTarget "p7zip" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B5FE49F2109E870100E1608F /* Debug */,
-				B5FE49F3109E870100E1608F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		B5FE4AFB109FBBCB00E1608F /* Build configuration list for PBXAggregateTarget "zip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B5FE4AF9109FBBC700E1608F /* Debug */,
 				B5FE4AFA109FBBC700E1608F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B5FE4B69109FD89200E1608F /* Build configuration list for PBXAggregateTarget "p7zip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5FE4B65109FD88600E1608F /* Debug */,
+				B5FE4B66109FD88600E1608F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
