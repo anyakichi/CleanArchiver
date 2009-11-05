@@ -340,6 +340,15 @@ IZ_IMP char *mktemp();
 #  include <wctype.h>
 #endif /* def UNICODE_SUPPORT */
 
+#ifdef USE_ICONV
+#  if defined( UNIX) || defined( VMS)
+#    include <locale.h>
+#    ifndef NO_NL_LANGINFO
+#      include <langinfo.h>
+#    endif
+#  endif /* defined( UNIX) || defined( VMS) */
+#endif
+
 #ifdef _MBCS
 #   include <locale.h>
 

@@ -3987,6 +3987,7 @@ char **argv;            /* command line tokens */
 
     if ((encoding_converter = iconv_open(to_encoding, fenc)) != (iconv_t)-1) {
       use_filename_conversion = 1;
+      using_utf8 = 0;
     } else {
       encoding_converter = NULL;
       ZIPERR(ZE_PARMS, "invalid encoding");

@@ -866,19 +866,21 @@ int newname(name, flags, casesensitive)
 
 #define isdir (flags& FLAGS_DIR)
 
-#if defined( UNIX) && defined( __APPLE__)
-# define isapldbl (flags& FLAGS_APLDBL)
-  /* AppleDouble special name pointers.
+#if (defined(UNIX) && defined(__APPLE__)) || defined(USE_ICONV)
+#  if defined(UNIX) && defined(__APPLE__)
+#   define isapldbl (flags& FLAGS_APLDBL)
+#  endif
+  /* AppleDouble or codeset converted special name pointers.
    * name_archv is stored in the archive.
    * name_flsys is sought in the file system.
    */
   char *name_archv;     /* Arg name or AppleDouble "._" name. */
   char *name_flsys;     /* Arg name or AppleDouble "/rsrc" name. */
-#else /* defined( UNIX) && defined( __APPLE__) */
+#else /* (defined(UNIX) && defined(__APPLE__)) || defined(USE_ICONV) */
   /* On non-Mac-OS-X systems, use the file name argument as-is. */
 # define name_archv name
 # define name_flsys name
-#endif /* defined( UNIX) && defined( __APPLE__) [else] */
+#endif /* (defined(UNIX) && defined(__APPLE__)) || defiend(USE_ICONV) */
 
   char *iname, *zname;  /* internal name, external version of iname */
   char *undosm;         /* zname version with "-j" and "-k" options disabled */
@@ -950,12 +952,18 @@ int newname(name, flags, casesensitive)
 #endif /* defined( UNIX) && defined( __APPLE__) */
 
 #ifdef USE_ICONV
+#if !(defined(UNIX) && defined(__APPLE__))
+  name_archv = name;
+  name_flsys = name;
+#endif
   if (use_filename_conversion) {
     char *new_name;
 
     if ((new_name = convert_encoding(name_archv, strlen(name_archv))) != NULL) {
-      if (name_archv != name_flsys)
+#if defined(UNIX) && defined(__APPLE__)
+      if (isapldbl)
 	free(name_archv);
+#endif
       name_archv = new_name;
     } else {
       sprintf(errbuf,"failed file name conversion: %s", name_archv);
@@ -1015,14 +1023,13 @@ int newname(name, flags, casesensitive)
 #endif /* !AMIGA */
     free((zvoid *)iname);
 
-#if defined( UNIX) && defined( __APPLE__)
-    /* Free the special AppleDouble name storage. */
-    if (isapldbl)
-    {
-      free( name_archv);
-      free( name_flsys);
-    }
-#endif /* defined( UNIX) && defined( __APPLE__) */
+#if (defined(UNIX) && defined(__APPLE__)) || defined(USE_ICONV)
+    /* Free the special name storage. */
+    if (name_archv != name)
+      free(name_archv);
+    if (name_flsys != name)
+      free(name_flsys);
+#endif
 
     return ZE_OK;
   }
@@ -1133,14 +1140,13 @@ int newname(name, flags, casesensitive)
         free((zvoid *)iname);
         free(oname);
 
-#if defined( UNIX) && defined( __APPLE__)
-        /* Free the special AppleDouble name storage. */
-        if (isapldbl)
-        {
-          free( name_archv);
-          free( name_flsys);
-        }
-#endif /* defined( UNIX) && defined( __APPLE__) */
+#if (defined(UNIX) && defined(__APPLE__)) || defined(USE_ICONV)
+    /* Free the special name storage. */
+    if (name_archv != name)
+      free(name_archv);
+    if (name_flsys != name)
+      free(name_flsys);
+#endif
 
         return ZE_OK;
     }
@@ -1173,17 +1179,20 @@ int newname(name, flags, casesensitive)
     f->iname = iname;
     f->zname = zname;
 
-#if defined( UNIX) && defined( __APPLE__)
-    /* Free the special AppleDouble name storage. */
-    if (isapldbl)
-    {
-      free( name_archv);
-      free( name_flsys);
-    }
-#endif /* defined( UNIX) && defined( __APPLE__) */
+#if (defined(UNIX) && defined(__APPLE__)) || defined(USE_ICONV)
+    /* Free the special name storage. */
+    if (name_archv != name)
+      free(name_archv);
+    if (name_flsys != name)
+      free(name_flsys);
+#endif
 
 #ifdef UNICODE_SUPPORT
     /* Unicode */
+#ifdef USE_ICONV
+    f->uname = NULL;
+    if (!use_filename_conversion)
+#endif
     f->uname = local_to_utf8_string(iname);
 #ifdef WIN32
     f->namew = NULL;
@@ -2978,10 +2987,8 @@ convert_encoding(char *src, size_t srclen)
   if ((dst = dst_save = malloc(dstlen)) == NULL)
     return NULL;
 
-  if (iconv(encoding_converter, (char **)&src, &srclen, &dst, &dstlen) ==
-      (size_t)(-1)) {
-    /* XXX: ERROR */
-    return NULL;
+  if (iconv(encoding_converter, &src, &srclen, &dst, &dstlen) == (size_t)(-1)) {
+    ZIPERR(ZE_READ, "codeset conversion failed");
   }
   *dst = '\0';
 

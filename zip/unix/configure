@@ -18,9 +18,9 @@
 trap "rm -f conftest* core a.out; exit 1" 1 2 3 15
 
 CC=${1-cc}
-CFLAGS=${2-"-I. -DUNIX -DUSE_ICONV"}
+CFLAGS=${2-"-I. -DUNIX"}
 LFLAGS1=''
-LFLAGS2='-liconv'
+LFLAGS2=''
 LN="ln -s"
 
 CFLAGS_OPT=''
@@ -518,6 +518,25 @@ else
   CFLAGS="${CFLAGS} -DUNICODE_SUPPORT"
   OCRCU8="${PROD}/crc32_.o ${OCRCU8}"
   OCRCTB=""
+fi
+
+
+# Check for iconv support
+
+echo Check for iconv support
+cat > conftest.c << _EOF_
+#include <iconv.h>
+int main() { iconv_t cd = iconv_open("",""); return 0; }
+_EOF_
+$CC -o conftest conftest.c >/dev/null 2>/dev/null
+if [ $? -eq 0 ]; then
+  CFLAGS="${CFLAGS} -DUSE_ICONV"
+else
+  $CC -o conftest conftest.c -liconv >/dev/null 2>/dev/null
+  if [ $? -eq 0 ]; then
+    CFLAGS="${CFLAGS} -DUSE_ICONV"
+    LFLAGS2="-liconv"
+  fi
 fi
 
 
