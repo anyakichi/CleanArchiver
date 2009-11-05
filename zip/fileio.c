@@ -80,7 +80,7 @@ local int ucs4_string_to_utf8 OF((ZCONST ulg *ucs4, char *utf8buf,
 #endif /* UNICODE_SUPPORT */
 
 #ifdef USE_ICONV
-local char *convert_encoding OF((char *, size_t));
+local char *convert_encoding OF((iconv_t, char *, size_t));
 #endif
 
 #ifndef UTIL    /* the companion #endif is a bit of ways down ... */
@@ -956,10 +956,11 @@ int newname(name, flags, casesensitive)
   name_archv = name;
   name_flsys = name;
 #endif
-  if (use_filename_conversion) {
+  if (use_encoding_conversion) {
     char *new_name;
 
-    if ((new_name = convert_encoding(name_archv, strlen(name_archv))) != NULL) {
+    if ((new_name = convert_encoding(iconv_cd, name_archv, strlen(name_archv)))
+	!= NULL) {
 #if defined(UNIX) && defined(__APPLE__)
       if (isapldbl)
 	free(name_archv);
@@ -1189,10 +1190,6 @@ int newname(name, flags, casesensitive)
 
 #ifdef UNICODE_SUPPORT
     /* Unicode */
-#ifdef USE_ICONV
-    f->uname = NULL;
-    if (!use_filename_conversion)
-#endif
     f->uname = local_to_utf8_string(iname);
 #ifdef WIN32
     f->namew = NULL;
@@ -2975,7 +2972,7 @@ size_t bfwrite(buffer, size, count, mode)
 
 #ifdef USE_ICONV
 local char *
-convert_encoding(char *src, size_t srclen)
+convert_encoding(iconv_t cd, char *src, size_t srclen)
 {
   size_t dstlen;
   char *dst, *dst_save;
@@ -2987,15 +2984,12 @@ convert_encoding(char *src, size_t srclen)
   if ((dst = dst_save = malloc(dstlen)) == NULL)
     return NULL;
 
-  if (iconv(encoding_converter, &src, &srclen, &dst, &dstlen) == (size_t)(-1)) {
+  if (iconv(cd, &src, &srclen, &dst, &dstlen) == (size_t)(-1)) {
     ZIPERR(ZE_READ, "codeset conversion failed");
   }
-  *dst = '\0';
+  *dst++ = '\0';
 
-  dst = dst_save;
-  dst = realloc(dst, strlen(dst) + 1);
-
-  return dst;
+  return realloc(dst_save, dst - dst_save);
 }
 #endif /* USE_ICONV */
 
@@ -3298,8 +3292,15 @@ int is_ascii_string(mbstring)
 char *local_to_utf8_string(local_string)
   char *local_string;
 {
-  zwchar *wide_string = local_to_wide_string(local_string);
-  char *utf8_string = wide_to_utf8_string(wide_string);
+  zwchar *wide_string;
+  char *utf8_string;
+
+#ifdef USE_ICONV
+  if (use_encoding_conversion)
+    return convert_encoding(iconv_sub_cd, local_string, strlen(local_string));
+#endif
+  wide_string = local_to_wide_string(local_string);
+  utf8_string = wide_to_utf8_string(wide_string);
 
   free(wide_string);
   return utf8_string;

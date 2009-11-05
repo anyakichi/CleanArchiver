@@ -266,9 +266,13 @@ local void freeup()
     key = NULL;
   }
 #ifdef USE_ICONV
-  if (encoding_converter != NULL) {
-    iconv_close(encoding_converter);
-    encoding_converter = NULL;
+  if (iconv_cd != NULL) {
+    iconv_close(iconv_cd);
+    iconv_cd = NULL;
+  }
+  if (iconv_sub_cd != NULL) {
+    iconv_close(iconv_sub_cd);
+    iconv_sub_cd = NULL;
   }
 #endif
 
@@ -2541,10 +2545,11 @@ char **argv;            /* command line tokens */
   utf8_force = 0;         /* 1=force storing UTF-8 as standard per AppNote bit 11 */
 #endif
 #ifdef USE_ICONV
-  use_filename_conversion = 0; /* 1= convert encoding in archive */
+  use_encoding_conversion = 0; /* 1= convert encoding in archive */
   from_encoding = NULL;      /* Encoding of filesystem */
   to_encoding = NULL;        /* Encoding of archive */
-  encoding_converter = NULL; /* filename_converter */
+  iconv_cd = NULL;           /* from -> to converter */
+  iconv_sub_cd = NULL;       /* to -> UTF8 converter */
 #endif
 
   unicode_escape_all = 0; /* 1=escape all non-ASCII characters in paths */
@@ -3985,13 +3990,16 @@ char **argv;            /* command line tokens */
     else
       fenc = nl_langinfo(CODESET);
 
-    if ((encoding_converter = iconv_open(to_encoding, fenc)) != (iconv_t)-1) {
-      use_filename_conversion = 1;
+    if ((iconv_cd = iconv_open(to_encoding, fenc)) != (iconv_t)-1) {
+      use_encoding_conversion = 1;
       using_utf8 = 0;
     } else {
-      encoding_converter = NULL;
+      iconv_cd = NULL;
       ZIPERR(ZE_PARMS, "invalid encoding");
     }
+
+    if ((iconv_sub_cd = iconv_open("utf-8", to_encoding)) == (iconv_t)-1)
+      ZIPERR(ZE_PARMS, "invalid encoding");
 
     if (from_encoding)
       free((zvoid *)from_encoding);

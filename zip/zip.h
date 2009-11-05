@@ -485,10 +485,11 @@ extern FILE *y;                 /* output file now global for splits */
   extern int utf8_force;         /* 1=store UTF-8 as standard per AppNote bit 11 */
 #endif
 #ifdef USE_ICONV
-extern int use_filename_conversion; /* 1=convert encoding in archive */
-extern const char *from_encoding; /* Encoding of filesystem */
-extern const char *to_encoding;	/* Encoding of archive */
-extern iconv_t encoding_converter; /* filename_converter */
+extern int use_encoding_conversion; /* 1=convert encoding in archive */
+extern const char *from_encoding;  /* Encoding of filesystem */
+extern const char *to_encoding;	   /* Encoding of archive */
+extern iconv_t iconv_cd;           /* from -> to converter */
+extern iconv_t iconv_sub_cd;       /* to -> UTF8 converter */
 #endif
 extern int unicode_escape_all;  /* 1=escape all non-ASCII characters in paths */
 extern int unicode_mismatch;    /* unicode mismatch is 0=error, 1=warn, 2=ignore, 3=no */
