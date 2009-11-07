@@ -32,7 +32,7 @@ UString MultiByteToUnicodeString(const AString &srcString, UINT codePage)
     UString resultString;
     mac::CFStringRef string;
     mac::CFMutableStringRef mutableString;
-    mac::UniChar *uString;
+    mac::UniChar *utf16String;
     int len;
     const char *src = srcString;
 
@@ -44,19 +44,21 @@ UString MultiByteToUnicodeString(const AString &srcString, UINT codePage)
     mutableString = mac::CFStringCreateMutableCopy(NULL, 0, string);
     if (mutableString == NULL)
       goto fail2;
-    mac::CFStringNormalize(mutableString, mac::kCFStringNormalizationFormC);
 
+    mac::CFStringNormalize(mutableString, mac::kCFStringNormalizationFormC);
     len = mac::CFStringGetLength(mutableString);
-    uString = (mac::UniChar *)malloc(len * sizeof(mac::UniChar));
-    if (uString == NULL)
+
+    utf16String = (mac::UniChar *)malloc(len * sizeof(mac::UniChar));
+    if (utf16String == NULL)
       goto fail3;
+
     mac::CFStringGetCharacters(mutableString, mac::CFRangeMake(0, len),
-			       uString);
+			       utf16String);
 
     for (int i = 0; i < len; i++)
-      resultString += wchar_t(uString[i]);
+      resultString += utf16String[i];
 
-    free(uString);
+    free(utf16String);
 fail3:
     CFRelease(mutableString);
 fail2:
@@ -87,36 +89,43 @@ AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage)
     AString resultString;
     mac::CFStringRef string;
     mac::CFMutableStringRef mutableString;
-    mac::UniChar *uString;
-    const wchar_t *wstring;
-    char *p;
+    mac::UniChar *utf16String;
+    const wchar_t *src;
+    char *dst;
     int len, max;
 
-    wstring = srcString;
-    len = srcString.Length();
-    uString = (mac::UniChar *)malloc(len * sizeof(mac::UniChar));
-    for (int i = 0; i < len; i++)
-      uString[i] = wstring[i];
-    string = mac::CFStringCreateWithCharacters(NULL, uString, len);
-    if (string == NULL)
+    src = srcString;
+    len = wcslen(src);
+
+    utf16String = (mac::UniChar *)malloc(len * sizeof(mac::UniChar));
+    if (utf16String == NULL)
       goto fail1;
+
+    for (int i = 0; i < len; i++)
+      utf16String[i] = src[i];
+
+    string = mac::CFStringCreateWithCharacters(NULL, utf16String, len);
+    if (string == NULL)
+      goto fail2;
 
     mutableString = mac::CFStringCreateMutableCopy(NULL, 0, string);
     if (mutableString == NULL)
-      goto fail2;
-    mac::CFStringNormalize(mutableString, mac::kCFStringNormalizationFormD);
+      goto fail3;
 
+    mac::CFStringNormalize(mutableString, mac::kCFStringNormalizationFormD);
     max = mac::CFStringGetMaximumSizeForEncoding(len,
 						 mac::kCFStringEncodingUTF8);
 
-    p = resultString.GetBuffer(max + 1);
-    mac::CFStringGetCString(mutableString, p, max + 1,
+    dst = resultString.GetBuffer(max);
+    mac::CFStringGetCString(mutableString, dst, max,
 			    mac::kCFStringEncodingUTF8);
     resultString.ReleaseBuffer();
 
     mac::CFRelease(mutableString);
-fail2:
+fail3:
     mac::CFRelease(string);
+fail2:
+    free(utf16String);
 fail1:
 
     if (!resultString.IsEmpty())
