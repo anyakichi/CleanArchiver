@@ -11,7 +11,7 @@ CXX=c++ $(ALLFLAGS)
 CC=cc $(ALLFLAGS)
 LINK_SHARED=-bundle
 
-LOCAL_LIBS=
+LOCAL_LIBS=-framework CoreFoundation
 LOCAL_LIBS_DLL=
 
 OBJ_CRC32=$(OBJ_CRC32_C)
