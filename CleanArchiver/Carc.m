@@ -121,6 +121,11 @@
     if (_compressionLevel != -1)
 	[args addObject:[NSString stringWithFormat:@"-%d", _compressionLevel]];
 
+    if (_encoding != nil) {
+	[args addObject:@"-E"];
+	[args addObject:_encoding];
+    }
+
     if (_excludeMacFiles)
 	[args addObject:@"-M"];
 
@@ -283,6 +288,19 @@ fail:
 {
 
     _compressionLevel = level;
+}
+
+- (NSString *)encoding
+{
+
+    return _encoding;
+}
+- (void)setEncoding:(NSString *)encoding
+{
+
+    [encoding retain];
+    [_encoding release];
+    _encoding = encoding;
 }
 
 - (BOOL)excludeMacFiles

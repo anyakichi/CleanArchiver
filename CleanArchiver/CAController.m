@@ -33,6 +33,7 @@
 NSString *AOArchiveIndividually	= @"Archive Individually";
 NSString *AOArchiveType		= @"Archive Type";
 NSString *AOCompressionLevel	= @"Compression Level";
+NSString *AOEncoding		= @"Encoding";
 NSString *AOExcludeDot_		= @"Exclude ._*";
 NSString *AOExcludeDSS		= @"Exclude .DS_Store";
 NSString *AOExcludeIcon		= @"Exclude Icon";
@@ -56,6 +57,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
     [defaults setObject:@"gzip" forKey:AOArchiveType];
     [defaults setObject:[NSNumber numberWithInt:-1] forKey:AOCompressionLevel];
+    [defaults setObject:@"" forKey:AOEncoding];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDot_];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDSS];
     [defaults setObject:[NSNumber numberWithBool:NO] forKey:AOExcludeIcon];
@@ -92,6 +94,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	break;
     }
     [self changeArchiveType:self];
+    [_encodingCBox setStringValue:[ud objectForKey:AOEncoding]];
     [_excludeDot_Check setState:[ud boolForKey:AOExcludeDot_]];
     [_excludeDSSCheck setState:[ud boolForKey:AOExcludeDSS]];
     [_excludeIconCheck setState:[ud boolForKey:AOExcludeIcon]];
@@ -227,17 +230,25 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     type = [_archiveTypeMenu indexOfSelectedItem];
     switch (type) {
     case DMGT:
+	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:YES];
 	[_saveRSRCCheck setState:NSOnState];
 	[_saveRSRCCheck setEnabled:NO];
 	break;
     case BZIP2T:
     case GZIPT:
+	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:NO];
 	[_saveRSRCCheck setEnabled:YES];
 	break;
     case SZIPT:
+	[_encodingCBox setEnabled:NO];
+	[_passwordField setEnabled:YES];
+	[_saveRSRCCheck setState:NSOffState];
+	[_saveRSRCCheck setEnabled:NO];
+	break;
     case ZIPT:
+	[_encodingCBox setEnabled:YES];
 	[_passwordField setEnabled:YES];
 	[_saveRSRCCheck setState:NSOffState];
 	[_saveRSRCCheck setEnabled:NO];
@@ -265,6 +276,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	    break;
     }
     [ud setInteger:level forKey:AOCompressionLevel];
+    [ud setObject:[_encodingCBox stringValue] forKey:AOEncoding];
     [ud setBool:[_excludeDot_Check state] forKey:AOExcludeDot_];
     [ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
     [ud setBool:[_excludeIconCheck state] forKey:AOExcludeIcon];
@@ -409,7 +421,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 {
     NSFileManager *fm;
     NSMutableDictionary *status;
-    NSString *dst, *password, *src;
+    NSString *dst, *encoding, *password, *src;
     enum archiveTypeMenuIndex type;
     int i, level;
     BOOL ai, e_, ed, ei, er, ie, ra;
@@ -428,20 +440,31 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     ie = [_internetEnabledDMGCheck state];
     ra = [_replaceAutomaticallyCheck state];
 
+    encoding = [_encodingCBox stringValue];
+    encoding = [encoding stringByTrimmingCharactersInSet:
+		    [NSCharacterSet whitespaceCharacterSet]];
+    for (i = 0; i < [encoding length]; i++) {
+	if ([encoding characterAtIndex:i] == ' ')
+	    break;
+    }
+    if (i < [encoding length])
+	encoding = [encoding substringToIndex:i];
+
     switch ([_compressionLevelMenu indexOfSelectedItem]) {
     case FAST:
-	    level = 1;
-	    break;
+	level = 1;
+	break;
     case BEST:
-	    level = 9;
-	    break;
+	level = 9;
+	break;
     default:
-	    level = -1;
-	    break;
+	level = -1;
+	break;
     }
 
     [status setObject:[NSNumber numberWithInt:type] forKey:AOArchiveType];
     [status setObject:[NSNumber numberWithInt:level] forKey:AOCompressionLevel];
+    [status setObject:encoding forKey:AOEncoding];
     [status setObject:[NSNumber numberWithBool:e_] forKey:AOExcludeDot_];
     [status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
     [status setObject:[NSNumber numberWithBool:ei] forKey:AOExcludeIcon];
@@ -496,8 +519,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSFileManager *fm;
     NSMutableArray *exfiles;
     NSMutableArray *srcbases;
-    NSString *dst;
-    NSString *password;
+    NSString *dst, *encoding, *password;
     enum archiveTypeMenuIndex type;
     int i, level;
     BOOL isDir;
@@ -511,6 +533,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
     type = [[status objectForKey:AOArchiveType] intValue];
     level = [[status objectForKey:AOCompressionLevel] intValue];
+    encoding = [status objectForKey:AOEncoding];
     password = [status objectForKey:AOPassword];
 
     dst = [status objectForKey:@"dst"];
@@ -552,6 +575,9 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
     if (level != -1)
 	[_mainTask setCompressionLevel:level];
+
+    if ([encoding length] > 0)
+	[_mainTask setEncoding:encoding];
 
     if (![password isEqualToString:@""])
 	[_mainTask setArchivePassword:password];

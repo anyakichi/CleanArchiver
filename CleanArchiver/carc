@@ -42,6 +42,7 @@ def check_cmd(cmd)
 end
 
 dmg_ie = false		# internet-enable disk image
+enc = ''		# encoding in archive
 level = -1		# conpression level; -1 means 'not specified'
 password = ''		# archive password
 rsrc = false		# save resource forks?
@@ -62,6 +63,7 @@ ARGV.options do |opt|
   opt.on('-8')						{ |v| level = 8 }
   opt.on('-9')						{ |v| level = 9 }
   opt.on('-D',		'Exclude .DS_Store')		{ |v| xdss = true }
+  opt.on('-E encoding'	'Encoding in archive')		{ |v| enc = v }
   opt.on('-I',		'Create internet-enable DMG')	{ |v| dmg_ie = true }
   opt.on('-M',		'Exclude Mac-specific files')	{ |v| xmacspec = true }
   opt.on('-O opts',	'Extra options')		{ |v| exopts = v }
@@ -200,6 +202,10 @@ when 'zip'
 
   if srcs.size > 1 || FileTest.directory?(srcs[0])
     cmdline.push('-r')
+  end
+
+  if enc != ''
+    cmdline.push('-CF', 'UTF-8-MAC', '-CT', enc)
   end
 
   if level != -1

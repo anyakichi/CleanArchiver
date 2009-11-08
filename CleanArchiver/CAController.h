@@ -31,6 +31,7 @@
 // Preference identifiers
 extern NSString *AOArchiveIndividually;
 extern NSString *AOArchiveType;
+extern NSString *AOEncoding;
 extern NSString *AOExcludeDot_;
 extern NSString *AOExcludeDSS;
 extern NSString *AOExcludeIcon;
@@ -62,6 +63,7 @@ enum compressionLevelMenuIndex {
     IBOutlet NSButton *_internetEnabledDMGCheck;
     IBOutlet NSButton *_replaceAutomaticallyCheck;
     IBOutlet NSButton *_saveRSRCCheck;
+    IBOutlet NSComboBox *_encodingCBox;
     IBOutlet NSPopUpButton *_archiveTypeMenu;
     IBOutlet NSPopUpButton *_compressionLevelMenu;
     IBOutlet NSProgressIndicator *_progressIndicator;
