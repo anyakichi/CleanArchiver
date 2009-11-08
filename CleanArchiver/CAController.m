@@ -40,7 +40,6 @@ NSString *AOExcludeIcon		= @"Exclude Icon";
 NSString *AOInternetEnabledDMG	= @"Internet-Enabled Disk Image";
 NSString *AOPassword		= @"Password";
 NSString *AOReplaceAutomatically= @"Replace Automatically";
-NSString *AOSaveRSRC		= @"Save Resource Fork";
 
 @implementation CAController
 
@@ -67,7 +66,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	forKey:AOArchiveIndividually];
     [defaults setObject:[NSNumber numberWithBool:NO]
 	forKey:AOInternetEnabledDMG];
-    [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOSaveRSRC];
 
     [ud registerDefaults:defaults];
 }
@@ -104,7 +102,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 	setState:[ud boolForKey:AOArchiveIndividually]];
     [_internetEnabledDMGCheck
 	setState:[ud boolForKey:AOInternetEnabledDMG]];
-    [_saveRSRCCheck setState:[ud boolForKey:AOSaveRSRC]];
 
     [nc addObserver:self selector:@selector(handleFilesDropped:)
 	name:AOFilesDroppedNotification object:nil];
@@ -232,26 +229,19 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     case DMGT:
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:YES];
-	[_saveRSRCCheck setState:NSOnState];
-	[_saveRSRCCheck setEnabled:NO];
 	break;
     case BZIP2T:
     case GZIPT:
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:NO];
-	[_saveRSRCCheck setEnabled:YES];
 	break;
     case SZIPT:
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:YES];
-	[_saveRSRCCheck setState:NSOffState];
-	[_saveRSRCCheck setEnabled:NO];
 	break;
     case ZIPT:
 	[_encodingCBox setEnabled:YES];
 	[_passwordField setEnabled:YES];
-	[_saveRSRCCheck setState:NSOffState];
-	[_saveRSRCCheck setEnabled:NO];
 	break;
     }
 }
@@ -280,7 +270,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     [ud setBool:[_excludeDot_Check state] forKey:AOExcludeDot_];
     [ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
     [ud setBool:[_excludeIconCheck state] forKey:AOExcludeIcon];
-    [ud setBool:[_saveRSRCCheck state] forKey:AOSaveRSRC];
     [ud setBool:[_replaceAutomaticallyCheck state]
 	forKey:AOReplaceAutomatically];
     [ud setBool:[_archiveIndividuallyCheck state] forKey:AOArchiveIndividually];
@@ -424,7 +413,7 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     NSString *dst, *encoding, *password, *src;
     enum archiveTypeMenuIndex type;
     int i, level;
-    BOOL ai, e_, ed, ei, er, ie, ra;
+    BOOL ai, e_, ed, ei, ie, ra;
 
     status = [[NSMutableDictionary alloc] init];
 
@@ -436,7 +425,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     ed = [_excludeDSSCheck state];
     ei = [_excludeIconCheck state];
     password = [_passwordField stringValue];
-    er = [_saveRSRCCheck state];
     ie = [_internetEnabledDMGCheck state];
     ra = [_replaceAutomaticallyCheck state];
 
@@ -469,7 +457,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
     [status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
     [status setObject:[NSNumber numberWithBool:ei] forKey:AOExcludeIcon];
     [status setObject:password forKey:AOPassword];
-    [status setObject:[NSNumber numberWithBool:er] forKey:AOSaveRSRC];
     [status setObject:[NSNumber numberWithBool:ie]
 	forKey:AOInternetEnabledDMG];
 
@@ -581,11 +568,6 @@ NSString *AOSaveRSRC		= @"Save Resource Fork";
 
     if (![password isEqualToString:@""])
 	[_mainTask setArchivePassword:password];
-
-    if ([[status objectForKey:AOSaveRSRC] intValue])
-	[_mainTask setSaveResourceFork:YES];
-    else
-	[_mainTask setSaveResourceFork:NO];
 
     if ([srcs count] == 1)
 	[_mainTask setInput:[[srcs objectAtIndex:0] lastPathComponent]];

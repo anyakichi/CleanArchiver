@@ -45,7 +45,7 @@ dmg_ie = false		# internet-enable disk image
 enc = ''		# encoding in archive
 level = -1		# conpression level; -1 means 'not specified'
 password = ''		# archive password
-rsrc = false		# save resource forks?
+rsrc = true		# save resource forks?
 type = nil		# archive type
 xdss = false		# exclude .DS_Store?
 xfiles = []		# exclude files
@@ -67,7 +67,6 @@ ARGV.options do |opt|
   opt.on('-I',		'Create internet-enable DMG')	{ |v| dmg_ie = true }
   opt.on('-M',		'Exclude Mac-specific files')	{ |v| xmacspec = true }
   opt.on('-O opts',	'Extra options')		{ |v| exopts = v }
-  opt.on('-R',		'Save resource forks')		{ |v| rsrc = true }
   opt.on('-P password',	'Archive password')		{ |v| password = v }
   opt.on('-t type',	'Archive type')			{ |v| type = v }
   opt.on('-x pat',	'Exclude pattern')		{ |v| xfiles.push(v) }
@@ -87,6 +86,10 @@ if xmacspec
 end
 
 xfiles.uniq!
+
+if xfiles.include?('._*')
+  rsrc = false
+end
 
 cmdline = []
 

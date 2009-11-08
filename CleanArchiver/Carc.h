@@ -52,7 +52,6 @@ enum archiveType {
     BOOL _excludeMacFiles;
     NSArray *_excludedFiles;
     BOOL _internetEnabledDMG;
-    BOOL _saveResourceFork;
 }
 
 - (id)init;
@@ -106,10 +105,6 @@ enum archiveType {
 // Create internet-enabled DMG
 - (BOOL)internetEnabledDMG;
 - (void)setInternetEnabledDMG:(BOOL)yn;
-
-// Save resource forks
-- (BOOL)saveResourceFork;
-- (void)setSaveResourceFork:(BOOL)yn;
 
 @end
 

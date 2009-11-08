@@ -37,7 +37,6 @@ extern NSString *AOExcludeDSS;
 extern NSString *AOExcludeIcon;
 extern NSString *AOInternetEnabledDMG;
 extern NSString *AOReplaceAutomatically;
-extern NSString *AOSaveRSRC;
 
 enum archiveTypeMenuIndex {
     DMGT = 0,
@@ -62,7 +61,6 @@ enum compressionLevelMenuIndex {
     IBOutlet NSButton *_excludeIconCheck;
     IBOutlet NSButton *_internetEnabledDMGCheck;
     IBOutlet NSButton *_replaceAutomaticallyCheck;
-    IBOutlet NSButton *_saveRSRCCheck;
     IBOutlet NSComboBox *_encodingCBox;
     IBOutlet NSPopUpButton *_archiveTypeMenu;
     IBOutlet NSPopUpButton *_compressionLevelMenu;

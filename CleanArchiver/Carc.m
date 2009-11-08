@@ -54,7 +54,6 @@
 	[self setCompressionLevel:-1];
 	[self setExcludeMacFiles:NO];
 	[self setExcludedFiles:nil];
-	[self setSaveResourceFork:YES];
 
 	_task = [[NSTask alloc] init];
 	[_task setLaunchPath:[[[NSBundle mainBundle] bundlePath]
@@ -133,9 +132,6 @@
 	[args addObject:@"-x"];
 	[args addObject:[_excludedFiles objectAtIndex:i]];
     }
-
-    if (_saveResourceFork)
-	[args addObject:@"-R"];
 
     path = [[[NSBundle mainBundle] bundlePath]
 	    stringByAppendingString:@"/Contents/Resources"];
@@ -336,17 +332,6 @@ fail:
 {
 
     _internetEnabledDMG = yn;
-}
-
-- (BOOL)saveResourceFork
-{
-
-    return _saveResourceFork;
-}
-- (void)setSaveResourceFork:(BOOL)yn
-{
-
-    _saveResourceFork = yn;
 }
 
 @end

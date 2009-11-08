@@ -54,8 +54,6 @@
 				<string>NSButton</string>
 				<key>_compressionLevelMenu</key>
 				<string>NSPopUpButton</string>
-				<key>_convertEncodingCheck</key>
-				<string>NSButton</string>
 				<key>_encodingCBox</key>
 				<string>NSComboBox</string>
 				<key>_excludeDSSCheck</key>
