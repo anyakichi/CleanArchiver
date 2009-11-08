@@ -36,7 +36,6 @@ NSString *AOCompressionLevel	= @"Compression Level";
 NSString *AOEncoding		= @"Encoding";
 NSString *AOExcludeDot_		= @"Exclude ._*";
 NSString *AOExcludeDSS		= @"Exclude .DS_Store";
-NSString *AOExcludeIcon		= @"Exclude Icon";
 NSString *AOInternetEnabledDMG	= @"Internet-Enabled Disk Image";
 NSString *AOPassword		= @"Password";
 NSString *AOReplaceAutomatically= @"Replace Automatically";
@@ -59,7 +58,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     [defaults setObject:@"" forKey:AOEncoding];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDot_];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDSS];
-    [defaults setObject:[NSNumber numberWithBool:NO] forKey:AOExcludeIcon];
     [defaults setObject:[NSNumber numberWithBool:NO]
 	forKey:AOReplaceAutomatically];
     [defaults setObject:[NSNumber numberWithBool:NO]
@@ -95,7 +93,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     [_encodingCBox setStringValue:[ud objectForKey:AOEncoding]];
     [_excludeDot_Check setState:[ud boolForKey:AOExcludeDot_]];
     [_excludeDSSCheck setState:[ud boolForKey:AOExcludeDSS]];
-    [_excludeIconCheck setState:[ud boolForKey:AOExcludeIcon]];
     [_replaceAutomaticallyCheck setState:
 	[ud boolForKey:AOReplaceAutomatically]];
     [_archiveIndividuallyCheck
@@ -269,7 +266,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     [ud setObject:[_encodingCBox stringValue] forKey:AOEncoding];
     [ud setBool:[_excludeDot_Check state] forKey:AOExcludeDot_];
     [ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
-    [ud setBool:[_excludeIconCheck state] forKey:AOExcludeIcon];
     [ud setBool:[_replaceAutomaticallyCheck state]
 	forKey:AOReplaceAutomatically];
     [ud setBool:[_archiveIndividuallyCheck state] forKey:AOArchiveIndividually];
@@ -413,7 +409,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     NSString *dst, *encoding, *password, *src;
     enum archiveTypeMenuIndex type;
     int i, level;
-    BOOL ai, e_, ed, ei, ie, ra;
+    BOOL ai, e_, ed, ie, ra;
 
     status = [[NSMutableDictionary alloc] init];
 
@@ -423,7 +419,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     ai = [_archiveIndividuallyCheck state];
     e_ = [_excludeDot_Check state];
     ed = [_excludeDSSCheck state];
-    ei = [_excludeIconCheck state];
     password = [_passwordField stringValue];
     ie = [_internetEnabledDMGCheck state];
     ra = [_replaceAutomaticallyCheck state];
@@ -455,7 +450,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     [status setObject:encoding forKey:AOEncoding];
     [status setObject:[NSNumber numberWithBool:e_] forKey:AOExcludeDot_];
     [status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
-    [status setObject:[NSNumber numberWithBool:ei] forKey:AOExcludeIcon];
     [status setObject:password forKey:AOPassword];
     [status setObject:[NSNumber numberWithBool:ie]
 	forKey:AOInternetEnabledDMG];
@@ -532,9 +526,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 
     if ([[status objectForKey:AOExcludeDSS] intValue])
 	[exfiles addObject:@".DS_Store"];
-
-    if ([[status objectForKey:AOExcludeIcon] intValue])
-	[exfiles addObject:@"Icon\r"];
 
     _mainTask = [[Carc alloc] init];
 

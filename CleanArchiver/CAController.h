@@ -34,7 +34,6 @@ extern NSString *AOArchiveType;
 extern NSString *AOEncoding;
 extern NSString *AOExcludeDot_;
 extern NSString *AOExcludeDSS;
-extern NSString *AOExcludeIcon;
 extern NSString *AOInternetEnabledDMG;
 extern NSString *AOReplaceAutomatically;
 
@@ -58,7 +57,6 @@ enum compressionLevelMenuIndex {
     IBOutlet NSButton *_cancelButton;
     IBOutlet NSButton *_excludeDot_Check;
     IBOutlet NSButton *_excludeDSSCheck;
-    IBOutlet NSButton *_excludeIconCheck;
     IBOutlet NSButton *_internetEnabledDMGCheck;
     IBOutlet NSButton *_replaceAutomaticallyCheck;
     IBOutlet NSComboBox *_encodingCBox;
