@@ -43,10 +43,10 @@ end
 
 dmg_ie = false		# internet-enable disk image
 enc = ''		# encoding in archive
+format = nil		# archive format
 level = -1		# conpression level; -1 means 'not specified'
 password = ''		# archive password
 rsrc = true		# save resource forks?
-type = nil		# archive type
 xdss = false		# exclude .DS_Store?
 xfiles = []		# exclude files
 xmacspec = false	# exclude mac specific files?
@@ -62,14 +62,20 @@ ARGV.options do |opt|
   opt.on('-7')						{ |v| level = 7 }
   opt.on('-8')						{ |v| level = 8 }
   opt.on('-9')						{ |v| level = 9 }
+  opt.on('-C',		'Exclude all Mac-specific files'){ |v| xmacspec = true }
   opt.on('-D',		'Exclude .DS_Store')		{ |v| xdss = true }
   opt.on('-E encoding'	'Encoding in archive')		{ |v| enc = v }
   opt.on('-I',		'Create internet-enable DMG')	{ |v| dmg_ie = true }
-  opt.on('-M',		'Exclude Mac-specific files')	{ |v| xmacspec = true }
   opt.on('-O opts',	'Extra options')		{ |v| exopts = v }
   opt.on('-P password',	'Archive password')		{ |v| password = v }
-  opt.on('-t type',	'Archive type')			{ |v| type = v }
+  opt.on('-R',		'Discard resource forks')	{ |v| rsrc = false }
+  opt.on('-b',		'Create bzip2 archive')		{ |v| format = 'bzip2' }
+  opt.on('-d',		'Create disk image')		{ |v| format = 'dmg' }
+  opt.on('-g',		'Create gzip archive')		{ |v| format = 'gzip' }
+  opt.on('-s',		'Create 7zip archive')		{ |v| format = '7zip' }
+  opt.on('-t format',	'Archive format')		{ |v| format = v }
   opt.on('-x pat',	'Exclude pattern')		{ |v| xfiles.push(v) }
+  opt.on('-z',		'Create zip archive')		{ |v| format = 'zip' }
 
   opt.parse!
 end
@@ -82,18 +88,21 @@ if xdss
 end
 
 if xmacspec
+  rsrc = false
   xfiles += MACSPECS
+end
+
+if !rsrc
+  xfiles.push('._*')
+elsif xfiles.include?('._*')
+  rsrc = false
 end
 
 xfiles.uniq!
 
-if xfiles.include?('._*')
-  rsrc = false
-end
-
 cmdline = []
 
-case type
+case format
 when '7zip'
   check_cmd('7za')
 
@@ -124,7 +133,7 @@ when '7zip'
   STDOUT.flush
   STDOUT.reopen(stdout_sv)
 when 'bzip2', 'gzip'
-  compress = type
+  compress = format
 
   check_cmd(compress)
 
@@ -219,10 +228,8 @@ when 'zip'
     cmdline.push('-P', password)
   end
 
-  if rsrc
-    # zip 3.1 may support to save resource forks
-    warn("saving resource forks is not supported")
-    exit 1
+  if !rsrc
+    cmdline.push('-df')
   end
 
   cmdline.push(dst)
@@ -232,8 +239,9 @@ when 'zip'
     cmdline.push('-x', "*/#{pat}")
   end
 
+  File.unlink(dst)
   system(*cmdline)
 else
-  warn('no file type is specified')
+  warn('no archive format is specified')
   exit(1)
 end

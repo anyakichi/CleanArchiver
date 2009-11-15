@@ -54,11 +54,11 @@
 				<string>NSButton</string>
 				<key>_compressionLevelMenu</key>
 				<string>NSPopUpButton</string>
+				<key>_discardRsrcCheck</key>
+				<string>NSButton</string>
 				<key>_encodingCBox</key>
 				<string>NSComboBox</string>
 				<key>_excludeDSSCheck</key>
-				<string>NSButton</string>
-				<key>_excludeDot_Check</key>
 				<string>NSButton</string>
 				<key>_excludeIconCheck</key>
 				<string>NSButton</string>

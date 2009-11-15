@@ -120,13 +120,19 @@
     if (_compressionLevel != -1)
 	[args addObject:[NSString stringWithFormat:@"-%d", _compressionLevel]];
 
+    if (_discardRsrc)
+	[args addObject:@"-R"];
+
     if (_encoding != nil) {
 	[args addObject:@"-E"];
 	[args addObject:_encoding];
     }
 
+    if (_excludeDSS)
+	[args addObject:@"-D"];
+
     if (_excludeMacFiles)
-	[args addObject:@"-M"];
+	[args addObject:@"-C"];
 
     for (i = 0; i < [_excludedFiles count]; i++) {
 	[args addObject:@"-x"];
@@ -286,6 +292,17 @@ fail:
     _compressionLevel = level;
 }
 
+- (BOOL)discardRsrc
+{
+
+    return _discardRsrc;
+}
+- (void)setDiscardRsrc:(BOOL)yn
+{
+
+    _discardRsrc = yn;
+}
+
 - (NSString *)encoding
 {
 
@@ -297,6 +314,17 @@ fail:
     [encoding retain];
     [_encoding release];
     _encoding = encoding;
+}
+
+- (BOOL)excludeDSS
+{
+
+    return _excludeDSS;
+}
+- (void)setExcludeDSS:(BOOL)yn
+{
+
+    _excludeDSS = yn;
 }
 
 - (BOOL)excludeMacFiles

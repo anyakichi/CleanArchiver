@@ -34,7 +34,7 @@ NSString *AOArchiveIndividually	= @"Archive Individually";
 NSString *AOArchiveType		= @"Archive Type";
 NSString *AOCompressionLevel	= @"Compression Level";
 NSString *AOEncoding		= @"Encoding";
-NSString *AOExcludeDot_		= @"Exclude ._*";
+NSString *AODiscardRsrc		= @"Discard Resource Forks";
 NSString *AOExcludeDSS		= @"Exclude .DS_Store";
 NSString *AOInternetEnabledDMG	= @"Internet-Enabled Disk Image";
 NSString *AOPassword		= @"Password";
@@ -56,7 +56,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     [defaults setObject:@"gzip" forKey:AOArchiveType];
     [defaults setObject:[NSNumber numberWithInt:-1] forKey:AOCompressionLevel];
     [defaults setObject:@"" forKey:AOEncoding];
-    [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDot_];
+    [defaults setObject:[NSNumber numberWithBool:YES] forKey:AODiscardRsrc];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:AOExcludeDSS];
     [defaults setObject:[NSNumber numberWithBool:NO]
 	forKey:AOReplaceAutomatically];
@@ -91,7 +91,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     }
     [self changeArchiveType:self];
     [_encodingCBox setStringValue:[ud objectForKey:AOEncoding]];
-    [_excludeDot_Check setState:[ud boolForKey:AOExcludeDot_]];
+    [_discardRsrcCheck setState:[ud boolForKey:AODiscardRsrc]];
     [_excludeDSSCheck setState:[ud boolForKey:AOExcludeDSS]];
     [_replaceAutomaticallyCheck setState:
 	[ud boolForKey:AOReplaceAutomatically]];
@@ -224,19 +224,25 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     type = [_archiveTypeMenu indexOfSelectedItem];
     switch (type) {
     case DMGT:
+	[_discardRsrcCheck setEnabled:NO];
+	[_discardRsrcCheck setState:NSOffState];
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:YES];
 	break;
     case BZIP2T:
     case GZIPT:
+	[_discardRsrcCheck setEnabled:YES];
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:NO];
 	break;
     case SZIPT:
+	[_discardRsrcCheck setEnabled:NO];
+	[_discardRsrcCheck setState:NSOnState];
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:YES];
 	break;
     case ZIPT:
+	[_discardRsrcCheck setEnabled:YES];
 	[_encodingCBox setEnabled:YES];
 	[_passwordField setEnabled:YES];
 	break;
@@ -264,7 +270,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     }
     [ud setInteger:level forKey:AOCompressionLevel];
     [ud setObject:[_encodingCBox stringValue] forKey:AOEncoding];
-    [ud setBool:[_excludeDot_Check state] forKey:AOExcludeDot_];
+    [ud setBool:[_discardRsrcCheck state] forKey:AODiscardRsrc];
     [ud setBool:[_excludeDSSCheck state] forKey:AOExcludeDSS];
     [ud setBool:[_replaceAutomaticallyCheck state]
 	forKey:AOReplaceAutomatically];
@@ -417,7 +423,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     type = [_archiveTypeMenu indexOfSelectedItem];
     src = [srcs objectAtIndex:0];
     ai = [_archiveIndividuallyCheck state];
-    e_ = [_excludeDot_Check state];
+    e_ = [_discardRsrcCheck state];
     ed = [_excludeDSSCheck state];
     password = [_passwordField stringValue];
     ie = [_internetEnabledDMGCheck state];
@@ -448,7 +454,7 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     [status setObject:[NSNumber numberWithInt:type] forKey:AOArchiveType];
     [status setObject:[NSNumber numberWithInt:level] forKey:AOCompressionLevel];
     [status setObject:encoding forKey:AOEncoding];
-    [status setObject:[NSNumber numberWithBool:e_] forKey:AOExcludeDot_];
+    [status setObject:[NSNumber numberWithBool:e_] forKey:AODiscardRsrc];
     [status setObject:[NSNumber numberWithBool:ed] forKey:AOExcludeDSS];
     [status setObject:password forKey:AOPassword];
     [status setObject:[NSNumber numberWithBool:ie]
@@ -521,12 +527,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
     srcs = [status objectForKey:@"srcs"];
     [fm fileExistsAtPath:[srcs objectAtIndex:0] isDirectory:&isDir];
 
-    if ([[status objectForKey:AOExcludeDot_] intValue])
-	[exfiles addObject:@"._*"];
-
-    if ([[status objectForKey:AOExcludeDSS] intValue])
-	[exfiles addObject:@".DS_Store"];
-
     _mainTask = [[Carc alloc] init];
 
     switch (type) {
@@ -573,6 +573,13 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 
 	[srcbases release];
     }
+
+    if ([[status objectForKey:AODiscardRsrc] intValue])
+	[_mainTask setDiscardRsrc:YES];
+
+    if ([[status objectForKey:AOExcludeDSS] intValue])
+	[_mainTask setExcludeDSS:YES];
+
     [_mainTask setCurrentDirectoryPath:
 	[[srcs objectAtIndex:0] stringByDeletingLastPathComponent]];
     [_mainTask setOutput:dst];
