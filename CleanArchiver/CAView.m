@@ -62,7 +62,7 @@
 {
 
     [_activeBackgroundImage release];
-    [super dalloc];
+    [super dealloc];
 }
 
 #pragma mark -
