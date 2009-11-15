@@ -125,11 +125,11 @@
 		B553E41F109DC60C009DDDA0 /* Carc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Carc.h; path = CleanArchiver/Carc.h; sourceTree = "<group>"; };
 		B553E420109DC60C009DDDA0 /* Carc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Carc.m; path = CleanArchiver/Carc.m; sourceTree = "<group>"; };
 		B56CCAE2109D680A00993EE9 /* carc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = carc; path = CleanArchiver/carc; sourceTree = "<group>"; };
-		B5F43A9D109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B5F43A9F109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B5F43A9D109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B5F43A9F109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5F43AA1109C3298000150B6 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		B5F43AC3109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B5F43AC4109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B5F43AC3109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B5F43AC4109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5F43AC5109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B5FE4A12109E928D00E1608F /* 7za */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = 7za; path = p7zip/bin/7za; sourceTree = "<group>"; };
 		B5FE4B3C109FD2DB00E1608F /* zip */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = zip; path = zip/zip; sourceTree = "<group>"; };
