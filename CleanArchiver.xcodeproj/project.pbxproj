@@ -122,20 +122,12 @@
 		B536BA9C109C2F5A003C7479 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = version.plist; path = CleanArchiver/version.plist; sourceTree = "<group>"; };
 		B545ACAD109C342C009CDDE0 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Japanese; path = CleanArchiver/Localized/Japanese.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
 		B545ACBE109C34C5009CDDE0 /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = CleanArchiver/Localized/English.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
-		B545ACCE109C34EE009CDDE0 /* German */ = {isa = PBXFileReference; lastKnownFileType = folder; name = German; path = CleanArchiver/Localized/German.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
-		B545ACDE109C3505009CDDE0 /* French */ = {isa = PBXFileReference; lastKnownFileType = folder; name = French; path = CleanArchiver/Localized/French.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
 		B553E41F109DC60C009DDDA0 /* Carc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Carc.h; path = CleanArchiver/Carc.h; sourceTree = "<group>"; };
 		B553E420109DC60C009DDDA0 /* Carc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Carc.m; path = CleanArchiver/Carc.m; sourceTree = "<group>"; };
 		B56CCAE2109D680A00993EE9 /* carc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = carc; path = CleanArchiver/carc; sourceTree = "<group>"; };
 		B5F43A9D109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5F43A9F109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5F43AA1109C3298000150B6 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		B5F43AAB109C3298000150B6 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B5F43AAC109C3298000150B6 /* French */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B5F43AAD109C3298000150B6 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = French.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		B5F43AB7109C3298000150B6 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B5F43AB8109C3298000150B6 /* German */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B5F43AB9109C3298000150B6 /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = German.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B5F43AC3109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B5F43AC4109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B5F43AC5109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
@@ -390,8 +382,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B545ACBE109C34C5009CDDE0 /* English */,
-				B545ACDE109C3505009CDDE0 /* French */,
-				B545ACCE109C34EE009CDDE0 /* German */,
 				B545ACAD109C342C009CDDE0 /* Japanese */,
 			);
 			name = CleanArchiverHelp;
@@ -401,8 +391,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B5F43A9D109C3298000150B6 /* English */,
-				B5F43AAB109C3298000150B6 /* French */,
-				B5F43AB7109C3298000150B6 /* German */,
 				B5F43AC3109C3298000150B6 /* Japanese */,
 			);
 			name = InfoPlist.strings;
@@ -413,8 +401,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B5F43A9F109C3298000150B6 /* English */,
-				B5F43AAC109C3298000150B6 /* French */,
-				B5F43AB8109C3298000150B6 /* German */,
 				B5F43AC4109C3298000150B6 /* Japanese */,
 			);
 			name = Localizable.strings;
@@ -425,8 +411,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				B5F43AA1109C3298000150B6 /* English */,
-				B5F43AAD109C3298000150B6 /* French */,
-				B5F43AB9109C3298000150B6 /* German */,
 				B5F43AC5109C3298000150B6 /* Japanese */,
 			);
 			name = MainMenu.nib;
