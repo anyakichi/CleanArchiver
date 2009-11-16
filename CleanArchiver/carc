@@ -239,7 +239,9 @@ when 'zip'
     cmdline.push('-x', "*/#{pat}")
   end
 
-  File.unlink(dst)
+  if FileTest.exist?(dst)
+    File.unlink(dst)
+  end
   system(*cmdline)
 else
   warn('no archive format is specified')
