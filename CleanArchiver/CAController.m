@@ -168,8 +168,10 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 
     if (_archivingCancelled == NO && [_mainTask terminationStatus] != 0) {
 	NSRunAlertPanel(@"",
-	    [NSString localizedStringWithFormat:
-		@"Can't make %@.", [_mainTask output]], nil, nil, nil);
+	    [NSString
+		stringWithFormat:NSLocalizedString(@"Can't create %@.",nil),
+		[_mainTask output]],
+	    nil, nil, nil);
     }
 
     [[NSWorkspace sharedWorkspace]
