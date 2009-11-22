@@ -113,6 +113,7 @@ AString UnicodeStringToMultiByte(const UString &srcString, UINT codePage)
       goto fail3;
 
     mac::CFStringNormalize(mutableString, mac::kCFStringNormalizationFormD);
+    len = mac::CFStringGetLength(mutableString);
     max = mac::CFStringGetMaximumSizeForEncoding(len,
 						 mac::kCFStringEncodingUTF8);
 
