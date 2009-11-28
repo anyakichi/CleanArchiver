@@ -2383,6 +2383,9 @@ char **argv;            /* command line tokens */
       }
     }
 
+#if defined(UNIX) && defined(__APPLE__)
+    using_utf8 = 0;
+#endif
 
     /* Alternative fix for just MAEMO. */
 # if 0

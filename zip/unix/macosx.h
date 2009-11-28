@@ -17,6 +17,8 @@
 #    include <sys/attr.h>
 #    include <sys/vnode.h>
 
+#    include <CoreFoundation/CFString.h>
+
 #    define APL_DBL_PFX "._"
 #    define APL_DBL_PFX_SQR "__MACOSX/"
 #    define APL_DBL_SFX "/rsrc"

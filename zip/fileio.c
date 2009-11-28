@@ -80,7 +80,7 @@ local int ucs4_string_to_utf8 OF((ZCONST ulg *ucs4, char *utf8buf,
 #endif /* UNICODE_SUPPORT */
 
 #ifdef USE_ICONV
-local char *convert_encoding OF((iconv_t, char *, size_t));
+local char *convert_encoding OF((iconv_t, char *));
 #endif
 
 #ifndef UTIL    /* the companion #endif is a bit of ways down ... */
@@ -888,6 +888,7 @@ int newname(name, flags, casesensitive)
   struct flist far *f;  /* where in found, or new found entry */
   struct zlist far *z;  /* where in zfiles (if found) */
   int dosflag;
+  int utf8flag = 0;
   int pad_name;         /* Pad for name (may include APL_DBL_xxx). */
 
 #if defined( UNIX) && defined( __APPLE__)
@@ -959,13 +960,19 @@ int newname(name, flags, casesensitive)
   if (use_encoding_conversion) {
     char *new_name;
 
-    if ((new_name = convert_encoding(iconv_cd, name_archv, strlen(name_archv)))
-	!= NULL) {
+    if ((new_name = convert_encoding(iconv_cd, name_archv)) != NULL) {
 #if defined(UNIX) && defined(__APPLE__)
       if (isapldbl)
 	free(name_archv);
 #endif
       name_archv = new_name;
+    } else if ((new_name = local_to_utf8_string(name_archv)) != NULL) {
+#if defined(UNIX) && defined(__APPLE__)
+      if (isapldbl)
+	free(name_archv);
+#endif
+      name_archv = new_name;
+      utf8flag = 1;
     } else {
       sprintf(errbuf,"failed file name conversion: %s", name_archv);
       ZIPERR(ZE_COMPERR, errbuf);
@@ -1189,8 +1196,19 @@ int newname(name, flags, casesensitive)
 #endif
 
 #ifdef UNICODE_SUPPORT
+#ifdef USE_ICONV
+  if (!utf8flag) {
+    char *uname;
+    if ((uname = ex2in(name, isdir, &dosflag)) == NULL)
+      return ZE_MEM;
+    f->uname = local_to_utf8_string(uname);
+    free(uname);
+  } else
+    f->uname = NULL;
+#else
     /* Unicode */
     f->uname = local_to_utf8_string(iname);
+#endif
 #ifdef WIN32
     f->namew = NULL;
     f->inamew = NULL;
@@ -2972,20 +2990,22 @@ size_t bfwrite(buffer, size, count, mode)
 
 #ifdef USE_ICONV
 local char *
-convert_encoding(iconv_t cd, char *src, size_t srclen)
+convert_encoding(iconv_t cd, char *src)
 {
-  size_t dstlen;
+  size_t dstlen, srclen;
   char *dst, *dst_save;
 
-  if (srclen == 0)
+  if ((srclen = strlen(src)) == 0)
     return NULL;
 
   dstlen = srclen * 4 + 1;
   if ((dst = dst_save = malloc(dstlen)) == NULL)
     return NULL;
 
+  fprintf(stderr, "%s\n", src);
   if (iconv(cd, &src, &srclen, &dst, &dstlen) == (size_t)(-1)) {
-    ZIPERR(ZE_READ, "codeset conversion failed");
+    free(dst_save);
+    return NULL;
   }
   *dst++ = '\0';
 
@@ -3292,18 +3312,45 @@ int is_ascii_string(mbstring)
 char *local_to_utf8_string(local_string)
   char *local_string;
 {
-  zwchar *wide_string;
-  char *utf8_string;
+#if defined(UNIX) && defined(__APPLE__)
+  CFStringRef cfstr;
+  CFMutableStringRef mstr;
+  char *utf8_string = NULL;
+  int len, max;
 
-#ifdef USE_ICONV
-  if (use_encoding_conversion)
-    return convert_encoding(iconv_sub_cd, local_string, strlen(local_string));
-#endif
-  wide_string = local_to_wide_string(local_string);
-  utf8_string = wide_to_utf8_string(wide_string);
+  cfstr = CFStringCreateWithBytes(NULL, (const UInt8 *)local_string,
+				  strlen(local_string), kCFStringEncodingUTF8,
+				  false);
+  if (cfstr == NULL)
+    goto fail1;
+
+  mstr = CFStringCreateMutableCopy(NULL, 0, cfstr);
+  if (mstr == NULL)
+    goto fail2;
+
+  CFStringNormalize(mstr, kCFStringNormalizationFormC);
+  len = CFStringGetLength(mstr);
+  max = CFStringGetMaximumSizeForEncoding(len, kCFStringEncodingUTF8);
+
+  utf8_string = malloc(max + 1);
+  if (utf8_string == NULL)
+    goto fail3;
+  CFStringGetCString(mstr, utf8_string, max, kCFStringEncodingUTF8);
+  utf8_string = realloc(utf8_string, strlen(utf8_string) + 1);
+
+fail3:
+  CFRelease(mstr);
+fail2:
+  CFRelease(cfstr);
+fail1:
+  return utf8_string;
+#else
+  zwchar *wide_string = local_to_wide_string(local_string);
+  char *utf8_string = wide_to_utf8_string(wide_string);
 
   free(wide_string);
   return utf8_string;
+#endif
 }
 
 /* wide_char_to_escape_string

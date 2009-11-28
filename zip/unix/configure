@@ -709,6 +709,8 @@ if [ -f /usr/bin/hostinfo ]; then
   if /usr/bin/hostinfo | grep NeXT > /dev/null; then
     CFLAGS="${CFLAGS} -posix"
     LFLAGS1="${LFLAGS1} -posix -object"
+  elif /usr/bin/hostinfo | grep Darwin > /dev/null; then
+    LFLAGS2="${LFLAGS2} -framework CoreFoundation"
   fi
 # XXX ATT6300, Cray
 elif [ -f /xenix ]; then
