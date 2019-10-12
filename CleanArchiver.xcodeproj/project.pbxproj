@@ -18,17 +18,6 @@
 			name = zip;
 			productName = zip;
 		};
-		B5FE4B64109FD88600E1608F /* p7zip */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = B5FE4B69109FD89200E1608F /* Build configuration list for PBXAggregateTarget "p7zip" */;
-			buildPhases = (
-				B5FE4B63109FD88600E1608F /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = p7zip;
-			productName = p7zip;
-		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXAppleScriptBuildPhase section */
@@ -45,9 +34,10 @@
 
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		B516A210109C850E0039610F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B516A20F109C850E0039610F /* Sparkle.framework */; };
-		B516A240109C8CC60039610F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B516A20F109C850E0039610F /* Sparkle.framework */; };
-		B516A25E109C9E5E0039610F /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = B516A25D109C9E5E0039610F /* dsa_pub.pem */; };
+		B52758EE2351D2E7006B2FAB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B52758ED2351D2E7006B2FAB /* Images.xcassets */; };
+		B52758FD2351E658006B2FAB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52758FB2351E657006B2FAB /* MainMenu.xib */; };
+		B527590123520A78006B2FAB /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B527590023520A78006B2FAB /* Sparkle.framework */; };
+		B527590223520ACB006B2FAB /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B527590023520A78006B2FAB /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B536BA42109C2BB6003C7479 /* CleanArchiver_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B536BA41109C2BB6003C7479 /* CleanArchiver_Prefix.pch */; };
 		B536BA51109C2D1C003C7479 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B536BA50109C2D1C003C7479 /* main.m */; };
 		B536BA76109C2D7F003C7479 /* CAController.h in Headers */ = {isa = PBXBuildFile; fileRef = B536BA63109C2D7F003C7479 /* CAController.h */; };
@@ -55,7 +45,6 @@
 		B536BA78109C2D7F003C7479 /* CAView.h in Headers */ = {isa = PBXBuildFile; fileRef = B536BA65109C2D7F003C7479 /* CAView.h */; };
 		B536BA79109C2D7F003C7479 /* CAView.m in Sources */ = {isa = PBXBuildFile; fileRef = B536BA66109C2D7F003C7479 /* CAView.m */; };
 		B536BA94109C2EBB003C7479 /* mkdmg in Resources */ = {isa = PBXBuildFile; fileRef = B536BA91109C2EBB003C7479 /* mkdmg */; };
-		B536BA96109C2F3D003C7479 /* CleanArchiver.icns in Resources */ = {isa = PBXBuildFile; fileRef = B536BA8A109C2E27003C7479 /* CleanArchiver.icns */; };
 		B536BA97109C2F43003C7479 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B536BA8F109C2EBB003C7479 /* bg.png */; };
 		B536BA98109C2F47003C7479 /* bgactive.png in Resources */ = {isa = PBXBuildFile; fileRef = B536BA90109C2EBB003C7479 /* bgactive.png */; };
 		B536BA9E109C2F5A003C7479 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = B536BA9C109C2F5A003C7479 /* version.plist */; };
@@ -63,12 +52,9 @@
 		B553E421109DC60C009DDDA0 /* Carc.h in Headers */ = {isa = PBXBuildFile; fileRef = B553E41F109DC60C009DDDA0 /* Carc.h */; };
 		B553E422109DC60C009DDDA0 /* Carc.m in Sources */ = {isa = PBXBuildFile; fileRef = B553E420109DC60C009DDDA0 /* Carc.m */; };
 		B56CCAE3109D680A00993EE9 /* carc in Resources */ = {isa = PBXBuildFile; fileRef = B56CCAE2109D680A00993EE9 /* carc */; };
-		B58986DF10B19AD900C67219 /* License-p7zip.txt in Resources */ = {isa = PBXBuildFile; fileRef = B58986DE10B19AD900C67219 /* License-p7zip.txt */; };
 		B58986E310B19AED00C67219 /* License-zip.txt in Resources */ = {isa = PBXBuildFile; fileRef = B58986E210B19AED00C67219 /* License-zip.txt */; };
 		B5F43ACC109C3298000150B6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5F43A9C109C3298000150B6 /* InfoPlist.strings */; };
 		B5F43ACD109C3298000150B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5F43A9E109C3298000150B6 /* Localizable.strings */; };
-		B5F43ACE109C3298000150B6 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = B5F43AA0109C3298000150B6 /* MainMenu.nib */; };
-		B5FE4A13109E928D00E1608F /* 7za in Resources */ = {isa = PBXBuildFile; fileRef = B5FE4A12109E928D00E1608F /* 7za */; };
 		B5FE4B3D109FD2DC00E1608F /* zip in Resources */ = {isa = PBXBuildFile; fileRef = B5FE4B3C109FD2DB00E1608F /* zip */; };
 /* End PBXBuildFile section */
 
@@ -80,13 +66,6 @@
 			remoteGlobalIDString = B5FE4AF8109FBBC600E1608F;
 			remoteInfo = zip;
 		};
-		B5FE4B6A109FD8B500E1608F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B5FE4B64109FD88600E1608F;
-			remoteInfo = p7zip;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -96,7 +75,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B516A240109C8CC60039610F /* Sparkle.framework in CopyFiles */,
+				B527590223520ACB006B2FAB /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,8 +86,16 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* CleanArchiver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanArchiver.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B516A20F109C850E0039610F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		B516A25D109C9E5E0039610F /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = CleanArchiver/dsa_pub.pem; sourceTree = "<group>"; };
+		B52758ED2351D2E7006B2FAB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CleanArchiver/Images.xcassets; sourceTree = "<group>"; };
+		B52758EF2351D532006B2FAB /* en */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en; path = CleanArchiver/Localized/en.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
+		B52758F02351D532006B2FAB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B52758F12351D532006B2FAB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B52758F32351D536006B2FAB /* ja */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ja; path = CleanArchiver/Localized/ja.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
+		B52758F42351D536006B2FAB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B52758F52351D536006B2FAB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B52758FC2351E657006B2FAB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = CleanArchiver/Localized/en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B52758FE2351E661006B2FAB /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = CleanArchiver/Localized/ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B527590023520A78006B2FAB /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		B536BA15109C1ED1003C7479 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CleanArchiver/Info.plist; sourceTree = "<group>"; };
 		B536BA41109C2BB6003C7479 /* CleanArchiver_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CleanArchiver_Prefix.pch; path = CleanArchiver/CleanArchiver_Prefix.pch; sourceTree = "<group>"; };
 		B536BA50109C2D1C003C7479 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CleanArchiver/main.m; sourceTree = "<group>"; };
@@ -116,26 +103,15 @@
 		B536BA64109C2D7F003C7479 /* CAController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAController.m; path = CleanArchiver/CAController.m; sourceTree = "<group>"; };
 		B536BA65109C2D7F003C7479 /* CAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAView.h; path = CleanArchiver/CAView.h; sourceTree = "<group>"; };
 		B536BA66109C2D7F003C7479 /* CAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CAView.m; path = CleanArchiver/CAView.m; sourceTree = "<group>"; };
-		B536BA8A109C2E27003C7479 /* CleanArchiver.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CleanArchiver.icns; path = CleanArchiver/CleanArchiver.icns; sourceTree = "<group>"; };
 		B536BA8F109C2EBB003C7479 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = CleanArchiver/bg.png; sourceTree = "<group>"; };
 		B536BA90109C2EBB003C7479 /* bgactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bgactive.png; path = CleanArchiver/bgactive.png; sourceTree = "<group>"; };
 		B536BA91109C2EBB003C7479 /* mkdmg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; name = mkdmg; path = CleanArchiver/mkdmg; sourceTree = "<group>"; };
 		B536BA9B109C2F5A003C7479 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.txt; path = CleanArchiver/README.txt; sourceTree = "<group>"; };
 		B536BA9C109C2F5A003C7479 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = version.plist; path = CleanArchiver/version.plist; sourceTree = "<group>"; };
-		B545ACAD109C342C009CDDE0 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Japanese; path = CleanArchiver/Localized/Japanese.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
-		B545ACBE109C34C5009CDDE0 /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = CleanArchiver/Localized/English.lproj/CleanArchiverHelp; sourceTree = "<group>"; };
 		B553E41F109DC60C009DDDA0 /* Carc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Carc.h; path = CleanArchiver/Carc.h; sourceTree = "<group>"; };
 		B553E420109DC60C009DDDA0 /* Carc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Carc.m; path = CleanArchiver/Carc.m; sourceTree = "<group>"; };
 		B56CCAE2109D680A00993EE9 /* carc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = carc; path = CleanArchiver/carc; sourceTree = "<group>"; };
-		B58986DE10B19AD900C67219 /* License-p7zip.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "License-p7zip.txt"; path = "p7zip/License-p7zip.txt"; sourceTree = "<group>"; };
 		B58986E210B19AED00C67219 /* License-zip.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "License-zip.txt"; path = "zip/License-zip.txt"; sourceTree = "<group>"; };
-		B5F43A9D109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B5F43A9F109C3298000150B6 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B5F43AA1109C3298000150B6 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		B5F43AC3109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B5F43AC4109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B5F43AC5109C3298000150B6 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
-		B5FE4A12109E928D00E1608F /* 7za */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = 7za; path = p7zip/bin/7za; sourceTree = "<group>"; };
 		B5FE4B3C109FD2DB00E1608F /* zip */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = zip; path = zip/zip; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,7 +121,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				B516A210109C850E0039610F /* Sparkle.framework in Frameworks */,
+				B527590123520A78006B2FAB /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +145,6 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				B516A20F109C850E0039610F /* Sparkle.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -208,19 +183,16 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B5FE4A12109E928D00E1608F /* 7za */,
+				B52758ED2351D2E7006B2FAB /* Images.xcassets */,
 				B536BA8F109C2EBB003C7479 /* bg.png */,
 				B536BA90109C2EBB003C7479 /* bgactive.png */,
 				B56CCAE2109D680A00993EE9 /* carc */,
-				B536BA8A109C2E27003C7479 /* CleanArchiver.icns */,
 				B545ACAC109C342C009CDDE0 /* CleanArchiverHelp */,
-				B516A25D109C9E5E0039610F /* dsa_pub.pem */,
 				B536BA15109C1ED1003C7479 /* Info.plist */,
 				B5F43A9C109C3298000150B6 /* InfoPlist.strings */,
-				B58986DE10B19AD900C67219 /* License-p7zip.txt */,
 				B58986E210B19AED00C67219 /* License-zip.txt */,
 				B5F43A9E109C3298000150B6 /* Localizable.strings */,
-				B5F43AA0109C3298000150B6 /* MainMenu.nib */,
+				B52758FB2351E657006B2FAB /* MainMenu.xib */,
 				B536BA91109C2EBB003C7479 /* mkdmg */,
 				B536BA9C109C2F5A003C7479 /* version.plist */,
 				B5FE4B3C109FD2DB00E1608F /* zip */,
@@ -231,6 +203,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B527590023520A78006B2FAB /* Sparkle.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -276,7 +249,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B5FE4B6B109FD8B500E1608F /* PBXTargetDependency */,
 				B5FE4B26109FC47500E1608F /* PBXTargetDependency */,
 			);
 			name = CleanArchiver;
@@ -290,15 +262,23 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1100;
+			};
 			buildConfigurationList = B5EA5CE808F15FD40064B72D /* Build configuration list for PBXProject "CleanArchiver" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+				Base,
+				ja,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CleanArchiver */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* CleanArchiver */,
-				B5FE4B64109FD88600E1608F /* p7zip */,
 				B5FE4AF8109FBBC600E1608F /* zip */,
 			);
 		};
@@ -310,19 +290,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				B536BA94109C2EBB003C7479 /* mkdmg in Resources */,
-				B536BA96109C2F3D003C7479 /* CleanArchiver.icns in Resources */,
+				B52758EE2351D2E7006B2FAB /* Images.xcassets in Resources */,
 				B536BA97109C2F43003C7479 /* bg.png in Resources */,
 				B536BA98109C2F47003C7479 /* bgactive.png in Resources */,
 				B536BA9E109C2F5A003C7479 /* version.plist in Resources */,
 				B5F43ACC109C3298000150B6 /* InfoPlist.strings in Resources */,
 				B5F43ACD109C3298000150B6 /* Localizable.strings in Resources */,
-				B5F43ACE109C3298000150B6 /* MainMenu.nib in Resources */,
 				B545ACB9109C342C009CDDE0 /* CleanArchiverHelp in Resources */,
-				B516A25E109C9E5E0039610F /* dsa_pub.pem in Resources */,
+				B52758FD2351E658006B2FAB /* MainMenu.xib in Resources */,
 				B56CCAE3109D680A00993EE9 /* carc in Resources */,
-				B5FE4A13109E928D00E1608F /* 7za in Resources */,
 				B5FE4B3D109FD2DC00E1608F /* zip in Resources */,
-				B58986DF10B19AD900C67219 /* License-p7zip.txt in Resources */,
 				B58986E310B19AED00C67219 /* License-zip.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,20 +318,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd zip\n\n[ -e \"zip\" ] && exit 0\n\nfor arch in ${ARCHS}; do\n  build_dir=../build/${arch}\n  mkdir -p ${build_dir}\n\n  make -f unix/Makefile clean\n  make -f unix/Makefile macosx ARCH=${arch}\n  cp zip ${build_dir}\ndone\n\nlipo -create ../build/*/zip -output zip\ncp LICENSE License-zip.txt\n\necho \"Done\"\nexit 0";
-		};
-		B5FE4B63109FD88600E1608F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd p7zip\n\n[ -e \"bin/7za\" ] && exit 0\n\nfor arch in ${ARCHS}; do\n  build_dir=../build/${arch}\n  mkdir -p ${build_dir}\n\n  make clean\n  make OPTFLAGS=\"-arch ${arch}\"\n  cp bin/7za ${build_dir}\ndone\n\nlipo -create ../build/*/7za -output bin/7za\ncp DOCS/License.txt License-p7zip.txt\n\necho \"Done\"\nexit 0";
+			shellScript = "cd zip\n\n[ -e \"zip\" ] && exit 0\n\nfor arch in ${ARCHS}; do\n  build_dir=../build/${arch}\n  mkdir -p ${build_dir}\n\n  make -f unix/Makefile clean\n  make -f unix/Makefile macosx ARCH=${arch}\n  cp zip ${build_dir}\ndone\n\nlipo -create ../build/*/zip -output zip\ncp LICENSE License-zip.txt\n\necho \"Done\"\nexit 0\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -378,19 +342,23 @@
 			target = B5FE4AF8109FBBC600E1608F /* zip */;
 			targetProxy = B5FE4B25109FC47500E1608F /* PBXContainerItemProxy */;
 		};
-		B5FE4B6B109FD8B500E1608F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B5FE4B64109FD88600E1608F /* p7zip */;
-			targetProxy = B5FE4B6A109FD8B500E1608F /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B52758FB2351E657006B2FAB /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B52758FC2351E657006B2FAB /* en */,
+				B52758FE2351E661006B2FAB /* ja */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		B545ACAC109C342C009CDDE0 /* CleanArchiverHelp */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B545ACBE109C34C5009CDDE0 /* English */,
-				B545ACAD109C342C009CDDE0 /* Japanese */,
+				B52758EF2351D532006B2FAB /* en */,
+				B52758F32351D536006B2FAB /* ja */,
 			);
 			name = CleanArchiverHelp;
 			sourceTree = "<group>";
@@ -398,8 +366,8 @@
 		B5F43A9C109C3298000150B6 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B5F43A9D109C3298000150B6 /* English */,
-				B5F43AC3109C3298000150B6 /* Japanese */,
+				B52758F02351D532006B2FAB /* en */,
+				B52758F42351D536006B2FAB /* ja */,
 			);
 			name = InfoPlist.strings;
 			path = CleanArchiver/Localized;
@@ -408,20 +376,10 @@
 		B5F43A9E109C3298000150B6 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B5F43A9F109C3298000150B6 /* English */,
-				B5F43AC4109C3298000150B6 /* Japanese */,
+				B52758F12351D532006B2FAB /* en */,
+				B52758F52351D536006B2FAB /* ja */,
 			);
 			name = Localizable.strings;
-			path = CleanArchiver/Localized;
-			sourceTree = "<group>";
-		};
-		B5F43AA0109C3298000150B6 /* MainMenu.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B5F43AA1109C3298000150B6 /* English */,
-				B5F43AC5109C3298000150B6 /* Japanese */,
-			);
-			name = MainMenu.nib;
 			path = CleanArchiver/Localized;
 			sourceTree = "<group>";
 		};
@@ -431,16 +389,19 @@
 		B535A1F0097A4F430018C1F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = 39;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(PROJECT_DIR)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_PPC64 = NO;
@@ -452,11 +413,16 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = CleanArchiver/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MARKETING_VERSION = 3.0a7;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.sopht.CleanArchiver;
 				PRODUCT_NAME = CleanArchiver;
 				SECTORDER_FLAGS = "";
+				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
@@ -467,29 +433,57 @@
 		B535A1F1097A4F430018C1F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		B5EA5CE508F15FD40064B72D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = 39;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(PROJECT_DIR)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_PPC64 = NO;
@@ -502,11 +496,16 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = CleanArchiver/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MARKETING_VERSION = 3.0a7;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = jp.sopht.CleanArchiver;
 				PRODUCT_NAME = CleanArchiver;
 				SECTORDER_FLAGS = "";
+				VALID_ARCHS = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
@@ -517,19 +516,49 @@
 		B5EA5CE908F15FD40064B72D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = NO;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		B5FE4AF9109FBBC700E1608F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = zip;
@@ -539,31 +568,10 @@
 		B5FE4AFA109FBBC700E1608F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				PRODUCT_NAME = zip;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		B5FE4B65109FD88600E1608F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = p7zip;
-			};
-			name = Debug;
-		};
-		B5FE4B66109FD88600E1608F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = p7zip;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -594,15 +602,6 @@
 			buildConfigurations = (
 				B5FE4AF9109FBBC700E1608F /* Debug */,
 				B5FE4AFA109FBBC700E1608F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		B5FE4B69109FD89200E1608F /* Build configuration list for PBXAggregateTarget "p7zip" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B5FE4B65109FD88600E1608F /* Debug */,
-				B5FE4B66109FD88600E1608F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

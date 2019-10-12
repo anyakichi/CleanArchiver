@@ -39,7 +39,6 @@ extern NSString *AOReplaceAutomatically;
 
 enum archiveTypeMenuIndex {
     DMGT = 0,
-    SZIPT,
     BZIP2T,
     GZIPT,
     ZIPT,

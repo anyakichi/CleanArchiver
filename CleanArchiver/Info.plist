@@ -27,10 +27,8 @@
 	<string>CleanArchiverHelp</string>
 	<key>CFBundleHelpBookName</key>
 	<string>CleanArchiver Help</string>
-	<key>CFBundleIconFile</key>
-	<string>CleanArchiver.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>jp.sopht.CleanArchiver</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -38,21 +36,23 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.0a6</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>ClAr</string>
 	<key>CFBundleVersion</key>
-	<string>39</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUFeedURL</key>
-	<string>http://www.sopht.jp/cleanarchiver/appcast.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
 	<key>SUEnableAutomaticChecks</key>
 	<string>true</string>
+	<key>SUFeedURL</key>
+	<string>https://www.sopht.jp/cleanarchiver/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>3SBxMzLI1RDjRfXyrfeERTmFR2FtcaA0q7VTIDELmEw=</string>
 	<key>SUShowReleaseNotes</key>
 	<string>false</string>
 </dict>

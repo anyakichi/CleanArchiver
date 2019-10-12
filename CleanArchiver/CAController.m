@@ -237,12 +237,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	[_encodingCBox setEnabled:NO];
 	[_passwordField setEnabled:NO];
 	break;
-    case SZIPT:
-	[_discardRsrcCheck setEnabled:NO];
-	[_discardRsrcCheck setState:NSOnState];
-	[_encodingCBox setEnabled:NO];
-	[_passwordField setEnabled:YES];
-	break;
     case ZIPT:
 	[_discardRsrcCheck setEnabled:YES];
 	[_encodingCBox setEnabled:YES];
@@ -362,9 +356,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	    return nil;
 	}
 	ext = @"dmg";
-	break;
-    case SZIPT:
-	ext = @"7z";
 	break;
     case BZIP2T:
 	if ([srcnames count] == 1 && !isDir)
@@ -536,9 +527,6 @@ NSString *AOReplaceAutomatically= @"Replace Automatically";
 	[_mainTask setArchiveType:DMG];
 	[_mainTask setInternetEnabledDMG:
 	    [[status objectForKey:AOInternetEnabledDMG] boolValue]];
-	break;
-    case SZIPT:
-	[_mainTask setArchiveType:SZIP];
 	break;
     case BZIP2T:
 	[_mainTask setArchiveType:BZIP2];

@@ -132,7 +132,7 @@ when '7zip'
 
   STDOUT.flush
   STDOUT.reopen(stdout_sv)
-when 'bzip2', 'gzip'
+when 'bzip2', 'gzip', 'xz'
   compress = format
 
   check_cmd(compress)
@@ -140,8 +140,10 @@ when 'bzip2', 'gzip'
   if level != -1
     if compress == 'bzip2'
       ENV['BZIP2'] = "-#{level}"
-    else
+    elsif compress == 'gzip'
       ENV['GZIP'] = "-#{level}"
+    else
+      ENV['XZ_DEFAULTS'] = "-#{level}"
     end
   end
 

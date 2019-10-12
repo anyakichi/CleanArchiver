@@ -105,6 +105,9 @@
     case SZIP:
 	[args addObject:@"7zip"];
 	break;
+    case XZ:
+	[args addObject:@"xz"];
+	break;
     case ZIP:
 	[args addObject:@"zip"];
 	break;

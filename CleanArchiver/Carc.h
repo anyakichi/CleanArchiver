@@ -35,6 +35,7 @@ enum archiveType {
     GZIP,
     RAR,
     SZIP,
+    XZ,
     ZIP,
 };
 

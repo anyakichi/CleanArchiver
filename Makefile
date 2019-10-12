@@ -3,7 +3,7 @@
 # 	Make CleanArchiver application
 #
 
-XFLAGS=		-activeconfiguration
+#XFLAGS=		-activeconfiguration
 
 .PHONY: build installsrc install clean
 
